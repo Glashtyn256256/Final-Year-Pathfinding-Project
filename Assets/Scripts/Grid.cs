@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
+   
     public Node[,] nodes;
     public List<Node> walls = new List<Node>();
 
@@ -78,8 +79,7 @@ public class Grid : MonoBehaviour
             //    nodeArray[newX,newY].nodeType != NodeType.Blocked)            
 
             //We want the blocked nodes incase they've been changed so we still want to know about them.
-            if (IsWithinBounds(newX, newY) &&
-               nodeArray[newX, newY] != null)
+            if (IsWithinBounds(newX, newY) && nodeArray[newX, newY] != null)
             {
                 neighbourNodes.Add(nodeArray[newX, newY]);
             }

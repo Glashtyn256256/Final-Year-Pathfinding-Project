@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NodeView : MonoBehaviour
+public class NodeVisualisation : MonoBehaviour
 {
     public GameObject tile;
     //public GameObject arrow;
      public GameObject wall;
 
-    Node m_node;
+    public Node gridNode;
 
     [Range(0, 0.5f)]
     public float borderSize = 0.15f;
@@ -20,7 +20,7 @@ public class NodeView : MonoBehaviour
             gameObject.name = "Node (" + node.xIndex + "," + node.yIndex + ")";
             gameObject.transform.position = node.position;
             tile.transform.localScale = new Vector3(1f - borderSize, 1f, 1f - borderSize);
-            m_node = node;
+            gridNode = node;
 
             // EnableObject(arrow, false);
             if (node.nodeType == NodeType.Blocked)
@@ -48,7 +48,7 @@ public class NodeView : MonoBehaviour
         ColorNode(color, tile);
     }
 
-    void EnableObject(GameObject go, bool state)
+   public void EnableObject(GameObject go, bool state)
     {
         go.SetActive(state);
     }
