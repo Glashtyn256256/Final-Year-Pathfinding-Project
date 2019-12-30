@@ -108,6 +108,11 @@ public class GridVisualisation : MonoBehaviour
         nodevisualisation.gridNode.nodeType = NodeType.GoalNode;
         nodevisualisation.ColorNode(goalColor);
     }
+
+    public void ChangeToGoalNodeColourOnly(NodeVisualisation nodevisualisation)
+    { 
+        nodevisualisation.ColorNode(goalColor);
+    }
 }
     
     

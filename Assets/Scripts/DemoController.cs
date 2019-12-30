@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DemoController : MonoBehaviour
 {
+    bool PathfindingVisualisation;
     public Unit unitPrefab;
     Ray ray;
     RaycastHit hit;
@@ -38,13 +39,13 @@ public class DemoController : MonoBehaviour
             gridVisualisation.ChangeToGoalNode(gridVisualisation.nodesVisualisationData[goalX,goalY]);
             Unit unit = Instantiate(unitPrefab, grid.nodes[startX,startY].position + unitPrefab.transform.position, Quaternion.identity) as Unit;
 
-            unit.SetUnitPositionInWorldAndGrid(gridVisualisation.nodesVisualisationData[goalX, goalY].transform, goalX, goalY);
+            unit.SetUnitPositionInWorldAndGrid( goalX, goalY);
             unit.InitPathfinder(grid, gridVisualisation);
             unitData.Add(unit);
 
             unit = Instantiate(unitPrefab, grid.nodes[5, 5].position + unitPrefab.transform.position, Quaternion.identity) as Unit;
 
-            unit.SetUnitPositionInWorldAndGrid(gridVisualisation.nodesVisualisationData[5, 5].transform, 5, 5);
+            unit.SetUnitPositionInWorldAndGrid( 5, 5);
             unit.InitPathfinder(grid, gridVisualisation);
             unitData.Add(unit);
         }
@@ -74,9 +75,10 @@ public class DemoController : MonoBehaviour
                             {
                                 if (unitData[i].SearchPathChangedNode(nodeview.gridNode))
                                 {
-                                    
-                                    unitData[i].UnitFindPath(goalNode.transform.position);
+                                    unitData[i].UnitFindPath(goalNode.transform);   
                                 }
+                                unitData[i].UnitPathVisualisation();
+                                gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
                             }
                             
                         }
@@ -85,7 +87,13 @@ public class DemoController : MonoBehaviour
                             nodeview.gridNode.nodeType = NodeType.Open;
                             nodeview.EnableObject(nodeview.wall, false);
                             gridVisualisation.ResetGridVisualisation();
-                            
+                            //Wall removed and now it's a floor. Need to see if better way of doing this.
+                            for (int i = 0; i < unitData.Count; i++)
+                            {
+                                unitData[i].UnitFindPath(goalNode.transform);
+                                unitData[i].UnitPathVisualisation();
+                                gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+                            }
 
                         }
                     }
@@ -111,7 +119,9 @@ public class DemoController : MonoBehaviour
                        
                         for (int i = 0; i < unitData.Count; i++)
                         {
-                            unitData[i].UnitFindPath(goalNode.transform.position);
+                            unitData[i].UnitFindPath(goalNode.transform);
+                            unitData[i].UnitPathVisualisation();
+                            gridVisualisation.ChangeToGoalNodeColourOnly(nodeview);
                         }
                         // StopCoroutine(pathFinder.BreadthFirstSearchRoutine(timeStep));
                         //gridVisualisation.ResetGridVisualisation();

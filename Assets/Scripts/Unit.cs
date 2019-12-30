@@ -28,10 +28,11 @@ public class Unit : MonoBehaviour
     {
         pathfinder.Init(grid, gridvisualisation);
     }
-   public void SetUnitPositionInWorldAndGrid(Transform goalworldposition, int spawnpositionx, int spawnpositiony)
+   public void SetUnitPositionInWorldAndGrid(int spawnpositionx, int spawnpositiony)
     {
+        
         //WorldPositon of the goal
-        goalWorldPosition = goalworldposition;
+        //goalWorldPosition = goalworldposition;
         
         //Where the unit was sppawned on the grid. Will be used so when we reset the map we can move the unit back to original position.
         spawnPositionX = spawnpositionx;
@@ -40,13 +41,13 @@ public class Unit : MonoBehaviour
 
     //Do we want to pass ina node or pass in a vector
     //Pass in type of search we're doing through unitfindpath. Then it will pick the correct one.
-    public void UnitFindPath(Vector3 goalposition)
+    public void UnitFindPath(Transform goalposition)
     {
-        //goalWorldPosition.position = goalposition;
+        goalWorldPosition = goalposition;
         if (goalposition != null)
         {
             StopCoroutine("moveUnitAcrossPath");
-            path = pathfinder.FindPathBreadthFirstSearch(transform.position, goalposition);
+            path = pathfinder.FindPathBreadthFirstSearch(transform.position, goalWorldPosition.position);
             if (path != null)
             {
                 StartCoroutine("moveUnitAcrossPath");
@@ -71,6 +72,7 @@ public class Unit : MonoBehaviour
                 currentNodeWorldPosition = path[IndexInPath].position;
             }
 
+            //Need a way to check the path after this to see if it's blocked, otherwise unit may be put inside wall.
             if (path[IndexInPath].nodeType == NodeType.Blocked)
             {
                 path = pathfinder.FindPathBreadthFirstSearch(transform.position, goalWorldPosition.position);
@@ -100,5 +102,10 @@ public class Unit : MonoBehaviour
             }
         }
         return false;
+    }
+
+   public void UnitPathVisualisation()
+    {
+        pathfinder.ShowColors();
     }
 }

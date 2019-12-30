@@ -62,7 +62,7 @@ public class Pathfinder : MonoBehaviour
         m_iterations = 0;
     }
 
-    void ShowColors()
+    public void ShowColors()
     {
         ShowColors(m_graphView);
     }
@@ -117,7 +117,7 @@ public class Pathfinder : MonoBehaviour
             if (m_frontierNodes.Contains(m_goalNode))
             {
                 m_pathNodes = GetPathNodes(m_goalNode);
-                ShowDiagnostics(m_goalNode);
+              //  ShowDiagnostics(m_goalNode);
                 Debug.Log("Pathfinder searchroutine: elapse time = " + (Time.time - timeStart).ToString() + " seconds");
                 return m_pathNodes;
             }
