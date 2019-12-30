@@ -132,6 +132,28 @@ public class DemoController : MonoBehaviour
                 }
             }
         }
-        
+        if (Input.GetMouseButtonDown(2))
+        {
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log(hit.collider.gameObject.tag);
+                //added mesh chollider to tile to make sure we are able to hit the tile plane.
+                if (hit.collider.gameObject.tag == "Node")
+                {
+                    NodeVisualisation nodeview = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
+                    if (nodeview.gridNode.nodeType == NodeType.Open)
+                    {
+                        Unit unit = Instantiate(unitPrefab, nodeview.transform.position + unitPrefab.transform.position, Quaternion.identity) as Unit;
+                        unit.SetUnitPositionInWorldAndGrid(nodeview.gridNode.xIndex, nodeview.gridNode.yIndex);
+                        unit.InitPathfinder(grid, gridVisualisation);
+                        unitData.Add(unit);
+                        unit.UnitFindPath(goalNode.transform);
+                        unit.UnitPathVisualisation();
+                        gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+                    }
+                }
+            }
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Diagnostics;
 
 public class Pathfinder : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class Pathfinder : MonoBehaviour
     {
         if (graphView == null || graph == null)
         {
-            Debug.Log("Pathfinder Init error: missing component(s)!");
+            UnityEngine.Debug.Log("Pathfinder Init error: missing component(s)!");
             return;
         }
 
@@ -101,8 +102,8 @@ public class Pathfinder : MonoBehaviour
         m_pathNodes = new List<Node>();
         m_frontierNodes.Enqueue(m_startNode);
 
-        float timeStart = Time.time;
-
+        Stopwatch timer = new Stopwatch();
+        timer.Start();
         while (m_frontierNodes.Count > 0)
         {
             Node currentNode = m_frontierNodes.Dequeue();
@@ -111,18 +112,18 @@ public class Pathfinder : MonoBehaviour
             {
                 m_exploredNodes.Add(currentNode);
             }
-
+            
             ExpandFrontier(currentNode);
 
             if (m_frontierNodes.Contains(m_goalNode))
             {
                 m_pathNodes = GetPathNodes(m_goalNode);
-              //  ShowDiagnostics(m_goalNode);
-                Debug.Log("Pathfinder searchroutine: elapse time = " + (Time.time - timeStart).ToString() + " seconds");
+                timer.Stop();
+                UnityEngine.Debug.Log("Pathfinder searchroutine: elapse time = " + (timer.ElapsedMilliseconds).ToString() + " milliseconds");
                 return m_pathNodes;
             }
         }
-        Debug.Log("Path is blocked, no path possible to goal");
+        UnityEngine.Debug.Log("Path is blocked, no path possible to goal");
         return null;
     }
 
