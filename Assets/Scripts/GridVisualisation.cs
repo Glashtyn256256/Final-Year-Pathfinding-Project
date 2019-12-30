@@ -10,6 +10,7 @@ public class GridVisualisation : MonoBehaviour
 
     public Color baseColor = Color.white;
     public Color wallColor = Color.black;
+    public Color goalColor = Color.red;
 
     public void Init(Grid graph)
     {
@@ -34,7 +35,7 @@ public class GridVisualisation : MonoBehaviour
                 {
                     nodeVisualisation.ColorNode(wallColor);
                 }
-                else
+                else 
                 {
                     nodeVisualisation.ColorNode(baseColor);
                 }
@@ -74,21 +75,39 @@ public class GridVisualisation : MonoBehaviour
     {
         foreach (Node n in nodes)
         {
-            ShowNodeArrows(n,color);
+            ShowNodeArrows(n, color);
         }
     }
 
     public void ResetGridVisualisation()
     {
-        foreach(NodeVisualisation nodeview in nodesVisualisationData)
+        foreach (NodeVisualisation nodeVisualisation in nodesVisualisationData)
 
-        if (nodeview.gridNode.nodeType == NodeType.Blocked)
-        {
-               nodeview.ColorNode(wallColor);
-        }
-        else
-        {
-            nodeview.ColorNode(baseColor);
-        }
+            if (nodeVisualisation.gridNode.nodeType == NodeType.Blocked)
+            {
+                nodeVisualisation.ColorNode(wallColor);
+            }
+            else if(nodeVisualisation.gridNode.nodeType == NodeType.Open) 
+            {
+                nodeVisualisation.ColorNode(baseColor);
+            }
+            else
+            {
+                nodeVisualisation.ColorNode(goalColor);
+            }
+        
+    }
+
+    public void ChangeToFloorNode(NodeVisualisation nodevisualisation)
+    {
+        nodevisualisation.gridNode.nodeType = NodeType.Open;
+        nodevisualisation.ColorNode(baseColor);
+    }
+    public void ChangeToGoalNode(NodeVisualisation nodevisualisation)
+    {
+        nodevisualisation.gridNode.nodeType = NodeType.GoalNode;
+        nodevisualisation.ColorNode(goalColor);
     }
 }
+    
+    

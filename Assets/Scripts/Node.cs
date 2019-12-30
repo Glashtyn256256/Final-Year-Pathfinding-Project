@@ -8,7 +8,8 @@ using UnityEngine;
 public enum NodeType
 {
     Open = 0,
-    Blocked = 1
+    Blocked = 1,
+    GoalNode = 2
 }
 
 public class Node

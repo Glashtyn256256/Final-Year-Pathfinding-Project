@@ -4,39 +4,42 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
-   
+
     public Node[,] nodes;
     public List<Node> walls = new List<Node>();
 
     int[,] m_mapData;
-    int m_width;
-    public int Width { get { return m_width; } }
-    int m_height;
-    public int Height { get{ return m_height; } }
+    int gridWidth;
+    public int Width { get { return gridWidth; } }
+    int gridHeight;
+    public int Height { get { return gridHeight; } }
+    float nodeDiameter;
+    float gridSizeX;
+    float gridSizeY;
 
     public static readonly Vector2[] allDirections =
     {   //x, y 
         new Vector2(0f,1f), //top
-        new Vector2(1f,1f), //top right
         new Vector2(1f,0f), //right
-        new Vector2(1f,-1f), //bottom right
         new Vector2(0f,-1f), //bottom
-        new Vector2(-1f,-1f), //bottom left
         new Vector2(-1f,0f), // left
+        new Vector2(1f,1f), //top right
+        new Vector2(1f,-1f), //bottom right    
+        new Vector2(-1f,-1f), //bottom left 
         new Vector2(-1f,1f), // top left
     };
 
     public void Init(int[,] mapData)
     {
         m_mapData = mapData;
-        m_width = mapData.GetLength(0); //first array so x
-        m_height = mapData.GetLength(1); //first array so y;
+        gridWidth = mapData.GetLength(0); //first array so x
+        gridHeight = mapData.GetLength(1); //first array so y;
 
-        nodes = new Node[m_width, m_height];
+        nodes = new Node[gridWidth, gridHeight];
 
-        for (int y = 0; y < m_height; y++)
+        for (int y = 0; y < gridHeight; y++)
         {
-            for (int x = 0; x < m_width; x++)
+            for (int x = 0; x < gridWidth; x++)
             {
                 //change nodetype depending on what number we gave it in the mapdata
                 NodeType type = (NodeType)mapData[x, y];
@@ -49,27 +52,29 @@ public class Grid : MonoBehaviour
             }
         }
 
-        for (int y = 0; y < m_height; y++)
+        for (int y = 0; y < gridHeight; y++)
         {
-            for (int x = 0; x < m_width; x++)
+            for (int x = 0; x < gridWidth; x++)
             {
-  
-                    nodes[x, y].neighbours = GetNeighbours(x, y);
-                
+                nodes[x, y].neighbours = GetNeighbours(x, y);
             }
         }
+
+        //nodeDiameter = 1 * 2;//0.70710678118f * 2;
+        //gridSizeX = Mathf.RoundToInt(gridWidth / nodeDiameter); //How many nodes we can fit into our worldsize X 
+        //gridSizeY = Mathf.RoundToInt(gridHeight / nodeDiameter);
     }
 
     public bool IsWithinBounds(int x, int y)
     {
-        return (x >= 0 && x < m_width && y >= 0 && y < m_height);
+        return (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight);
     }
 
     List<Node> GetNeighbours(int x, int y, Node[,] nodeArray, Vector2[] directions)
     {
         List<Node> neighbourNodes = new List<Node>();
 
-        foreach(Vector2 dir in directions)
+        foreach (Vector2 dir in directions)
         {
             int newX = x + (int)dir.x;
             int newY = y + (int)dir.y;
@@ -91,4 +96,43 @@ public class Grid : MonoBehaviour
     {
         return GetNeighbours(x, y, nodes, allDirections);
     }
+
+    public Node GetNodeFromWorldPoint(Vector3 worldPosition)
+    {
+        //float percentX = (worldPosition.x - transform.position.x) / gridWorldSize.x + 0.5f - (nodeRadius / gridWorldSize.x);
+        //float percentY = (worldPosition.z - transform.position.z) / gridWorldSize.y + 0.5f - (nodeRadius / gridWorldSize.y);
+        //float percentX = (worldPosition.x - transform.position.x) / gridWidth + 0.5f;
+        //float percentY = (worldPosition.z - transform.position.z) / gridHeight + 0.5f;
+        // float percentX = (worldPosition.x + gridWidth / 2) / gridWidth;
+        //   float percentY = (worldPosition.z + gridHeight / 2) / gridHeight;
+        // percentX = Mathf.Clamp01(percentX);
+        // percentY = Mathf.Clamp01(percentY);
+
+        //int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
+        //int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+
+        //Nodes world position matches the nodes grid position in the array so 3,3 in world space is 3,3 in grid.
+        //When the playernode is passed through it may be between two nodes so we round it to the closest int meaning
+        //the node it is closest to. This might result in it going back to a node if it's closer. 
+        float percentX = worldPosition.x;
+        float percentY = worldPosition.z;
+        
+        int x = Mathf.RoundToInt(percentX);
+        int y = Mathf.RoundToInt(percentY);
+
+        return nodes[x, y];
+    }
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireCube(nodes[0, 0].position, new Vector3(gridWidth, 1, gridHeight)); //Reason we use Y axis and not z is because the grid
+
+    //    if (nodes != null)
+    //    {
+    //        foreach (Node n in nodes)
+    //        {
+
+    //            Gizmos.DrawCube(n.position, Vector3.one * (nodeDiameter));
+    //        }
+    //    }
+    //}
 }
