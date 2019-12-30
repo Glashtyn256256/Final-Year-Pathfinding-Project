@@ -136,4 +136,19 @@ public class Grid : MonoBehaviour
     //        }
     //    }
     //}
+
+     //Talk about this more later, from tutorial. explain in write up what it does.
+    public int GetNodeDistance(Node source, Node target)
+    {
+        int dx = Mathf.Abs(source.xIndex - target.xIndex);
+        int dy = Mathf.Abs(source.yIndex - target.yIndex);
+
+        int min = Mathf.Min(dx, dy);
+        int max = Mathf.Max(dx, dy);
+
+        int diagonalSteps = min;
+        int straightSteps = max - min;
+
+        return (14 * diagonalSteps + straightSteps);
+    }
 }

@@ -55,6 +55,9 @@ public class Unit : MonoBehaviour
                 case 1:
                     path = pathfinder.FindPathDepthFirstSearch(transform.position, goalWorldPosition.position);
                     break;
+                case 2:
+                    path = pathfinder.FindPathDijkstra(transform.position, goalWorldPosition.position);
+                    break;
                 default:
                     return;
                

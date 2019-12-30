@@ -110,8 +110,45 @@ public class Pathfinder : MonoBehaviour
             {
                 m_exploredNodes.Add(currentNode);
             }
-            
-            ExpandFrontier(currentNode);
+
+            ExpandFrontierBreadth(currentNode);
+
+            if (m_frontierNodes.Contains(m_goalNode))
+            {
+                m_pathNodes = GetPathNodes(m_goalNode);
+                timer.Stop();
+                UnityEngine.Debug.Log("Pathfinder searchroutine: elapse time = " + (timer.ElapsedMilliseconds).ToString() + " milliseconds");
+                return m_pathNodes;
+            }
+        }
+        UnityEngine.Debug.Log("Path is blocked, no path possible to goal");
+        return null;
+    }
+
+    //These are a waste shorten when you get the chance. A lot of re-used code
+    public List<Node> FindPathDijkstra(Vector3 startposition, Vector3 goalposition)
+    {
+        ResetNodePreviousValuetoNull();
+        Node m_startNode = m_graph.GetNodeFromWorldPoint(startposition);
+        Node m_goalNode = m_graph.GetNodeFromWorldPoint(goalposition);
+
+        m_frontierNodes = new Queue<Node>();
+        m_exploredNodes = new List<Node>();
+        m_pathNodes = new List<Node>();
+        m_frontierNodes.Enqueue(m_startNode);
+
+        Stopwatch timer = new Stopwatch();
+        timer.Start();
+        while (m_frontierNodes.Count > 0)
+        {
+            Node currentNode = m_frontierNodes.Dequeue();
+
+            if (!m_exploredNodes.Contains(currentNode))
+            {
+                m_exploredNodes.Add(currentNode);
+            }
+
+            ExpandFrontierDijkstra(currentNode);
 
             if (m_frontierNodes.Contains(m_goalNode))
             {
@@ -180,48 +217,6 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
-    //public IEnumerator DepthFirstSearchRoutine(float timestep = 0.1f)
-    //{
-    //    float timeStart = Time.time;
-    //    yield return null;
-
-    //    while (!isComplete)
-    //    {
-    //        if (m_frontNodes.Count > 0)
-    //        {
-    //            Node currentNode = m_frontNodes[m_frontNodes.Count - 1];
-    //            m_iterations++;
-    //            m_frontNodes.RemoveAt(m_frontNodes.Count - 1);
-    //            if (!m_exploredNodes.Contains(currentNode))
-    //            {
-    //                m_exploredNodes.Add(currentNode);
-    //            }
-
-    //            DepthExpandFrontier(currentNode);
-
-    //            if (m_frontNodes.Contains(m_goalNode))
-    //            {
-    //                m_pathNodes = GetPathNodes(m_goalNode);
-    //                if (exitOnGoal)
-    //                {
-    //                    isComplete = true;
-    //                }
-    //            }
-
-    //            if (showIterations)
-    //            {
-    //                ShowDiagnostics();
-    //                yield return new WaitForSeconds(timestep);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            isComplete = true;
-    //        }
-    //    }
-    //    ShowDiagnostics();
-    //    Debug.Log("Pathfinder searchroutine: elapse time = " + (Time.time - timeStart).ToString() + " seconds");
-    //}
     void ShowDiagnostics(Node m_goalnode)
     {
         if (showColors)
@@ -230,7 +225,7 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
-    void ExpandFrontier(Node node)
+    void ExpandFrontierBreadth(Node node)
     {
         if (node != null)
         {
@@ -246,8 +241,44 @@ public class Pathfinder : MonoBehaviour
             }
         }
     }
+    void ExpandFrontierDijkstra(Node node)
+    {
+        if (node != null)
+        {
+            foreach (Node neighbour in node.neighbours)
+            {
+                if(neighbour.nodeType == NodeType.Blocked || m_exploredNodes.Contains(neighbour))
+                {
+                    continue;
+                }
 
- 
+                int distanceToNeighbor = node.gCost + m_graph.GetNodeDistance(node, neighbour);
+
+                if (distanceToNeighbor < neighbour.gCost || !m_frontierNodes.Contains(neighbour))
+                {
+                    neighbour.gCost = distanceToNeighbor;
+                    neighbour.previous = node;
+
+                    if (!m_frontierNodes.Contains(neighbour))
+                    {
+                        m_frontierNodes.Enqueue(neighbour);
+                    }
+                }
+                
+            }
+        }
+    }
+    int GetDistance(Node nodeA, Node nodeB)
+    {
+        int distX = Mathf.Abs(nodeA.xIndex - nodeB.xIndex);
+        int distY = Mathf.Abs(nodeA.yIndex - nodeB.yIndex);
+
+        if (distX > distY)
+        {
+            return 14 * distY + 10 * (distX - distY);
+        }
+        return 14 * distX + 10 * (distY - distX);
+    }
 
     List<Node> GetPathNodes(Node endNode)
     {
