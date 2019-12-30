@@ -18,15 +18,16 @@ public class Grid : MonoBehaviour
     float gridSizeY;
 
     public static readonly Vector2[] allDirections =
-    {   //x, y 
+    {   //Create two one for all directions and one for four directions, then have a option to toggle it on or off.
+        //x, y
         new Vector2(0f,1f), //top
         new Vector2(1f,0f), //right
         new Vector2(0f,-1f), //bottom
         new Vector2(-1f,0f), // left
-        new Vector2(1f,1f), //top right
-        new Vector2(1f,-1f), //bottom right    
-        new Vector2(-1f,-1f), //bottom left 
-        new Vector2(-1f,1f), // top left
+        //new Vector2(1f,1f), //top right
+        //new Vector2(1f,-1f), //bottom right    
+        //new Vector2(-1f,-1f), //bottom left 
+        //new Vector2(-1f,1f), // top left
     };
 
     public void Init(int[,] mapData)

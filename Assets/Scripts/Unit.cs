@@ -11,7 +11,7 @@ public class Unit : MonoBehaviour
     int spawnPositionX;
     int spawnPositionY;
     int IndexInPath;
- 
+   
 
     //create a consutrctor for when we create a new unit, we want to know it's position in the grid where it's spawned.
     //public Unit(Transform goalworldposition, int spawnpositionx, int spawnpositiony)
@@ -41,13 +41,25 @@ public class Unit : MonoBehaviour
 
     //Do we want to pass ina node or pass in a vector
     //Pass in type of search we're doing through unitfindpath. Then it will pick the correct one.
-    public void UnitFindPath(Transform goalposition)
+    public void UnitFindPath(Transform goalposition, int algorithmIndex)
     {
         goalWorldPosition = goalposition;
         if (goalposition != null)
         {
             StopCoroutine("moveUnitAcrossPath");
-            path = pathfinder.FindPathBreadthFirstSearch(transform.position, goalWorldPosition.position);
+            switch (algorithmIndex)
+            {
+                case 0:
+                    path = pathfinder.FindPathBreadthFirstSearch(transform.position, goalWorldPosition.position);
+                    break;
+                case 1:
+                    path = pathfinder.FindPathDepthFirstSearch(transform.position, goalWorldPosition.position);
+                    break;
+                default:
+                    return;
+               
+            }
+            
             if (path != null)
             {
                 StartCoroutine("moveUnitAcrossPath");

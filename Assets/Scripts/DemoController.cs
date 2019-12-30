@@ -20,6 +20,7 @@ public class DemoController : MonoBehaviour
     Node startNode;
     NodeVisualisation goalNode;
    public List<Unit> unitData;
+    int algorithmIndex;
 
     void Start()
     {
@@ -42,13 +43,13 @@ public class DemoController : MonoBehaviour
             unit.SetUnitPositionInWorldAndGrid( goalX, goalY);
             unit.InitPathfinder(grid, gridVisualisation);
             unitData.Add(unit);
-
-            unit = Instantiate(unitPrefab, grid.nodes[5, 5].position + unitPrefab.transform.position, Quaternion.identity) as Unit;
-
-            unit.SetUnitPositionInWorldAndGrid( 5, 5);
-            unit.InitPathfinder(grid, gridVisualisation);
-            unitData.Add(unit);
         }
+    }
+
+    //Get the intgeger value selected from the dropdown
+    public void SetCurrentAlgorithmFromDropdown(int algorithmindex)
+    {
+        algorithmIndex = algorithmindex;
     }
 
     void Update()
@@ -75,7 +76,7 @@ public class DemoController : MonoBehaviour
                             {
                                 if (unitData[i].SearchPathChangedNode(nodeview.gridNode))
                                 {
-                                    unitData[i].UnitFindPath(goalNode.transform);   
+                                    unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);   
                                 }
                                 unitData[i].UnitPathVisualisation();
                                 gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
@@ -90,7 +91,7 @@ public class DemoController : MonoBehaviour
                             //Wall removed and now it's a floor. Need to see if better way of doing this.
                             for (int i = 0; i < unitData.Count; i++)
                             {
-                                unitData[i].UnitFindPath(goalNode.transform);
+                                unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
                                 unitData[i].UnitPathVisualisation();
                                 gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
                             }
@@ -119,15 +120,10 @@ public class DemoController : MonoBehaviour
                        
                         for (int i = 0; i < unitData.Count; i++)
                         {
-                            unitData[i].UnitFindPath(goalNode.transform);
+                            unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
                             unitData[i].UnitPathVisualisation();
                             gridVisualisation.ChangeToGoalNodeColourOnly(nodeview);
                         }
-                        // StopCoroutine(pathFinder.BreadthFirstSearchRoutine(timeStep));
-                        //gridVisualisation.ResetGridVisualisation();
-
-                        //StartCoroutine(pathFinder.BreadthFirstSearchRoutine(timeStep));
-
                     }
                 }
             }
@@ -147,7 +143,7 @@ public class DemoController : MonoBehaviour
                         unit.SetUnitPositionInWorldAndGrid(nodeview.gridNode.xIndex, nodeview.gridNode.yIndex);
                         unit.InitPathfinder(grid, gridVisualisation);
                         unitData.Add(unit);
-                        unit.UnitFindPath(goalNode.transform);
+                        unit.UnitFindPath(goalNode.transform, algorithmIndex);
                         unit.UnitPathVisualisation();
                         gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
                     }

@@ -58,8 +58,6 @@ public class Pathfinder : MonoBehaviour
                 m_graph.nodes[x, y].Reset();
             }
         }
-
-        isComplete = false;
         m_iterations = 0;
     }
 
@@ -75,15 +73,15 @@ public class Pathfinder : MonoBehaviour
             return;
         }
 
-        //if (m_frontierNodes != null)
-        //{
-        //    graphView.ColorNodes(m_frontierNodes.ToList(), frontierColor);
-        //}
+        if (m_frontierNodes != null)
+        {
+            graphView.ColorNodes(m_frontierNodes.ToList(), frontierColor);
+        }
 
-        //if (m_exploredNodes != null)
-        //{
-        //    graphView.ColorNodes(m_exploredNodes, exploredColor);
-        //}
+        if (m_exploredNodes != null)
+        {
+            graphView.ColorNodes(m_exploredNodes, exploredColor);
+        }
 
         if (m_pathNodes != null && m_pathNodes.Count > 0)
         {
@@ -127,57 +125,60 @@ public class Pathfinder : MonoBehaviour
         return null;
     }
 
-    
-            
-        
-      
-    
+    public List<Node> FindPathDepthFirstSearch(Vector3 startposition, Vector3 goalposition)
+    {
+        ResetNodePreviousValuetoNull();
+        Node m_startNode = m_graph.GetNodeFromWorldPoint(startposition);
+        Node m_goalNode = m_graph.GetNodeFromWorldPoint(goalposition);
 
-    //public IEnumerator BreadthFirstSearchRoutine(float timestep = 0.1f)
-    //{
-    //    float timeStart = Time.time;
-    //    yield return null;
-    //    while (!isComplete)
-    //    {
-    //        if (m_frontierNodes.Count > 0)
-    //        {
-    //            Node currentNode = m_frontierNodes.Dequeue();
-    //            m_iterations++;
+        m_frontNodes = new List<Node>();
+        m_exploredNodes = new List<Node>();
 
-    //            if (!m_exploredNodes.Contains(currentNode))
-    //            {
-    //                m_exploredNodes.Add(currentNode);
-    //            }
+        m_pathNodes = new List<Node>();
+        m_frontNodes.Add(m_startNode);
 
-    //            ExpandFrontier(currentNode);
+        Stopwatch timer = new Stopwatch();
+        timer.Start();
+        while (m_frontNodes.Count > 0)
+        {
+            Node currentNode = m_frontNodes[m_frontNodes.Count - 1];
+            m_frontNodes.RemoveAt(m_frontNodes.Count - 1);
 
-    //            if (m_frontierNodes.Contains(m_goalNode))
-    //            {
-    //                m_pathNodes = GetPathNodes(m_goalNode);
-    //                if (exitOnGoal)
-    //                {
-    //                    ShowDiagnostics();
-    //                    isComplete = true;
-    //                }
-    //            }
+            if (!m_exploredNodes.Contains(currentNode))
+            {
+                m_exploredNodes.Add(currentNode);
+            }
 
-    //            //if (showIterations)
-    //            //{
-    //            //    ShowDiagnostics();
-    //            //    yield return new WaitForSeconds(timestep);
-    //            //}
-    //        }
-    //        else
-    //        {
-    //            isComplete = true;
-    //            Debug.Log("Path is blocked, no path possible to goal");
-    //             yield break;
-    //        }
-    //    }
-    //    Debug.Log("Pathfinder searchroutine: elapse time = " + (Time.time - timeStart).ToString() + " seconds");
-    //}
+            DepthExpandFrontier(currentNode);
 
+            if (m_frontNodes.Contains(m_goalNode))
+            {
+                m_pathNodes = GetPathNodes(m_goalNode);
+                timer.Stop();
+                UnityEngine.Debug.Log("Pathfinder searchroutine: elapse time = " + (timer.ElapsedMilliseconds).ToString() + " milliseconds");
+                return m_pathNodes;
+            }
+        }
+        UnityEngine.Debug.Log("Path is blocked, no path possible to goal");
+        return null;
+    }
 
+    void DepthExpandFrontier(Node node)
+    {
+        if (node != null)
+        {
+            for (int i = 0; i < node.neighbours.Count; i++)
+            {
+                if (!m_exploredNodes.Contains(node.neighbours[i]) &&
+                    (!m_frontNodes.Contains(node.neighbours[i])
+                    && node.neighbours[i].nodeType != NodeType.Blocked))
+                {
+                    node.neighbours[i].previous = node;
+                    m_frontNodes.Add(node.neighbours[i]);
+                }
+            }
+        }
+    }
 
     //public IEnumerator DepthFirstSearchRoutine(float timestep = 0.1f)
     //{
@@ -227,8 +228,6 @@ public class Pathfinder : MonoBehaviour
         {
             ShowColors();
         }
-       
-        
     }
 
     void ExpandFrontier(Node node)
@@ -247,6 +246,8 @@ public class Pathfinder : MonoBehaviour
             }
         }
     }
+
+ 
 
     List<Node> GetPathNodes(Node endNode)
     {
