@@ -17,7 +17,7 @@ public class DemoController : MonoBehaviour
     public int goalX = 20;
     public int goalY = 20;
     public float timeStep = 0.1f;
-    Node startNode;
+    NodeVisualisation startNode;
     NodeVisualisation goalNode;
    public List<Unit> unitData;
     int algorithmIndex;
@@ -36,26 +36,19 @@ public class DemoController : MonoBehaviour
                 gridVisualisation.Init(grid);
             }
 
-            goalNode = gridVisualisation.nodesVisualisationData[goalX, goalY];
-            gridVisualisation.ChangeToGoalNode(gridVisualisation.nodesVisualisationData[goalX,goalY]);
-            Unit unit = Instantiate(unitPrefab, grid.nodes[startX,startY].position + unitPrefab.transform.position, Quaternion.identity) as Unit;
-
-            unit.SetUnitPositionInWorldAndGrid( goalX, goalY);
-            unit.InitPathfinder(grid, gridVisualisation);
-            unitData.Add(unit);
+            //if our goal is not in the map range it will throw.
+            if(grid.IsWithinBounds(goalX,goalY) && grid.IsWithinBounds(startX, startY))
+            {
+                startNode = gridVisualisation.nodesVisualisationData[startX, startY];
+                goalNode = gridVisualisation.nodesVisualisationData[goalX, goalY];
+                InstantiateUnit(startNode);
+            }
         }
-    }
-
-    //Get the intgeger value selected from the dropdown
-    public void SetCurrentAlgorithmFromDropdown(int algorithmindex)
-    {
-        algorithmIndex = algorithmindex;
     }
 
     void Update()
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -69,33 +62,14 @@ public class DemoController : MonoBehaviour
                     {
                         if (nodeview.gridNode.nodeType == 0)
                         {
-                            nodeview.gridNode.nodeType = NodeType.Blocked;
-                            nodeview.EnableObject(nodeview.wall, true);
-                            gridVisualisation.ResetGridVisualisation();
-                            for (int i = 0; i < unitData.Count; i++)
-                            {
-                                if (unitData[i].SearchPathChangedNode(nodeview.gridNode))
-                                {
-                                    unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);   
-                                }
-                                unitData[i].UnitPathVisualisation();
-                                gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
-                            }
-                            
+                            ChangeTileTerrain(nodeview, NodeType.Blocked, true);
+                            SearchUnitPathRecalculate(nodeview);     
                         }
                         else
                         {
-                            nodeview.gridNode.nodeType = NodeType.Open;
-                            nodeview.EnableObject(nodeview.wall, false);
-                            gridVisualisation.ResetGridVisualisation();
-                            //Wall removed and now it's a floor. Need to see if better way of doing this.
-                            for (int i = 0; i < unitData.Count; i++)
-                            {
-                                unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
-                                unitData[i].UnitPathVisualisation();
-                                gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
-                            }
-
+                            ChangeTileTerrain(nodeview, NodeType.Open, false);
+                            RecalculateUnitPath();
+                            //When we put back to a floor we recalculate a path. Need a better way since it may not even effect path
                         }
                     }
                 }
@@ -113,21 +87,13 @@ public class DemoController : MonoBehaviour
                     NodeVisualisation nodeview = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
                     if (nodeview.gridNode.nodeType == NodeType.Open)
                     {
-                        gridVisualisation.ResetGridVisualisation();
-                        gridVisualisation.ChangeToFloorNode(gridVisualisation.nodesVisualisationData[goalNode.gridNode.xIndex, goalNode.gridNode.yIndex]);
-                        gridVisualisation.ChangeToGoalNode(nodeview);
-                        goalNode = nodeview;
-                       
-                        for (int i = 0; i < unitData.Count; i++)
-                        {
-                            unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
-                            unitData[i].UnitPathVisualisation();
-                            gridVisualisation.ChangeToGoalNodeColourOnly(nodeview);
-                        }
+                        ChangeTileToGoalNode(nodeview);
+                        RecalculateUnitPath();
                     }
                 }
             }
         }
+
         if (Input.GetMouseButtonDown(2))
         {
             if (Physics.Raycast(ray, out hit))
@@ -139,17 +105,66 @@ public class DemoController : MonoBehaviour
                     NodeVisualisation nodeview = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
                     if (nodeview.gridNode.nodeType == NodeType.Open)
                     {
-                        Unit unit = Instantiate(unitPrefab, nodeview.transform.position + unitPrefab.transform.position, Quaternion.identity) as Unit;
-                        unit.SetUnitPositionInWorldAndGrid(nodeview.gridNode.xIndex, nodeview.gridNode.yIndex);
-                        unit.InitPathfinder(grid, gridVisualisation);
-                        unitData.Add(unit);
-                        unit.UnitFindPath(goalNode.transform, algorithmIndex);
-                        unit.UnitPathVisualisation();
-                        gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+                        InstantiateUnit(nodeview);
                     }
                 }
             }
         }
 
+    }
+
+    //Get the intgeger value selected from the dropdown
+    public void SetCurrentAlgorithmFromDropdown(int algorithmindex)
+    {
+        algorithmIndex = algorithmindex;
+    }
+
+    void ChangeTileToGoalNode(NodeVisualisation node)
+    {
+        gridVisualisation.ResetGridVisualisation();
+        gridVisualisation.ChangeToFloorNode(goalNode);
+        gridVisualisation.ChangeToGoalNode(node);
+        goalNode = node;
+    }
+
+    void ChangeTileTerrain(NodeVisualisation node, NodeType nodeType, bool wallStatus)
+    {
+        node.gridNode.nodeType = nodeType;
+        node.EnableObject(node.wall, wallStatus);
+        gridVisualisation.ResetGridVisualisation();
+    }
+    
+    void InstantiateUnit(NodeVisualisation node)
+    {
+        Unit unit = Instantiate(unitPrefab, node.transform.position + unitPrefab.transform.position, Quaternion.identity) as Unit;
+        unit.SetUnitPositionInWorldAndGrid(node.gridNode.xIndex, node.gridNode.yIndex);
+        unit.InitPathfinder(grid, gridVisualisation);
+        unitData.Add(unit);
+        unit.UnitFindPath(goalNode.transform, algorithmIndex);
+        unit.UnitPathVisualisation();
+        gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+    }
+
+    void RecalculateUnitPath() 
+    {
+        for (int i = 0; i < unitData.Count; i++)
+        {
+            unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
+            unitData[i].UnitPathVisualisation();
+            gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+        }
+    }
+
+    void SearchUnitPathRecalculate(NodeVisualisation node)
+    {
+        for (int i = 0; i < unitData.Count; i++)
+        {
+            if (unitData[i].SearchPathChangedNode(node.gridNode))
+            {
+                unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
+            }
+            unitData[i].UnitPathVisualisation();
+            gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+        }
     }
 }
