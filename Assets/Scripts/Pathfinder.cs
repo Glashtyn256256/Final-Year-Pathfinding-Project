@@ -202,16 +202,32 @@ public class Pathfinder : MonoBehaviour
     {
         if (node != null)
         {
-            for (int i = 0; i < node.neighbours.Count; i++)
+            foreach (Node neighbour in node.neighbours)
             {
-                if (!m_exploredNodes.Contains(node.neighbours[i]) && 
-                    (!m_frontierNodes.Contains(node.neighbours[i])
-                    && node.neighbours[i].nodeType != NodeType.Blocked)) 
+                if (neighbour.nodeType == NodeType.Blocked 
+                    || m_exploredNodes.Contains(neighbour)
+                    || m_frontierNodes.Contains(neighbour))
                 {
-                    node.neighbours[i].nodeParent = node;
-                    m_frontierNodes.Add(node.neighbours[i]);
+                    continue;
                 }
+
+                neighbour.nodeParent = node;
+                m_frontierNodes.Add(neighbour);
+
             }
+
+        
+    
+            //for (int i = 0; i < node.neighbours.Count; i++)
+            //{
+            //    if (!m_exploredNodes.Contains(node.neighbours[i]) && 
+            //        (!m_frontierNodes.Contains(node.neighbours[i])
+            //        && node.neighbours[i].nodeType != NodeType.Blocked)) 
+            //    {
+            //        node.neighbours[i].nodeParent = node;
+            //        m_frontierNodes.Add(node.neighbours[i]);
+            //    }
+            //}
         }
     }
     void ExpandFrontierDijkstra(Node node)
@@ -270,18 +286,7 @@ public class Pathfinder : MonoBehaviour
             }
         }
     }
-    int GetDistance(Node nodeA, Node nodeB)
-    {
-        int distX = Mathf.Abs(nodeA.xIndex - nodeB.xIndex);
-        int distY = Mathf.Abs(nodeA.yIndex - nodeB.yIndex);
-
-        if (distX > distY)
-        {
-            return 14 * distY + 10 * (distX - distY);
-        }
-        return 14 * distX + 10 * (distY - distX);
-    }
-
+ 
     List<Node> GetPathNodes(Node endNode)
     {
         List<Node> path = new List<Node>();

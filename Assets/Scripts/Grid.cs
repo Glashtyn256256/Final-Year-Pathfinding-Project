@@ -22,10 +22,10 @@ public class Grid : MonoBehaviour
         new Vector2(1f,0f), //right
         new Vector2(0f,-1f), //bottom
         new Vector2(-1f,0f), // left
-        //new Vector2(1f,1f), //top right
-        //new Vector2(1f,-1f), //bottom right    
-        //new Vector2(-1f,-1f), //bottom left 
-        //new Vector2(-1f,1f), // top left
+        new Vector2(1f,1f), //top right
+        new Vector2(1f,-1f), //bottom right    
+        new Vector2(-1f,-1f), //bottom left 
+        new Vector2(-1f,1f), // top left
     };
 
     public void Init(int[,] mapdata)
@@ -120,17 +120,19 @@ public class Grid : MonoBehaviour
     //}
 
      //Talk about this more later, from tutorial. explain in write up what it does.
+     //Issue with previous herustic, noticed it wasnt getting the most optimal path
+     //May be wrong but I feel it finds it faster for a less optimal path
+     //changed it and now getting optimal path. 
     public int GetNodeDistance(Node source, Node target)
     {
-        int dx = Mathf.Abs(source.xIndex - target.xIndex);
-        int dy = Mathf.Abs(source.yIndex - target.yIndex);
+        int distX = Mathf.Abs(source.xIndex - target.xIndex);
+        int distY = Mathf.Abs(source.yIndex - target.yIndex);
 
-        int min = Mathf.Min(dx, dy);
-        int max = Mathf.Max(dx, dy);
-
-        int diagonalSteps = min;
-        int straightSteps = max - min;
-
-        return (14 * diagonalSteps + straightSteps);
+        if (distX > distY)
+        {
+            return 14 * distY + 10 * (distX - distY);
+        }
+        return 14 * distX + 10 * (distY - distX);
     }
+
 }
