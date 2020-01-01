@@ -27,7 +27,7 @@ public class DemoController : MonoBehaviour
         if (mapData != null && grid != null)
         {
             int[,] mapinstance = mapData.MakeMap();
-            grid.Init(mapinstance);
+            grid.CreateGrid(mapinstance);
 
             gridVisualisation = grid.gameObject.GetComponent<GridVisualisation>();
 

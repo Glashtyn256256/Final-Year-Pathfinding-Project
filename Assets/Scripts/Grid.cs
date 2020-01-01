@@ -28,7 +28,7 @@ public class Grid : MonoBehaviour
         new Vector2(-1f,1f), // top left
     };
 
-    public void Init(int[,] mapdata)
+    public void CreateGrid(int[,] mapdata)
     {
         mapData = mapdata;
         gridWidth = mapdata.GetLength(0); //first array so x
