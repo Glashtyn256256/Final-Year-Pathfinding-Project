@@ -57,7 +57,6 @@ public class Pathfinder : MonoBehaviour
                 m_graph.nodes[x, y].Reset();
             }
         }
-        m_iterations = 0;
     }
 
     public void ShowColors()
