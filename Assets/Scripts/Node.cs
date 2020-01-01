@@ -18,33 +18,31 @@ public class Node
     public NodeType nodeType = NodeType.Open;
 
     //integers to track position in the 2d array.
-    public int xIndex = -1;
-    public int yIndex = -1;
+    public int xIndexPosition = -1;
+    public int yIndexPosition = -1;
 
-    //The gCost is the distance between the current node we're looking at and the start node
-    public int gCost;
-    //The hCost is the heurstic, it estimates the distance between the current node we're looking at to the end node.
-    public int hCost;
-    //This is the total cost of the node we are in.
-    public int fCost
-    {
-        get { return gCost + hCost; }
-    }
     //Keep track of node position
     public Vector3 nodePosition;
 
     //neighbour of the node
-    public List<Node> neighbours = new List<Node>(); 
+    public List<Node> neighbours = new List<Node>();
 
-   //This is important for when we get our path.
+    //This is important for when we get our path.
     public Node nodeParent = null;
 
+    //The gCost is the distance between the current node we're looking at and the start node
+    //The hCost is the heurstic, it estimates the distance between the current node we're looking at to the end node.
+    //This is the total cost of the node we are in.
+    public int gCost;
+    public int hCost;
+    public int fCost { get { return gCost + hCost; } }
+    
     //Constructor
-    public Node(int xIndex, int yIndex, NodeType nodeType)
+    public Node(int xindexposition, int yindexposition, NodeType nodetype)
     {
-        this.xIndex = xIndex;
-        this.yIndex = yIndex;
-        this.nodeType = nodeType;
+        xIndexPosition = xindexposition;
+        yIndexPosition = yindexposition;
+        nodeType = nodetype;
     }
 
     //Reset our node parent to null.

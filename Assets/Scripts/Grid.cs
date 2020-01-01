@@ -125,8 +125,8 @@ public class Grid : MonoBehaviour
      //changed it and now getting optimal path. 
     public int GetNodeDistance(Node source, Node target)
     {
-        int distX = Mathf.Abs(source.xIndex - target.xIndex);
-        int distY = Mathf.Abs(source.yIndex - target.yIndex);
+        int distX = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
+        int distY = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
 
         if (distX > distY)
         {

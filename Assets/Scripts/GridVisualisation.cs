@@ -30,7 +30,7 @@ public class GridVisualisation : MonoBehaviour
             if (nodeVisualisation != null)
             {
                 nodeVisualisation.Init(n);
-                nodesVisualisationData[n.xIndex, n.yIndex] = nodeVisualisation;
+                nodesVisualisationData[n.xIndexPosition, n.yIndexPosition] = nodeVisualisation;
                 if (n.nodeType == NodeType.Blocked)
                 {
                     nodeVisualisation.ColorNode(wallColor);
@@ -49,7 +49,7 @@ public class GridVisualisation : MonoBehaviour
         {
             if (n != null)
             {
-                NodeVisualisation nodeVisualisation = nodesVisualisationData[n.xIndex, n.yIndex];
+                NodeVisualisation nodeVisualisation = nodesVisualisationData[n.xIndexPosition, n.yIndexPosition];
 
                 if (nodeVisualisation != null)
                 {
@@ -63,7 +63,7 @@ public class GridVisualisation : MonoBehaviour
     {
         if (node != null)
         {
-            NodeVisualisation nodeView = nodesVisualisationData[node.xIndex, node.yIndex];
+            NodeVisualisation nodeView = nodesVisualisationData[node.xIndexPosition, node.yIndexPosition];
             if (nodeView != null)
             {
                 nodeView.ShowArrow(color);

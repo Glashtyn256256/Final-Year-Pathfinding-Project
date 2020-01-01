@@ -137,7 +137,7 @@ public class DemoController : MonoBehaviour
     void InstantiateUnit(NodeVisualisation node)
     {
         Unit unit = Instantiate(unitPrefab, node.transform.position + unitPrefab.transform.position, Quaternion.identity) as Unit;
-        unit.SetUnitPositionInWorldAndGrid(node.gridNode.xIndex, node.gridNode.yIndex);
+        unit.SetUnitPositionInWorldAndGrid(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
         unit.InitPathfinder(grid, gridVisualisation);
         unitData.Add(unit);
         unit.UnitFindPath(goalNode.transform, algorithmIndex);
