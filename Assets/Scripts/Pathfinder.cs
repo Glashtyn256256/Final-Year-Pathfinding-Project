@@ -9,7 +9,7 @@ public class Pathfinder : MonoBehaviour
     Grid m_graph;
     GridVisualisation m_graphView;
 
-    Queue<Node> m_frontierNodes;
+    List<Node> m_frontierNodes;
     List<Node> m_exploredNodes;
     List<Node> m_pathNodes;
     List<Node> m_frontNodes;
@@ -42,7 +42,7 @@ public class Pathfinder : MonoBehaviour
 
 
 
-        m_frontierNodes = new Queue<Node>();
+        m_frontierNodes = new List<Node>();
         //  m_frontierNodes.Enqueue(start);
         m_exploredNodes = new List<Node>();
         m_pathNodes = new List<Node>();
@@ -87,28 +87,74 @@ public class Pathfinder : MonoBehaviour
         }
         
     }
-    public List<Node> FindPathBreadthFirstSearch(Vector3 startposition, Vector3 goalposition)
+    public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex)
     {
         ResetNodePreviousValuetoNull();
         Node m_startNode = m_graph.GetNodeFromWorldPoint(startposition);
         Node m_goalNode = m_graph.GetNodeFromWorldPoint(goalposition);
-
-        m_frontierNodes = new Queue<Node>();
+       
+        m_frontierNodes = new List<Node>();
         m_exploredNodes = new List<Node>();
         m_pathNodes = new List<Node>();
-        m_frontierNodes.Enqueue(m_startNode);
+        m_frontierNodes.Add(m_startNode);
 
         Stopwatch timer = new Stopwatch();
         timer.Start();
         while (m_frontierNodes.Count > 0)
         {
-            Node currentNode = m_frontierNodes.Dequeue();
-
+            Node currentNode;
+            //Depth takes from the back off the list instead of front.
+            if (!(algorithmindex == 1))
+            {
+                currentNode = m_frontierNodes[0];
+                m_frontierNodes.Remove(currentNode);
+            }
+            else
+            if (algorithmindex == 4)
+            {
+                currentNode = m_frontierNodes[0];
+                //Get the lowest fcost in the list, then we check it to see if it has the lowest hcost.
+                for (int i = 1; i < m_frontierNodes.Count; i++)
+                {
+                    if (m_frontierNodes[i].fCost < currentNode.fCost || m_frontierNodes[i].fCost == currentNode.fCost)
+                    {
+                        if (m_frontierNodes[i].hCost < currentNode.hCost)
+                            currentNode = m_frontierNodes[i];
+                    }
+                }
+            }
+            else
+            {
+                currentNode = m_frontierNodes[m_frontierNodes.Count - 1];
+                m_frontierNodes.Remove(currentNode);
+            }
+           
             if (!m_exploredNodes.Contains(currentNode))
             {
                 m_exploredNodes.Add(currentNode);
             }
 
+            switch (algorithmindex)
+            {
+                case 0:
+                    ExpandFrontierBreadth(currentNode);
+                    break;
+                case 1:
+                    DepthExpandFrontier(currentNode);
+                    break;
+                case 2:
+                    ExpandFrontierDijkstra(currentNode);
+                    break;
+                case 3:
+                    break;
+                case 4:
+
+           
+                        ExpandFrontierAStar(currentNode, m_goalNode);
+                    break;
+                default:
+                    break;
+            }
             ExpandFrontierBreadth(currentNode);
 
             if (m_frontierNodes.Contains(m_goalNode))
@@ -124,80 +170,9 @@ public class Pathfinder : MonoBehaviour
     }
 
     //These are a waste shorten when you get the chance. A lot of re-used code
-    public List<Node> FindPathDijkstra(Vector3 startposition, Vector3 goalposition)
-    {
-        ResetNodePreviousValuetoNull();
-        Node m_startNode = m_graph.GetNodeFromWorldPoint(startposition);
-        Node m_goalNode = m_graph.GetNodeFromWorldPoint(goalposition);
+   
 
-        m_frontierNodes = new Queue<Node>();
-        m_exploredNodes = new List<Node>();
-        m_pathNodes = new List<Node>();
-        m_frontierNodes.Enqueue(m_startNode);
-
-        Stopwatch timer = new Stopwatch();
-        timer.Start();
-        while (m_frontierNodes.Count > 0)
-        {
-            Node currentNode = m_frontierNodes.Dequeue();
-
-            if (!m_exploredNodes.Contains(currentNode))
-            {
-                m_exploredNodes.Add(currentNode);
-            }
-
-            ExpandFrontierDijkstra(currentNode);
-
-            if (m_frontierNodes.Contains(m_goalNode))
-            {
-                m_pathNodes = GetPathNodes(m_goalNode);
-                timer.Stop();
-                UnityEngine.Debug.Log("Pathfinder searchroutine: elapse time = " + (timer.ElapsedMilliseconds).ToString() + " milliseconds");
-                return m_pathNodes;
-            }
-        }
-        UnityEngine.Debug.Log("Path is blocked, no path possible to goal");
-        return null;
-    }
-
-    public List<Node> FindPathDepthFirstSearch(Vector3 startposition, Vector3 goalposition)
-    {
-        ResetNodePreviousValuetoNull();
-        Node m_startNode = m_graph.GetNodeFromWorldPoint(startposition);
-        Node m_goalNode = m_graph.GetNodeFromWorldPoint(goalposition);
-
-        m_frontNodes = new List<Node>();
-        m_exploredNodes = new List<Node>();
-
-        m_pathNodes = new List<Node>();
-        m_frontNodes.Add(m_startNode);
-
-        Stopwatch timer = new Stopwatch();
-        timer.Start();
-        while (m_frontNodes.Count > 0)
-        {
-            Node currentNode = m_frontNodes[m_frontNodes.Count - 1];
-            m_frontNodes.RemoveAt(m_frontNodes.Count - 1);
-
-            if (!m_exploredNodes.Contains(currentNode))
-            {
-                m_exploredNodes.Add(currentNode);
-            }
-
-            DepthExpandFrontier(currentNode);
-
-            if (m_frontNodes.Contains(m_goalNode))
-            {
-                m_pathNodes = GetPathNodes(m_goalNode);
-                timer.Stop();
-                UnityEngine.Debug.Log("Pathfinder searchroutine: elapse time = " + (timer.ElapsedMilliseconds).ToString() + " milliseconds");
-                return m_pathNodes;
-            }
-        }
-        UnityEngine.Debug.Log("Path is blocked, no path possible to goal");
-        return null;
-    }
-
+ 
     void DepthExpandFrontier(Node node)
     {
         if (node != null)
@@ -234,7 +209,7 @@ public class Pathfinder : MonoBehaviour
                     && node.neighbours[i].nodeType != NodeType.Blocked)) 
                 {
                     node.neighbours[i].nodeParent = node;
-                    m_frontierNodes.Enqueue(node.neighbours[i]);
+                    m_frontierNodes.Add(node.neighbours[i]);
                 }
             }
         }
@@ -259,10 +234,39 @@ public class Pathfinder : MonoBehaviour
 
                     if (!m_frontierNodes.Contains(neighbour))
                     {
-                        m_frontierNodes.Enqueue(neighbour);
+                        m_frontierNodes.Add(neighbour);
                     }
                 }
                 
+            }
+        }
+    }
+
+    void ExpandFrontierAStar(Node node, Node goalNode)
+    {
+        if (node != null)
+        {
+            foreach (Node neighbour in node.neighbours)
+            {
+                if (neighbour.nodeType == NodeType.Blocked || m_exploredNodes.Contains(neighbour))
+                {
+                    continue;
+                }
+
+                int distanceToNeighbor = node.gCost + m_graph.GetNodeDistance(node, neighbour);
+
+                if (distanceToNeighbor < neighbour.gCost || !m_frontierNodes.Contains(neighbour))
+                {
+                    neighbour.gCost = distanceToNeighbor;
+                    neighbour.hCost = m_graph.GetNodeDistance(node, goalNode);
+                    neighbour.nodeParent = node;
+
+                    if (!m_frontierNodes.Contains(neighbour))
+                    {
+                        m_frontierNodes.Add(neighbour);
+                    }
+                }
+
             }
         }
     }

@@ -41,35 +41,21 @@ public class Unit : MonoBehaviour
 
     //Do we want to pass ina node or pass in a vector
     //Pass in type of search we're doing through unitfindpath. Then it will pick the correct one.
-    public void UnitFindPath(Transform goalposition, int algorithmIndex)
+    public void UnitFindPath(Transform goalposition, int algorithmindex)
     {
         goalWorldPosition = goalposition;
         if (goalposition != null)
         {
-            StopCoroutine("moveUnitAcrossPath");
-            switch (algorithmIndex)
-            {
-                case 0:
-                    path = pathfinder.FindPathBreadthFirstSearch(transform.position, goalWorldPosition.position);
-                    break;
-                case 1:
-                    path = pathfinder.FindPathDepthFirstSearch(transform.position, goalWorldPosition.position);
-                    break;
-                case 2:
-                    path = pathfinder.FindPathDijkstra(transform.position, goalWorldPosition.position);
-                    break;
-                default:
-                    return;
-               
-            }
-            
+            StopCoroutine("MoveUnitAcrossPath");
+            path = pathfinder.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
             if (path != null)
             {
-                StartCoroutine("moveUnitAcrossPath");
+                //StartCoroutine(MoveUnitAcrossPath(algorithmindex));
+                StartCoroutine("MoveUnitAcrossPath",algorithmindex);
             }
         }
     }
-    IEnumerator moveUnitAcrossPath()
+    IEnumerator MoveUnitAcrossPath(int algorithmindex)
     {
         Vector3 currentNodeWorldPosition = path[0].nodePosition;
         
@@ -90,7 +76,7 @@ public class Unit : MonoBehaviour
             //Need a way to check the path after this to see if it's blocked, otherwise unit may be put inside wall.
             if (path[IndexInPath].nodeType == NodeType.Blocked)
             {
-                path = pathfinder.FindPathBreadthFirstSearch(transform.position, goalWorldPosition.position);
+                path = pathfinder.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
                 yield return null;
             }
             //issue it goes down in y :/
