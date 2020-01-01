@@ -22,7 +22,7 @@ public class Node
     public int yIndexPosition = -1;
 
     //Keep track of node position
-    public Vector3 nodePosition;
+    public Vector3 nodeWorldPosition;
 
     //neighbour of the node
     public List<Node> neighbours = new List<Node>();

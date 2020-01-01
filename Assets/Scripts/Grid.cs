@@ -48,7 +48,7 @@ public class Grid : MonoBehaviour
                 nodes[x, y] = newNode;
 
                 //Position in world space
-                newNode.nodePosition = new Vector3(x, 0, y);
+                newNode.nodeWorldPosition = new Vector3(x, 0, y);
             }
         }
 
