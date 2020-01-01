@@ -18,7 +18,7 @@ public class NodeVisualisation : MonoBehaviour
         if (tile != null)
         {
             gameObject.name = "Node (" + node.xIndex + "," + node.yIndex + ")";
-            gameObject.transform.position = node.position;
+            gameObject.transform.position = node.nodePosition;
             tile.transform.localScale = new Vector3(1f - borderSize, 1f, 1f - borderSize);
             gridNode = node;
 

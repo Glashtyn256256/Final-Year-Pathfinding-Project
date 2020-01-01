@@ -5,6 +5,7 @@ using UnityEngine;
 
 //Container of data with some limited functionality, not in heriting from monobehaviour could make pathfinding more fficient
 
+//A enum that allows us to give our node a type. Blocked is when we have a wall, goal is the goal node and open is the node being walkable.
 public enum NodeType
 {
     Open = 0,
@@ -30,12 +31,13 @@ public class Node
         get { return gCost + hCost; }
     }
     //Keep track of node position
-    public Vector3 position;
+    public Vector3 nodePosition;
 
     //neighbour of the node
     public List<Node> neighbours = new List<Node>(); 
 
-    public Node previous = null;
+   //This is important for when we get our path.
+    public Node nodeParent = null;
 
     //Constructor
     public Node(int xIndex, int yIndex, NodeType nodeType)
@@ -45,8 +47,9 @@ public class Node
         this.nodeType = nodeType;
     }
 
+    //Reset our node parent to null.
     public void Reset()
     {
-        previous = null;
+        nodeParent = null;
     }
 }

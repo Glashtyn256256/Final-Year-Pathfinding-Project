@@ -71,7 +71,7 @@ public class Unit : MonoBehaviour
     }
     IEnumerator moveUnitAcrossPath()
     {
-        Vector3 currentNodeWorldPosition = path[0].position;
+        Vector3 currentNodeWorldPosition = path[0].nodePosition;
         
         
         IndexInPath = 0;
@@ -84,7 +84,7 @@ public class Unit : MonoBehaviour
                 {
                     yield break;
                 }
-                currentNodeWorldPosition = path[IndexInPath].position;
+                currentNodeWorldPosition = path[IndexInPath].nodePosition;
             }
 
             //Need a way to check the path after this to see if it's blocked, otherwise unit may be put inside wall.

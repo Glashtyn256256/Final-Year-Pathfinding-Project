@@ -27,7 +27,6 @@ public class Pathfinder : MonoBehaviour
     public bool showArrows = true;
     public bool exitOnGoal = true;
     public bool isComplete = false;
-    int m_iterations = 0;
 
     public void Init(Grid graph, GridVisualisation graphView)
     {
@@ -210,7 +209,7 @@ public class Pathfinder : MonoBehaviour
                     (!m_frontNodes.Contains(node.neighbours[i])
                     && node.neighbours[i].nodeType != NodeType.Blocked))
                 {
-                    node.neighbours[i].previous = node;
+                    node.neighbours[i].nodeParent = node;
                     m_frontNodes.Add(node.neighbours[i]);
                 }
             }
@@ -235,7 +234,7 @@ public class Pathfinder : MonoBehaviour
                     (!m_frontierNodes.Contains(node.neighbours[i])
                     && node.neighbours[i].nodeType != NodeType.Blocked)) 
                 {
-                    node.neighbours[i].previous = node;
+                    node.neighbours[i].nodeParent = node;
                     m_frontierNodes.Enqueue(node.neighbours[i]);
                 }
             }
@@ -257,7 +256,7 @@ public class Pathfinder : MonoBehaviour
                 if (distanceToNeighbor < neighbour.gCost || !m_frontierNodes.Contains(neighbour))
                 {
                     neighbour.gCost = distanceToNeighbor;
-                    neighbour.previous = node;
+                    neighbour.nodeParent = node;
 
                     if (!m_frontierNodes.Contains(neighbour))
                     {
@@ -289,11 +288,11 @@ public class Pathfinder : MonoBehaviour
         }
 
         path.Add(endNode);
-        Node currentNode = endNode.previous;
+        Node currentNode = endNode.nodeParent;
         while(currentNode != null)
         {
             path.Insert(0, currentNode); //saves us haivng to reverse if we use add
-            currentNode = currentNode.previous;
+            currentNode = currentNode.nodeParent;
         }
 
         return path;
