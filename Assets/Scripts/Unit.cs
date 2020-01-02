@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    public Pathfinding pathFinding;
     Transform goalWorldPosition;
-    float unitSpeed = 0.1f;
-    public Pathfinding pathfinding;
     List<Node> path;
+
+    float unitSpeed = 0.1f;
+
     int xSpawnPosition;
     int ySpawnPosition;
+
     int IndexInPath;
    
 
@@ -17,7 +20,7 @@ public class Unit : MonoBehaviour
 
    public void InitiatePathfinding(GridManager grid, GridVisualisation gridvisualisation)
     {
-        pathfinding.CreatePathfinding(grid, gridvisualisation);
+        pathFinding.CreatePathfinding(grid, gridvisualisation);
     }
    public void SetUnitPositionInGrid(int xspawnposition, int yspawnposition)
     {
@@ -34,7 +37,7 @@ public class Unit : MonoBehaviour
         if (goalposition != null)
         {
             StopCoroutine("MoveUnitAcrossPath");
-            path = pathfinding.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
+            path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
             if (path != null)
             {
                 //StartCoroutine(MoveUnitAcrossPath(algorithmindex));
@@ -45,9 +48,8 @@ public class Unit : MonoBehaviour
     IEnumerator MoveUnitAcrossPath(int algorithmindex)
     {
         Vector3 currentNodeWorldPosition = path[0].nodeWorldPosition;
-        
-        
         IndexInPath = 0;
+
         while (true)
         {
             if (transform.position == currentNodeWorldPosition)
@@ -63,7 +65,8 @@ public class Unit : MonoBehaviour
             //Need a way to check the path after this to see if it's blocked, otherwise unit may be put inside wall.
             if (path[IndexInPath].nodeType == NodeType.Blocked)
             {
-                path = pathfinding.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
+                path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
+                IndexInPath = 0;
                 yield return null;
             }
             //issue it goes down in y :/
@@ -77,7 +80,7 @@ public class Unit : MonoBehaviour
         //Instead of recalculating a path every time a node is turned into a wall. We check
         //the units current path and if the changednode is in that path we re-calculate a new path.
         //This won't work when we turn a wall into a node.
-      public bool SearchPathChangedNode(Node changedNode)
+    public bool SearchPathChangedNode(Node changedNode)
     {
         if (path != null)
         {
@@ -94,7 +97,7 @@ public class Unit : MonoBehaviour
 
    public void UnitPathVisualisation()
     {
-        pathfinding.ShowColors();
+        pathFinding.ShowColors();
     }
 
     void ResetUnitPosition()

@@ -4,22 +4,25 @@ using UnityEngine;
 
 public class SceneController : MonoBehaviour
 {
-    bool PathfindingVisualisation;
-    public Unit unitPrefab;
-    Ray ray;
-    RaycastHit hit;
     public MapData mapData;
     public GridManager grid;
+    public Unit unitPrefab;
+    public List<Unit> unitData;
+
     GridVisualisation gridVisualisation;
-    public int startX = 1;
-    public int startY = 4;
-    public int goalX = 20;
-    public int goalY = 20;
-    public float timeStep = 0.1f;
     NodeVisualisation startNode;
     NodeVisualisation goalNode;
-   public List<Unit> unitData;
+
+    Ray ray;
+    RaycastHit hit;
+    
+    public int xStart = 1;
+    public int yStart = 4;
+    public int xGoal = 20;
+    public int yGoal = 20;
+
     int algorithmIndex;
+    bool PathfindingVisualisation;
 
     void Start()
     {
@@ -36,10 +39,10 @@ public class SceneController : MonoBehaviour
             }
 
             //if our goal is not in the map range it will throw.
-            if(grid.IsWithinBounds(goalX,goalY) && grid.IsWithinBounds(startX, startY))
+            if(grid.IsWithinBounds(xGoal,yGoal) && grid.IsWithinBounds(xStart, yStart))
             {
-                startNode = gridVisualisation.nodesVisualisationData[startX, startY];
-                goalNode = gridVisualisation.nodesVisualisationData[goalX, goalY];
+                startNode = gridVisualisation.nodesVisualisationData[xStart, yStart];
+                goalNode = gridVisualisation.nodesVisualisationData[xGoal, yGoal];
                 InstantiateUnit(startNode);
             }
         }
@@ -48,68 +51,9 @@ public class SceneController : MonoBehaviour
     void Update()
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (Physics.Raycast(ray, out hit))
-            {
-                Debug.Log(hit.collider.gameObject.tag);
-                if (hit.collider.gameObject.tag == "Node")
-                {
-                    NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
-                    if (nodeVisualisation != goalNode)
-                    {
-                        if (nodeVisualisation.gridNode.nodeType == 0)
-                        {
-                            ChangeTileTerrain(nodeVisualisation, NodeType.Blocked, true);
-                            SearchUnitPathRecalculate(nodeVisualisation);     
-                        }
-                        else
-                        {
-                            ChangeTileTerrain(nodeVisualisation, NodeType.Open, false);
-                            RecalculateUnitPath();
-                            //When we put back to a floor we recalculate a path. Need a better way since it may not even effect path
-                        }
-                    }
-                }
-            }
-        }
-        //Right click
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (Physics.Raycast(ray, out hit))
-            {
-                Debug.Log(hit.collider.gameObject.tag);
-                //added mesh chollider to tile to make sure we are able to hit the tile plane.
-                if (hit.collider.gameObject.tag == "Node")
-                {
-                    NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
-                    if (nodeVisualisation.gridNode.nodeType == NodeType.Open)
-                    {
-                        ChangeTileToGoalNode(nodeVisualisation);
-                        RecalculateUnitPath();
-                    }
-                }
-            }
-        }
-
-        if (Input.GetMouseButtonDown(2))
-        {
-            if (Physics.Raycast(ray, out hit))
-            {
-                Debug.Log(hit.collider.gameObject.tag);
-                //added mesh chollider to tile to make sure we are able to hit the tile plane.
-                if (hit.collider.gameObject.tag == "Node")
-                {
-                    NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
-                    if (nodeVisualisation.gridNode.nodeType == NodeType.Open)
-                    {
-                        InstantiateUnit(nodeVisualisation);
-                    }
-                }
-            }
-        }
-
+        LeftMouseClickToAlterNodeTerrain();
+        RightMouseClickToChangeGoalNodePositon();
+        MiddleMouseClickToSpawnUnit();
     }
 
     //Get the intgeger value selected from the dropdown
@@ -135,7 +79,7 @@ public class SceneController : MonoBehaviour
     
     void InstantiateUnit(NodeVisualisation node)
     {
-        Unit unit = Instantiate(unitPrefab, node.transform.position + unitPrefab.transform.position, Quaternion.identity) as Unit;
+        Unit unit = Instantiate(unitPrefab, node.transform.position + unitPrefab.transform.position, Quaternion.identity);
         unit.SetUnitPositionInGrid(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
         unit.InitiatePathfinding(grid, gridVisualisation);
         unitData.Add(unit);
@@ -166,4 +110,77 @@ public class SceneController : MonoBehaviour
             gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
         }
     }
+
+    //When you left click the mouse button, it will
+    void LeftMouseClickToAlterNodeTerrain()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log(hit.collider.gameObject.tag);
+                if (hit.collider.gameObject.tag == "Node")
+                {
+                    NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
+                    if (nodeVisualisation != goalNode)
+                    {
+                        if (nodeVisualisation.gridNode.nodeType == 0)
+                        {
+                            ChangeTileTerrain(nodeVisualisation, NodeType.Blocked, true);
+                            SearchUnitPathRecalculate(nodeVisualisation);
+                        }
+                        else
+                        {
+                            ChangeTileTerrain(nodeVisualisation, NodeType.Open, false);
+                            RecalculateUnitPath();
+                            //When we put back to a floor we recalculate a path. Need a better way since it may not even effect path
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void RightMouseClickToChangeGoalNodePositon() 
+    {
+        //Right click
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log(hit.collider.gameObject.tag);
+                //added mesh chollider to tile to make sure we are able to hit the tile plane.
+                if (hit.collider.gameObject.tag == "Node")
+                {
+                    NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
+                    if (nodeVisualisation.gridNode.nodeType == NodeType.Open)
+                    {
+                        ChangeTileToGoalNode(nodeVisualisation);
+                        RecalculateUnitPath();
+                    }
+                }
+            }
+        }
+    }
+
+    void MiddleMouseClickToSpawnUnit()
+    {
+        if (Input.GetMouseButtonDown(2))
+        {
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log(hit.collider.gameObject.tag);
+                //added mesh chollider to tile to make sure we are able to hit the tile plane.
+                if (hit.collider.gameObject.tag == "Node")
+                {
+                    NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
+                    if (nodeVisualisation.gridNode.nodeType == NodeType.Open)
+                    {
+                        InstantiateUnit(nodeVisualisation);
+                    }
+                }
+            }
+        }
+    }
 }
+
