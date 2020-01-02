@@ -10,25 +10,97 @@ public class MapData : MonoBehaviour
     public int mapWidth = 10;
     public int mapHeight = 5;
 
+    public Texture2D textureMap;
+    public string resourcePath = "MapData";
+    public string levelName;
     //This function puts our mapadata into the 2d array. 0 is for out floor and 1 is for our wall
     //This will eventually be used in our grid and converted into a enum to let us know if the node is blocked or not. 
+
+   
     public int[,] MakeMap() //2d array
     {
-        int[,] map = new int[mapWidth, mapHeight];
-        for (int y = 0; y < mapHeight; y++)
+
+        int[,] map;
+        if (textureMap != null)
         {
-            for (int x = 0; x < mapWidth; x++)
+            List<string> lines = new List<string>();
+            lines = GetMapFromTexture(textureMap);
+            SetDimensions(lines);
+            map = new int[mapWidth, mapHeight];
+            for (int y = 0; y < mapHeight; y++)
             {
-                if(x == 0 || y == 0 || x == mapWidth - 1 || y == mapHeight - 1)
+                for (int x = 0; x < mapWidth; x++)
                 {
-                    map[x, y] = 1;
+                    if (lines[y].Length > x)
+                    {
+                        map[x, y] = (int)char.GetNumericValue(lines[y][x]);
+                    }
+
                 }
-                else
+            }
+        }
+        else
+        {
+            map = new int[mapWidth, mapHeight];
+            for (int y = 0; y < mapHeight; y++)
+            {
+                for (int x = 0; x < mapWidth; x++)
                 {
-                    map[x, y] = 0;
+                    if (x == 0 || y == 0 || x == mapWidth - 1 || y == mapHeight - 1)
+                    {
+                        map[x, y] = 1;
+                    }
+                    else
+                    {
+                        map[x, y] = 0;
+                    }
                 }
             }
         }
         return map;
+    }
+
+    public void SetDimensions(List<string> textLines)
+    {
+        mapHeight = textLines.Count;
+
+        foreach (string line in textLines)
+        {
+            if (line.Length > mapWidth)
+            {
+                mapWidth = line.Length;
+            }
+        }
+    }
+
+    public List<string> GetMapFromTexture(Texture2D texture)
+    {
+        List<string> lines = new List<string>();
+
+        if (textureMap != null)
+        {
+            for (int y = 0; y < texture.height; y++)
+            {
+                string newLine = "";
+
+                for (int x = 0; x < texture.width; x++)
+                {
+                    if (texture.GetPixel(x, y) == Color.black)
+                    {
+                        newLine += '1';
+                    }
+                    else if (texture.GetPixel(x, y) == Color.white)
+                    {
+                        newLine += '0';
+                    }
+                    else
+                    {
+                        newLine += ' ';
+                    }
+                }
+                lines.Add(newLine);
+            }
+        }
+        return lines;
     }
 }

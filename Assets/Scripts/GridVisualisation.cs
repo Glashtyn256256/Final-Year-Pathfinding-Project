@@ -91,7 +91,7 @@ public class GridVisualisation : MonoBehaviour
             {
                 nodeVisualisation.ColorNode(baseColor);
             }
-            else
+            else if(nodeVisualisation.gridNode.nodeType == NodeType.GoalNode)
             {
                 nodeVisualisation.ColorNode(goalColor);
             }
