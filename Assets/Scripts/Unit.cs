@@ -6,37 +6,24 @@ public class Unit : MonoBehaviour
 {
     Transform goalWorldPosition;
     float unitSpeed = 0.1f;
-    public Pathfinding pathfinder;
+    public Pathfinding pathfinding;
     List<Node> path;
-    int spawnPositionX;
-    int spawnPositionY;
+    int xSpawnPosition;
+    int ySpawnPosition;
     int IndexInPath;
    
 
-    //create a consutrctor for when we create a new unit, we want to know it's position in the grid where it's spawned.
-    //public Unit(Transform goalworldposition, int spawnpositionx, int spawnpositiony)
-    //{
-    //    //WorldPositon of the goal
-    //    goalWorldPosition = goalworldposition;
-    //    pathfinder = GetComponent<Pathfinder>();
-    //    //Where the unit was sppawned on the grid. Will be used so when we reset the map we can move the unit back to original position.
-    //    spawnPositionX = spawnpositionx;
-    //    spawnPositionY = spawnpositiony;
-//}
 
-   public void InitPathfinder(GridManager grid, GridVisualisation gridvisualisation)
+
+   public void InitiatePathfinding(GridManager grid, GridVisualisation gridvisualisation)
     {
-        pathfinder.CreatePathfinding(grid, gridvisualisation);
+        pathfinding.CreatePathfinding(grid, gridvisualisation);
     }
-   public void SetUnitPositionInWorldAndGrid(int spawnpositionx, int spawnpositiony)
+   public void SetUnitPositionInGrid(int xspawnposition, int yspawnposition)
     {
-        
-        //WorldPositon of the goal
-        //goalWorldPosition = goalworldposition;
-        
         //Where the unit was sppawned on the grid. Will be used so when we reset the map we can move the unit back to original position.
-        spawnPositionX = spawnpositionx;
-        spawnPositionY = spawnpositiony;
+        xSpawnPosition = xspawnposition;
+        ySpawnPosition = yspawnposition;
     }
 
     //Do we want to pass ina node or pass in a vector
@@ -47,7 +34,7 @@ public class Unit : MonoBehaviour
         if (goalposition != null)
         {
             StopCoroutine("MoveUnitAcrossPath");
-            path = pathfinder.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
+            path = pathfinding.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
             if (path != null)
             {
                 //StartCoroutine(MoveUnitAcrossPath(algorithmindex));
@@ -76,7 +63,7 @@ public class Unit : MonoBehaviour
             //Need a way to check the path after this to see if it's blocked, otherwise unit may be put inside wall.
             if (path[IndexInPath].nodeType == NodeType.Blocked)
             {
-                path = pathfinder.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
+                path = pathfinding.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
                 yield return null;
             }
             //issue it goes down in y :/
@@ -107,6 +94,13 @@ public class Unit : MonoBehaviour
 
    public void UnitPathVisualisation()
     {
-        pathfinder.ShowColors();
+        pathfinding.ShowColors();
+    }
+
+    void ResetUnitPosition()
+    {
+        StopCoroutine("MoveUnitAcrossPath");
+        //yspawnposition is meant to be in z, confusing name.
+        transform.position = new Vector3(xSpawnPosition, transform.position.y, ySpawnPosition);
     }
 }

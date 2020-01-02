@@ -106,7 +106,7 @@ public class Pathfinding : MonoBehaviour
             }
             else
             {
-                currentNode = openList[openList.Count - 1];
+                currentNode = openList.Last();
                 openList.Remove(currentNode);
             }
            
@@ -155,15 +155,17 @@ public class Pathfinding : MonoBehaviour
     {
         if (node != null)
         {
-            for (int i = 0; i < node.neighbours.Count; i++)
+            foreach (var neighbour in node.neighbours)
             {
-                if (!closedList.Contains(node.neighbours[i]) &&
-                    (!openList.Contains(node.neighbours[i])
-                    && node.neighbours[i].nodeType != NodeType.Blocked))
+                if (neighbour.nodeType == NodeType.Blocked
+                   || closedList.Contains(neighbour)
+                   || openList.Contains(neighbour))
                 {
-                    node.neighbours[i].nodeParent = node;
-                    openList.Add(node.neighbours[i]);
+                    continue;
                 }
+
+                neighbour.nodeParent = node;
+                openList.Add(neighbour);
             }
         }
     }

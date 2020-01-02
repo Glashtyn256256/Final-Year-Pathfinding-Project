@@ -136,8 +136,8 @@ public class SceneController : MonoBehaviour
     void InstantiateUnit(NodeVisualisation node)
     {
         Unit unit = Instantiate(unitPrefab, node.transform.position + unitPrefab.transform.position, Quaternion.identity) as Unit;
-        unit.SetUnitPositionInWorldAndGrid(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
-        unit.InitPathfinder(grid, gridVisualisation);
+        unit.SetUnitPositionInGrid(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
+        unit.InitiatePathfinding(grid, gridVisualisation);
         unitData.Add(unit);
         unit.UnitFindPath(goalNode.transform, algorithmIndex);
         unit.UnitPathVisualisation();
