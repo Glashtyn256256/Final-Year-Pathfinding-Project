@@ -43,13 +43,13 @@ public class GridVisualisation : MonoBehaviour
         }
     }
 
-    public void ColorNodes(List<Node> nodes, Color color)
+    public void ColorNodes(List<Node> nodelist, Color color)
     {
-        foreach (Node n in nodes)
+        foreach (Node node in nodelist)
         {
-            if (n != null)
+            if (node != null)
             {
-                NodeVisualisation nodeVisualisation = nodesVisualisationData[n.xIndexPosition, n.yIndexPosition];
+                NodeVisualisation nodeVisualisation = nodesVisualisationData[node.xIndexPosition, node.yIndexPosition];
 
                 if (nodeVisualisation != null)
                 {

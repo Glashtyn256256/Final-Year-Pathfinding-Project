@@ -6,7 +6,7 @@ public class Unit : MonoBehaviour
 {
     Transform goalWorldPosition;
     float unitSpeed = 0.1f;
-    public Pathfinder pathfinder;
+    public Pathfinding pathfinder;
     List<Node> path;
     int spawnPositionX;
     int spawnPositionY;
@@ -26,7 +26,7 @@ public class Unit : MonoBehaviour
 
    public void InitPathfinder(GridManager grid, GridVisualisation gridvisualisation)
     {
-        pathfinder.Init(grid, gridvisualisation);
+        pathfinder.CreatePathfinding(grid, gridvisualisation);
     }
    public void SetUnitPositionInWorldAndGrid(int spawnpositionx, int spawnpositiony)
     {
