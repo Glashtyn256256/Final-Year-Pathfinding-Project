@@ -85,12 +85,6 @@ public class Pathfinding : MonoBehaviour
         {
             Node currentNode;
             //Depth takes from the back off the list instead of front.
-            if (!(algorithmindex == 1))
-            {
-                currentNode = openList[0];
-                openList.Remove(currentNode);
-            }
-            else
             if (algorithmindex == 4)
             {
                 currentNode = openList[0];
@@ -103,7 +97,13 @@ public class Pathfinding : MonoBehaviour
                             currentNode = openList[i];
                     }
                 }
+                openList.Remove(currentNode);
             }
+            else if (!(algorithmindex == 1))
+            {
+                currentNode = openList[0];
+                openList.Remove(currentNode);
+            }      
             else
             {
                 currentNode = openList.Last();
