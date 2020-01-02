@@ -5,17 +5,17 @@ using UnityEngine;
 public class NodeVisualisation : MonoBehaviour
 {
     public GameObject tile;
+    public GameObject wall;
     //public GameObject arrow;
-     public GameObject wall;
 
     public Node gridNode;
 
     [Range(0, 0.5f)]
-    public float borderSize = 0.15f;
+    public float borderSize = 0.0f;
 
-    public void Init(Node node){
+    public void CreateNodeVisualisation(Node node){
 
-        if (tile != null)
+        if (tile != null && wall != null)
         {
             gameObject.name = "Node (" + node.xIndexPosition + "," + node.yIndexPosition + ")";
             gameObject.transform.position = node.nodeWorldPosition;

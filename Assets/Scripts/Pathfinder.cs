@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 public class Pathfinder : MonoBehaviour
 {
-    Grid m_graph;
+    GridManager m_graph;
     GridVisualisation m_graphView;
 
     List<Node> m_frontierNodes;
@@ -28,7 +28,7 @@ public class Pathfinder : MonoBehaviour
     public bool exitOnGoal = true;
     public bool isComplete = false;
 
-    public void Init(Grid graph, GridVisualisation graphView)
+    public void Init(GridManager graph, GridVisualisation graphView)
     {
         if (graphView == null || graph == null)
         {
@@ -50,11 +50,11 @@ public class Pathfinder : MonoBehaviour
         //m_frontNodes.Add(start);
 
 
-        for (int x = 0; x < m_graph.Width; x++)
+        for (int x = 0; x < m_graph.GetGridWidth; x++)
         {
-            for (int y = 0; y < m_graph.Height; y++)
+            for (int y = 0; y < m_graph.GetGridHeight; y++)
             {
-                m_graph.nodes[x, y].Reset();
+                m_graph.gridNodes[x, y].Reset();
             }
         }
     }
@@ -180,11 +180,11 @@ public class Pathfinder : MonoBehaviour
             for (int i = 0; i < node.neighbours.Count; i++)
             {
                 if (!m_exploredNodes.Contains(node.neighbours[i]) &&
-                    (!m_frontNodes.Contains(node.neighbours[i])
+                    (!m_frontierNodes.Contains(node.neighbours[i])
                     && node.neighbours[i].nodeType != NodeType.Blocked))
                 {
                     node.neighbours[i].nodeParent = node;
-                    m_frontNodes.Add(node.neighbours[i]);
+                    m_frontierNodes.Add(node.neighbours[i]);
                 }
             }
         }
@@ -311,11 +311,11 @@ public class Pathfinder : MonoBehaviour
     //One to look at later since I thought they would just be overwritten with the new values but it doesnt seem to be the case.
     void ResetNodePreviousValuetoNull()
     {
-        for (int x = 0; x < m_graph.Width; x++)
+        for (int x = 0; x < m_graph.GetGridWidth; x++)
         {
-            for (int y = 0; y < m_graph.Height; y++)
+            for (int y = 0; y < m_graph.GetGridHeight; y++)
             {
-                m_graph.nodes[x, y].Reset();
+                m_graph.gridNodes[x, y].Reset();
             }
         }
     }

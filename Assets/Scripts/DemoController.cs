@@ -9,7 +9,7 @@ public class DemoController : MonoBehaviour
     Ray ray;
     RaycastHit hit;
     public MapData mapData;
-    public Grid grid;
+    public GridManager grid;
     GridVisualisation gridVisualisation;
     public Pathfinder pathFinder;
     public int startX = 1;

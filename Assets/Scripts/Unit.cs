@@ -24,7 +24,7 @@ public class Unit : MonoBehaviour
     //    spawnPositionY = spawnpositiony;
 //}
 
-   public void InitPathfinder(Grid grid, GridVisualisation gridvisualisation)
+   public void InitPathfinder(GridManager grid, GridVisualisation gridvisualisation)
     {
         pathfinder.Init(grid, gridvisualisation);
     }

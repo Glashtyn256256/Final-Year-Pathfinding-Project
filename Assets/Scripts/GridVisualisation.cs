@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Grid))]
+[RequireComponent(typeof(GridManager))]
 public class GridVisualisation : MonoBehaviour
 {
     public GameObject nodeVisualisationPrefab;
@@ -12,24 +12,24 @@ public class GridVisualisation : MonoBehaviour
     public Color wallColor = Color.black;
     public Color goalColor = Color.red;
 
-    public void Init(Grid graph)
+    public void Init(GridManager grid)
     {
-        if (graph == null)
+        if (grid == null)
         {
-            Debug.LogWarning("Graphview! No graph");
+            Debug.LogWarning("GridManager! No grid");
             return;
         }
 
-        nodesVisualisationData = new NodeVisualisation[graph.Width, graph.Height];
+        nodesVisualisationData = new NodeVisualisation[grid.GetGridWidth, grid.GetGridHeight];
 
-        foreach (Node n in graph.nodes)
+        foreach (Node n in grid.gridNodes)
         {
             GameObject instance = Instantiate(nodeVisualisationPrefab, Vector3.zero, Quaternion.identity);
             NodeVisualisation nodeVisualisation = instance.GetComponent<NodeVisualisation>();
 
             if (nodeVisualisation != null)
             {
-                nodeVisualisation.Init(n);
+                nodeVisualisation.CreateNodeVisualisation(n);
                 nodesVisualisationData[n.xIndexPosition, n.yIndexPosition] = nodeVisualisation;
                 if (n.nodeType == NodeType.Blocked)
                 {

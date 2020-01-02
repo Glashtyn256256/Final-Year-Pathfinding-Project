@@ -38,11 +38,12 @@ public class Node
     public int fCost { get { return gCost + hCost; } }
     
     //Constructor
-    public Node(int xindexposition, int yindexposition, NodeType nodetype)
+    public Node(int xindexposition, int yindexposition, NodeType nodetype, Vector3 worldposition)
     {
         xIndexPosition = xindexposition;
         yIndexPosition = yindexposition;
         nodeType = nodetype;
+        nodeWorldPosition = worldposition;
     }
 
     //Reset our node parent to null.

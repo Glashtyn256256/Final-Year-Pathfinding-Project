@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grid : MonoBehaviour
+public class GridManager : MonoBehaviour
 {
     //A 2d array of nodes.
-    public Node[,] nodes;
+    public Node[,] gridNodes;
 
-    int[,] mapData;
-   private int gridWidth;
-   private int gridHeight;
+    //int[,] mapData;
+    private int gridWidth;
+    private int gridHeight;
+    public int GetGridWidth { get { return gridWidth; } }
+    public int GetGridHeight { get { return gridHeight; } }
 
-    public int Width { get { return gridWidth; } }
-    public int Height { get { return gridHeight; } }
-
-
-    public static readonly Vector2[] allDirections =
-    {   //Create two one for all directions and one for four directions, then have a option to toggle it on or off.
+    //Create two one for all directions and one for four directions, then have a option to toggle it on or off.
+    public static readonly Vector2[] nodeNeighbourDirections =
+    {   
         //x, y
         new Vector2(0f,1f), //top
         new Vector2(1f,0f), //right
@@ -30,11 +29,10 @@ public class Grid : MonoBehaviour
 
     public void CreateGrid(int[,] mapdata)
     {
-        mapData = mapdata;
         gridWidth = mapdata.GetLength(0); //first array so x
         gridHeight = mapdata.GetLength(1); //first array so y;
 
-        nodes = new Node[gridWidth, gridHeight];
+        gridNodes = new Node[gridWidth, gridHeight];
 
         for (int y = 0; y < gridHeight; y++)
         {
@@ -42,13 +40,12 @@ public class Grid : MonoBehaviour
             {
                 //change nodetype depending on what number we gave it in the mapdata
                 NodeType type = (NodeType)mapdata[x, y];
+                //Node world position
+                Vector3 worldPosition = new Vector3(x, 0, y);
                 //create a new node
-                Node newNode = new Node(x, y, type);
+                Node newNode = new Node(x, y, type, worldPosition);
                 //place it in the grid of nodes
-                nodes[x, y] = newNode;
-
-                //Position in world space
-                newNode.nodeWorldPosition = new Vector3(x, 0, y);
+                gridNodes[x, y] = newNode;
             }
         }
 
@@ -57,7 +54,7 @@ public class Grid : MonoBehaviour
             for (int x = 0; x < gridWidth; x++)
             {
                 //pre-calc neighbours.
-                nodes[x, y].neighbours = GetNeighbours(x, y);
+                gridNodes[x, y].neighbours = GetNeighbours(x, y);
             }
         }
     }
@@ -66,7 +63,10 @@ public class Grid : MonoBehaviour
     {
         return (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight);
     }
-
+    List<Node> GetNeighbours(int x, int y)
+    {
+        return GetNeighbours(x, y, gridNodes, nodeNeighbourDirections);
+    }
     List<Node> GetNeighbours(int x, int y, Node[,] nodeArray, Vector2[] directions)
     {
         List<Node> neighbourNodes = new List<Node>();
@@ -87,23 +87,16 @@ public class Grid : MonoBehaviour
         return neighbourNodes;
     }
 
-    List<Node> GetNeighbours(int x, int y)
-    {
-        return GetNeighbours(x, y, nodes, allDirections);
-    }
 
+    //Nodes world position matches the nodes grid position in the array so 3,0,3 (x,y,z) in world space is 3,3 in grid.
+    //When the playernode is passed through it may be between two nodes so we round it to the closest int meaning
+    //the node it is closest to. This might result in it going back to a node if it's closer.
     public Node GetNodeFromWorldPoint(Vector3 worldPosition)
     {
-        //Nodes world position matches the nodes grid position in the array so 3,0,3 (x,y,z) in world space is 3,3 in grid.
-        //When the playernode is passed through it may be between two nodes so we round it to the closest int meaning
-        //the node it is closest to. This might result in it going back to a node if it's closer. 
-        float percentX = worldPosition.x;
-        float percentY = worldPosition.z;
-        
-        int x = Mathf.RoundToInt(percentX);
-        int y = Mathf.RoundToInt(percentY);
+        int x = Mathf.RoundToInt(worldPosition.x);
+        int y = Mathf.RoundToInt(worldPosition.z);
 
-        return nodes[x, y];
+        return gridNodes[x, y];
     }
     //void OnDrawGizmos()
     //{
@@ -125,14 +118,14 @@ public class Grid : MonoBehaviour
      //changed it and now getting optimal path. 
     public int GetNodeDistance(Node source, Node target)
     {
-        int distX = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
-        int distY = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
+        int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
+        int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
 
-        if (distX > distY)
+        if (xDistance > yDistance)
         {
-            return 14 * distY + 10 * (distX - distY);
+            return 14 * yDistance + 10 * (xDistance - yDistance);
         }
-        return 14 * distX + 10 * (distY - distX);
+        return 14 * xDistance + 10 * (yDistance - xDistance);
     }
 
 }
