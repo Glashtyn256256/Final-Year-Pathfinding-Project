@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DemoController : MonoBehaviour
+public class SceneController : MonoBehaviour
 {
     bool PathfindingVisualisation;
     public Unit unitPrefab;
@@ -11,7 +11,6 @@ public class DemoController : MonoBehaviour
     public MapData mapData;
     public GridManager grid;
     GridVisualisation gridVisualisation;
-    public Pathfinder pathFinder;
     public int startX = 1;
     public int startY = 4;
     public int goalX = 20;
@@ -33,7 +32,7 @@ public class DemoController : MonoBehaviour
 
             if (gridVisualisation != null)
             {
-                gridVisualisation.Init(grid);
+                gridVisualisation.CreateGridVisualisation(grid);
             }
 
             //if our goal is not in the map range it will throw.
@@ -57,17 +56,17 @@ public class DemoController : MonoBehaviour
                 Debug.Log(hit.collider.gameObject.tag);
                 if (hit.collider.gameObject.tag == "Node")
                 {
-                    NodeVisualisation nodeview = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
-                    if (nodeview != goalNode)
+                    NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
+                    if (nodeVisualisation != goalNode)
                     {
-                        if (nodeview.gridNode.nodeType == 0)
+                        if (nodeVisualisation.gridNode.nodeType == 0)
                         {
-                            ChangeTileTerrain(nodeview, NodeType.Blocked, true);
-                            SearchUnitPathRecalculate(nodeview);     
+                            ChangeTileTerrain(nodeVisualisation, NodeType.Blocked, true);
+                            SearchUnitPathRecalculate(nodeVisualisation);     
                         }
                         else
                         {
-                            ChangeTileTerrain(nodeview, NodeType.Open, false);
+                            ChangeTileTerrain(nodeVisualisation, NodeType.Open, false);
                             RecalculateUnitPath();
                             //When we put back to a floor we recalculate a path. Need a better way since it may not even effect path
                         }
@@ -84,10 +83,10 @@ public class DemoController : MonoBehaviour
                 //added mesh chollider to tile to make sure we are able to hit the tile plane.
                 if (hit.collider.gameObject.tag == "Node")
                 {
-                    NodeVisualisation nodeview = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
-                    if (nodeview.gridNode.nodeType == NodeType.Open)
+                    NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
+                    if (nodeVisualisation.gridNode.nodeType == NodeType.Open)
                     {
-                        ChangeTileToGoalNode(nodeview);
+                        ChangeTileToGoalNode(nodeVisualisation);
                         RecalculateUnitPath();
                     }
                 }
@@ -102,10 +101,10 @@ public class DemoController : MonoBehaviour
                 //added mesh chollider to tile to make sure we are able to hit the tile plane.
                 if (hit.collider.gameObject.tag == "Node")
                 {
-                    NodeVisualisation nodeview = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
-                    if (nodeview.gridNode.nodeType == NodeType.Open)
+                    NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
+                    if (nodeVisualisation.gridNode.nodeType == NodeType.Open)
                     {
-                        InstantiateUnit(nodeview);
+                        InstantiateUnit(nodeVisualisation);
                     }
                 }
             }

@@ -12,7 +12,7 @@ public class GridVisualisation : MonoBehaviour
     public Color wallColor = Color.black;
     public Color goalColor = Color.red;
 
-    public void Init(GridManager grid)
+    public void CreateGridVisualisation(GridManager grid)
     {
         if (grid == null)
         {
@@ -22,16 +22,16 @@ public class GridVisualisation : MonoBehaviour
 
         nodesVisualisationData = new NodeVisualisation[grid.GetGridWidth, grid.GetGridHeight];
 
-        foreach (Node n in grid.gridNodes)
+        foreach (Node node in grid.gridNodes)
         {
             GameObject instance = Instantiate(nodeVisualisationPrefab, Vector3.zero, Quaternion.identity);
             NodeVisualisation nodeVisualisation = instance.GetComponent<NodeVisualisation>();
 
             if (nodeVisualisation != null)
             {
-                nodeVisualisation.CreateNodeVisualisation(n);
-                nodesVisualisationData[n.xIndexPosition, n.yIndexPosition] = nodeVisualisation;
-                if (n.nodeType == NodeType.Blocked)
+                nodeVisualisation.CreateNodeVisualisation(node);
+                nodesVisualisationData[node.xIndexPosition, node.yIndexPosition] = nodeVisualisation;
+                if (node.nodeType == NodeType.Blocked)
                 {
                     nodeVisualisation.ColorNode(wallColor);
                 }
