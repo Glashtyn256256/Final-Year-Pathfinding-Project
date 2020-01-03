@@ -91,9 +91,8 @@ public class Pathfinding : MonoBehaviour
                 //Get the lowest fcost in the list, then we check it to see if it has the lowest hcost.
                 for (int i = 1; i < openList.Count; i++)
                 {
-                    if (openList[i].fCost < currentNode.fCost || openList[i].fCost == currentNode.fCost)
+                    if (openList[i].fCost < currentNode.fCost)
                     {
-                        if (openList[i].hCost < currentNode.hCost)
                             currentNode = openList[i];
                     }
                 }
@@ -139,7 +138,7 @@ public class Pathfinding : MonoBehaviour
             {
                 pathList = GetPathNodes(goalNode);
                 timer.Stop();
-                UnityEngine.Debug.Log("Pathfinder searchroutine: elapse time = " + (timer.ElapsedMilliseconds).ToString() + " milliseconds");
+                UnityEngine.Debug.Log("Pathfinder searchroutine: elapse time = " + (timer.Elapsed.TotalMilliseconds).ToString() + " milliseconds");
                 return pathList;
             }
         }
