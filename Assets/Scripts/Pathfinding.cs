@@ -39,7 +39,12 @@ public class Pathfinding : MonoBehaviour
 
         ResetNodePreviousValuetoNull();
     }
-
+    public void ClearLists() 
+    {
+        openList = new List<Node>();
+        closedList = new List<Node>();
+        pathList = new List<Node>();
+    }
     public void ShowPathColors()
     {
         ShowPathColors(gridVisualisation);

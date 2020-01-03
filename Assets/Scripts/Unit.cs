@@ -104,6 +104,11 @@ public class Unit : MonoBehaviour
         pathFinding.ShowPathColors();
     }
 
+    public void ClearList()
+    {
+        pathFinding.ClearLists();
+    }
+
     public void ResetUnitPositionBackToOriginal()
     {
         StopCoroutine("MoveUnitAcrossPath");
