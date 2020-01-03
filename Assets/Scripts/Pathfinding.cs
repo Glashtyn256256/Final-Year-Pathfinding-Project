@@ -40,33 +40,43 @@ public class Pathfinding : MonoBehaviour
         ResetNodePreviousValuetoNull();
     }
 
-    public void ShowColors()
+    public void ShowPathColors()
     {
-        ShowColors(gridVisualisation);
+        ShowPathColors(gridVisualisation);
+    }
+    public void ShowSearchColors()
+    {
+        ShowSearchColors(gridVisualisation);
+    }
+    void ShowPathColors(GridVisualisation gridvisualisation)
+    {
+        if (gridvisualisation == null)
+        {
+            return;
+        }
+
+        if (pathList != null && pathList.Count > 0)
+        {
+            gridvisualisation.ColorNodes(pathList, pathListColor);
+        }
     }
 
-    void ShowColors(GridVisualisation graphView)
+    void ShowSearchColors(GridVisualisation gridvisualisation)
     {
-        if (graphView == null)
+        if (gridvisualisation == null)
         {
             return;
         }
 
         if (openList != null)
         {
-            graphView.ColorNodes(openList.ToList(), openListColor);
+            gridvisualisation.ColorNodes(openList.ToList(), openListColor);
         }
 
         if (closedList != null)
         {
-            graphView.ColorNodes(closedList, closedListColor);
+            gridvisualisation.ColorNodes(closedList, closedListColor);
         }
-
-        if (pathList != null && pathList.Count > 0)
-        {
-            graphView.ColorNodes(pathList, pathListColor);
-        }
-        
     }
     public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex)
     {

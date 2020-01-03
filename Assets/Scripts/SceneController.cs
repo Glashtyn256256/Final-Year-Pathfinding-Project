@@ -34,7 +34,8 @@ public class SceneController : MonoBehaviour
     int yUnitInputValue;
 
     int algorithmIndex;
-    bool PathfindingVisualisation;
+
+    bool PathfindingVisualisationAid = true;
 
     void Start()
     {
@@ -74,6 +75,30 @@ public class SceneController : MonoBehaviour
         algorithmIndex = algorithmindex;
     }
 
+    public void ToggleVisualisationAid(bool toggle)
+    {
+        PathfindingVisualisationAid = toggle;
+
+        if (PathfindingVisualisationAid)
+        {
+            //shouldn't need to do this but just incase
+            gridVisualisation.ResetGridVisualisation();
+            foreach (var unit in unitData)
+            {
+                if(!(unitData.Count > 1))
+                {
+                    unit.UnitSearchVisualisation();
+                }
+                unit.UnitPathVisualisation();
+                gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+            }
+        }
+        else
+        {
+            gridVisualisation.ResetGridVisualisation();
+            gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+        }
+    }
     public void ChangeGoalPositionOnButtonClick()
     {
         //If the text box is not blank then crack on otherwise throw debug message.
@@ -162,8 +187,16 @@ public class SceneController : MonoBehaviour
         unit.InitiatePathfinding(grid, gridVisualisation);
         unitData.Add(unit);
         unit.UnitFindPath(goalNode.transform, algorithmIndex);
-        unit.UnitPathVisualisation();
-        gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+        if (PathfindingVisualisationAid)
+        {
+            if(!(unitData.Count > 1))
+            {
+                unit.UnitSearchVisualisation();
+            }
+            unit.UnitPathVisualisation();
+            gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+        }
+        
     }
 
     void RecalculateUnitPath() 
@@ -171,8 +204,15 @@ public class SceneController : MonoBehaviour
         for (int i = 0; i < unitData.Count; i++)
         {
             unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
-            unitData[i].UnitPathVisualisation();
-            gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+            if (PathfindingVisualisationAid)
+            {
+                if (!(unitData.Count > 1))
+                {
+                    unitData[i].UnitSearchVisualisation();
+                }
+                unitData[i].UnitPathVisualisation();
+                gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+            }
         }
     }
 
@@ -184,8 +224,16 @@ public class SceneController : MonoBehaviour
             {
                 unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
             }
-            unitData[i].UnitPathVisualisation();
-            gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+            if(PathfindingVisualisationAid)
+            {
+                if (!(unitData.Count > 1))
+                {
+                    unitData[i].UnitSearchVisualisation();
+                }
+                unitData[i].UnitPathVisualisation();
+                gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+            }
+          
         }
     }
 

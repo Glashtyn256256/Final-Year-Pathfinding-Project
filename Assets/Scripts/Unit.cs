@@ -95,9 +95,13 @@ public class Unit : MonoBehaviour
         return false;
     }
 
+    public void UnitSearchVisualisation()
+    {
+        pathFinding.ShowSearchColors();
+    }
    public void UnitPathVisualisation()
     {
-        pathFinding.ShowColors();
+        pathFinding.ShowPathColors();
     }
 
     public void ResetUnitPositionBackToOriginal()
