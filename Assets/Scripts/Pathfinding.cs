@@ -73,7 +73,7 @@ public class Pathfinding : MonoBehaviour
         ResetNodePreviousValuetoNull();
         Node startNode = grid.GetNodeFromWorldPoint(startposition);
         Node goalNode = grid.GetNodeFromWorldPoint(goalposition);
-       
+        int nodesExploredCount = 0;
         openList = new List<Node>();
         closedList = new List<Node>();
 
@@ -112,6 +112,7 @@ public class Pathfinding : MonoBehaviour
             if (!closedList.Contains(currentNode))
             {
                 closedList.Add(currentNode);
+                nodesExploredCount++;
             }
 
             switch (algorithmindex)
@@ -138,7 +139,14 @@ public class Pathfinding : MonoBehaviour
             {
                 pathList = GetPathNodes(goalNode);
                 timer.Stop();
-                UnityEngine.Debug.Log("Pathfinder searchroutine: elapse time = " + (timer.Elapsed.TotalMilliseconds).ToString() + " milliseconds");
+                UnityEngine.Debug.Log("Pathfinder searchroutine: Elapsed time = "
+                    + (timer.Elapsed.TotalMilliseconds).ToString()
+                    + " milliseconds , Nodes Explored = " 
+                    + nodesExploredCount.ToString()
+                    + ", Nodes To Goal "
+                    + pathList.Count.ToString());
+
+
                 return pathList;
             }
         }
