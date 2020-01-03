@@ -40,19 +40,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 777923026687957541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b109201e456039f41a0302711e82e831, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ec144e8a3e63cc44b54bb24c7d20104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startColor: {r: 0, g: 1, b: 0, a: 1}
-  goalColor: {r: 1, g: 0, b: 0, a: 1}
-  frontierColor: {r: 1, g: 0, b: 1, a: 1}
-  exploredColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  pathColor: {r: 0, g: 1, b: 1, a: 1}
-  arrowColor: {r: 0.84705883, g: 0.84705883, b: 0.84705883, a: 1}
-  highLightColor: {r: 1, g: 1, b: 0.5, a: 1}
-  showIterations: 1
-  showColors: 1
-  showArrows: 1
+  startNodeColor: {r: 0, g: 1, b: 0, a: 1}
+  goalNodeColor: {r: 1, g: 0, b: 0, a: 1}
+  openListColor: {r: 1, g: 0, b: 1, a: 1}
+  closedListColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  pathListColor: {r: 0, g: 1, b: 1, a: 1}
   exitOnGoal: 1
   isComplete: 0
 --- !u!1 &8445363487285333785
@@ -68,8 +63,6 @@ GameObject:
   - component: {fileID: 3024680016710708705}
   - component: {fileID: 6812732425861871966}
   - component: {fileID: 2793640578789117138}
-  - component: {fileID: 1972414094210053335}
-  - component: {fileID: 1557270769875625726}
   - component: {fileID: 7061966724812052238}
   m_Layer: 0
   m_Name: Unit
@@ -118,7 +111,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8b15d628121ed344290e333f62049204, type: 2}
+  - {fileID: 2100000, guid: f6ea6762c98820d42b08a5284553cffd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -162,47 +155,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8445363487285333785}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7820debdf26e1d2439505537c2d327e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 5727ba46a0a842f4b90ceb5965b79699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathfinder: {fileID: 1235119935113994836}
---- !u!114 &1972414094210053335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8445363487285333785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b109201e456039f41a0302711e82e831, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startColor: {r: 0, g: 1, b: 0, a: 1}
-  goalColor: {r: 1, g: 0, b: 0, a: 1}
-  frontierColor: {r: 1, g: 0, b: 1, a: 1}
-  exploredColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  pathColor: {r: 0, g: 1, b: 1, a: 1}
-  arrowColor: {r: 0.84705883, g: 0.84705883, b: 0.84705883, a: 1}
-  highLightColor: {r: 1, g: 1, b: 0.5, a: 1}
-  showIterations: 1
-  showColors: 1
-  showArrows: 1
-  exitOnGoal: 1
-  isComplete: 0
---- !u!114 &1557270769875625726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8445363487285333785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7820debdf26e1d2439505537c2d327e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathfinder: {fileID: 0}
+  pathFinding: {fileID: 1235119935113994836}
 --- !u!54 &7061966724812052238
 Rigidbody:
   m_ObjectHideFlags: 0

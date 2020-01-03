@@ -100,10 +100,17 @@ public class Unit : MonoBehaviour
         pathFinding.ShowColors();
     }
 
-    void ResetUnitPosition()
+    public void ResetUnitPositionBackToOriginal()
     {
         StopCoroutine("MoveUnitAcrossPath");
         //yspawnposition is meant to be in z, confusing name.
         transform.position = new Vector3(xSpawnPosition, transform.position.y, ySpawnPosition);
+    }
+
+    public void ChangeUnitPositionWithoutUsingSpawnPosition(int x, int y)
+    {
+        StopCoroutine("MoveUnitAcrossPath");
+        //yspawnposition is meant to be in z, confusing name.
+        transform.position = new Vector3(x, transform.position.y, y);
     }
 }

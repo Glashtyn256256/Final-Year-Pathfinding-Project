@@ -17,6 +17,9 @@ public class SceneController : MonoBehaviour
     public InputField xGoalInput;
     public InputField yGoalInput;
 
+    public InputField xUnitInput;
+    public InputField yUnitInput;
+
 
     Ray ray;
     RaycastHit hit;
@@ -25,9 +28,10 @@ public class SceneController : MonoBehaviour
     int yStart = 4;
     int xGoal = 20;
     int yGoal = 20;
-
-    int xGoalInputCanvas;
-    int yGoalInputCanvas;
+    int xGoalInputValue;
+    int yGoalInputValue;
+    int xUnitInputValue;
+    int yUnitInputValue;
 
     int algorithmIndex;
     bool PathfindingVisualisation;
@@ -69,24 +73,18 @@ public class SceneController : MonoBehaviour
     {
         algorithmIndex = algorithmindex;
     }
-    public void SetYCanvasInput(string yinput)
-    {
-        yGoalInputCanvas = int.Parse(yinput);
-    }
-    public void SetXCanvasInput(string xinput)
-    {
-        xGoalInputCanvas = int.Parse(xinput);
-    }
+
     public void ChangeGoalPositionOnButtonClick()
     {
+        //If the text box is not blank then crack on otherwise throw debug message.
         if (xGoalInput.text != "" && yGoalInput.text != "")
         {
-            xGoalInputCanvas = int.Parse(xGoalInput.text);
-            yGoalInputCanvas = int.Parse(yGoalInput.text);
+            xGoalInputValue = int.Parse(xGoalInput.text);
+            yGoalInputValue = int.Parse(yGoalInput.text);
 
-            if (grid.IsWithinBounds(xGoalInputCanvas, yGoalInputCanvas))
+            if (grid.IsWithinBounds(xGoalInputValue, yGoalInputValue))
             {
-                NodeVisualisation node = gridVisualisation.nodesVisualisationData[xGoalInputCanvas, yGoalInputCanvas];
+                NodeVisualisation node = gridVisualisation.nodesVisualisationData[xGoalInputValue, yGoalInputValue];
                 if (node.gridNode.nodeType != NodeType.Blocked)
                 {
                     ChangeTileToGoalNode(node);
@@ -107,9 +105,41 @@ public class SceneController : MonoBehaviour
             Debug.Log("A value must be given");
         }
     }
-        
 
-       
+    public void ChangeUnitPositionOnButtonClick()
+    {
+        
+        if (xUnitInput.text != "" && yUnitInput.text != "")
+        {
+            xUnitInputValue = int.Parse(xUnitInput.text);
+            yUnitInputValue = int.Parse(yUnitInput.text);
+           
+            if (grid.IsWithinBounds(xUnitInputValue, yUnitInputValue))
+            {
+                NodeVisualisation node = gridVisualisation.nodesVisualisationData[xUnitInputValue, yUnitInputValue];
+                if (node.gridNode.nodeType != NodeType.Blocked)
+                {                
+                    unitData[0].ChangeUnitPositionWithoutUsingSpawnPosition(xUnitInputValue, xUnitInputValue);
+                    gridVisualisation.ResetGridVisualisation();
+                    gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+                }
+                else
+                {
+                    Debug.Log("Can't place unit on a blocked node please input a valid walkable node");
+                }
+            }
+            else
+            {
+                Debug.Log("Number Inputted is out of bounds. Please put a number that corresponds to the size of the map");
+            }
+        }
+        else
+        {
+            Debug.Log("A value must be given for the unit");
+        }
+    }
+
+
     void ChangeTileToGoalNode(NodeVisualisation node)
     {
         gridVisualisation.ResetGridVisualisation();
