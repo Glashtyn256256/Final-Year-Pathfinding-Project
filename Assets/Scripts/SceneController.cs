@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class SceneController : MonoBehaviour
@@ -13,13 +14,20 @@ public class SceneController : MonoBehaviour
     NodeVisualisation startNode;
     NodeVisualisation goalNode;
 
+    public InputField xGoalInput;
+    public InputField yGoalInput;
+
+
     Ray ray;
     RaycastHit hit;
     
-    public int xStart = 1;
-    public int yStart = 4;
-    public int xGoal = 20;
-    public int yGoal = 20;
+    int xStart = 1;
+    int yStart = 4;
+    int xGoal = 20;
+    int yGoal = 20;
+
+    int xGoalInputCanvas;
+    int yGoalInputCanvas;
 
     int algorithmIndex;
     bool PathfindingVisualisation;
@@ -61,7 +69,47 @@ public class SceneController : MonoBehaviour
     {
         algorithmIndex = algorithmindex;
     }
+    public void SetYCanvasInput(string yinput)
+    {
+        yGoalInputCanvas = int.Parse(yinput);
+    }
+    public void SetXCanvasInput(string xinput)
+    {
+        xGoalInputCanvas = int.Parse(xinput);
+    }
+    public void ChangeGoalPositionOnButtonClick()
+    {
+        if (xGoalInput.text != "" && yGoalInput.text != "")
+        {
+            xGoalInputCanvas = int.Parse(xGoalInput.text);
+            yGoalInputCanvas = int.Parse(yGoalInput.text);
 
+            if (grid.IsWithinBounds(xGoalInputCanvas, yGoalInputCanvas))
+            {
+                NodeVisualisation node = gridVisualisation.nodesVisualisationData[xGoalInputCanvas, yGoalInputCanvas];
+                if (node.gridNode.nodeType != NodeType.Blocked)
+                {
+                    ChangeTileToGoalNode(node);
+                    RecalculateUnitPath();
+                }
+                else
+                {
+                    Debug.Log("Can't place goal on a blocked node please input a valid walkable node");
+                }
+            }
+            else
+            {
+                Debug.Log("Number Inputted is out of bounds. Please put a number that corresponds to the size of the map");
+            }
+        }
+        else
+        {
+            Debug.Log("A value must be given");
+        }
+    }
+        
+
+       
     void ChangeTileToGoalNode(NodeVisualisation node)
     {
         gridVisualisation.ResetGridVisualisation();
