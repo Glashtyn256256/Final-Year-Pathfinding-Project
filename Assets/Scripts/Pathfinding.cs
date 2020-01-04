@@ -33,11 +33,8 @@ public class Pathfinding : MonoBehaviour
         grid = gridnodes;
         gridVisualisation = gridvisualisation;
 
-        openList = new List<Node>();
-        closedList = new List<Node>();
-        pathList = new List<Node>();
-
-        ResetNodePreviousValuetoNull();
+        ClearLists();
+        ResetNodeParentValueToNull();
     }
     public void ClearLists() 
     {
@@ -85,17 +82,19 @@ public class Pathfinding : MonoBehaviour
     }
     public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex)
     {
-        ResetNodePreviousValuetoNull();
+        ResetNodeParentValueToNull();
+
         Node startNode = grid.GetNodeFromWorldPoint(startposition);
         Node goalNode = grid.GetNodeFromWorldPoint(goalposition);
-        int nodesExploredCount = 0;
+       
         openList = new List<Node>();
         closedList = new List<Node>();
+        Stopwatch timer = new Stopwatch();
 
         openList.Add(startNode);
-
-        Stopwatch timer = new Stopwatch();
+        int nodesExploredCount = 0;   
         timer.Start();
+
         while (openList.Count > 0)
         {
             Node currentNode;
@@ -133,18 +132,18 @@ public class Pathfinding : MonoBehaviour
             switch (algorithmindex)
             {
                 case 0:
-                    ExpandFrontierBreadth(currentNode);
+                    ExpandBreadthFirstSearchOpenList(currentNode);
                     break;
                 case 1:
-                    DepthExpandFrontier(currentNode);
+                    ExpandDepthFirstSearchOpenList(currentNode);
                     break;
                 case 2:
-                    ExpandFrontierDijkstra(currentNode);
+                    ExpandDijkstraOpenList(currentNode);
                     break;
                 case 3:
                     break;
                 case 4:
-                    ExpandFrontierAStar(currentNode, goalNode);
+                    ExpandAStarOpenList(currentNode, goalNode);
                     break;
                 default:
                     break;
@@ -173,7 +172,7 @@ public class Pathfinding : MonoBehaviour
    
 
  
-    void DepthExpandFrontier(Node node)
+    void ExpandDepthFirstSearchOpenList(Node node)
     {
         if (node != null)
         {
@@ -192,7 +191,7 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    void ExpandFrontierBreadth(Node node)
+    void ExpandBreadthFirstSearchOpenList(Node node)
     {
         if (node != null)
         {
@@ -211,7 +210,7 @@ public class Pathfinding : MonoBehaviour
             }
         }
     }
-    void ExpandFrontierDijkstra(Node node)
+    void ExpandDijkstraOpenList(Node node)
     {
         if (node != null)
         {
@@ -239,7 +238,7 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    void ExpandFrontierAStar(Node node, Node goalnode)
+    void ExpandAStarOpenList(Node node, Node goalnode)
     {
         if (node != null)
         {
@@ -290,7 +289,7 @@ public class Pathfinding : MonoBehaviour
 
     //Without this it crashes due to it adding all the nodes into frontier and bombs out bizzare.
     //One to look at later since I thought they would just be overwritten with the new values but it doesnt seem to be the case.
-    void ResetNodePreviousValuetoNull()
+    void ResetNodeParentValueToNull()
     {
         for (int x = 0; x < grid.GetGridWidth; x++)
         {
