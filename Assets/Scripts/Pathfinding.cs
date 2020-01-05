@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
@@ -34,7 +33,7 @@ public class Pathfinding : MonoBehaviour
         gridVisualisation = gridvisualisation;
 
         ClearLists();
-        ResetNodeParentgCostAndfCost();
+        ResetNodeParentgCostAndhCost();
     }
     public void ClearLists() 
     {
@@ -82,7 +81,7 @@ public class Pathfinding : MonoBehaviour
     }
     public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex)
     {
-        ResetNodeParentgCostAndfCost();
+        ResetNodeParentgCostAndhCost();
 
         Node startNode = grid.GetNodeFromWorldPoint(startposition);
         Node goalNode = grid.GetNodeFromWorldPoint(goalposition);
@@ -91,9 +90,10 @@ public class Pathfinding : MonoBehaviour
         openList = new List<Node>();
         closedList = new List<Node>();
         Stopwatch timer = new Stopwatch();
-        int nodesExploredCount = 0;
 
+        int nodesExploredCount = 0;
         startNode.gCost = 0;
+
         openList.Add(startNode);          
         timer.Start();
 
@@ -103,12 +103,25 @@ public class Pathfinding : MonoBehaviour
             if (algorithmindex == 4)
             {
                 currentNode = openList[0];
-                //Get the lowest fcost in the list, then we check it to see if it has the lowest hcost.
+                //Get the lowest fcost in the list.
                 for (int i = 1; i < openList.Count; i++)
                 {
                     if (openList[i].fCost < currentNode.fCost)
                     {
                             currentNode = openList[i];
+                    }
+                }
+                openList.Remove(currentNode);
+            }
+            else if (algorithmindex == 2)
+            {
+                currentNode = openList[0];
+                //Get the lowest gcost in the openlist.
+                for (int i = 1; i < openList.Count; i++)
+                {
+                    if (openList[i].gCost < currentNode.gCost)
+                    {
+                        currentNode = openList[i];
                     }
                 }
                 openList.Remove(currentNode);
@@ -284,7 +297,7 @@ public class Pathfinding : MonoBehaviour
 
     //Without this it crashes due to it adding all the nodes into frontier and bombs out bizzare.
     //One to look at later since I thought they would just be overwritten with the new values but it doesnt seem to be the case.
-    void ResetNodeParentgCostAndfCost()
+    void ResetNodeParentgCostAndhCost()
     {
         for (int x = 0; x < grid.GetGridWidth; x++)
         {
