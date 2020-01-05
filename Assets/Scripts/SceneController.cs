@@ -144,7 +144,7 @@ public class SceneController : MonoBehaviour
                 NodeVisualisation node = gridVisualisation.nodesVisualisationData[xUnitInputValue, yUnitInputValue];
                 if (node.gridNode.nodeType != NodeType.Blocked)
                 {                
-                    unitData[0].ChangeUnitPositionWithoutUsingSpawnPosition(xUnitInputValue, xUnitInputValue);
+                    unitData[0].ChangeUnitPositionWithoutUsingSpawnPosition(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
                     unitData[0].ClearList();
                     gridVisualisation.ResetGridVisualisation();
                     gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);

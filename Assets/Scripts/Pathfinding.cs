@@ -126,6 +126,19 @@ public class Pathfinding : MonoBehaviour
                 }
                 openList.Remove(currentNode);
             }
+            else if(algorithmindex == 3)
+            {
+                currentNode = openList[0];
+                //Get the lowest gcost in the openlist.
+                for (int i = 1; i < openList.Count; i++)
+                {
+                    if (openList[i].hCost < currentNode.hCost)
+                    {
+                        currentNode = openList[i];
+                    }
+                }
+                openList.Remove(currentNode);
+            }
             else if (!(algorithmindex == 1))
             {
                 currentNode = openList[0];
@@ -155,6 +168,7 @@ public class Pathfinding : MonoBehaviour
                     ExpandDijkstraOpenList(currentNode);
                     break;
                 case 3:
+                    ExpandGreedyBestFirstSearchOpenList(currentNode, goalNode);
                     break;
                 case 4:
                     ExpandAStarOpenList(currentNode, goalNode);
@@ -184,7 +198,22 @@ public class Pathfinding : MonoBehaviour
 
     //These are a waste shorten when you get the chance. A lot of re-used code
    
-
+    void ExpandBreadthFirstSearchOpenList(Node node)
+        {
+            if (node != null)
+            {
+                foreach (Node neighbour in node.neighbours)
+                {
+                    if (neighbour.nodeType != NodeType.Blocked 
+                         && !closedList.Contains(neighbour)
+                        && !openList.Contains(neighbour))
+                    {
+                        neighbour.nodeParent = node;
+                        openList.Add(neighbour);
+                    }
+                }
+            }
+        }
  
     void ExpandDepthFirstSearchOpenList(Node node)
     {
@@ -203,22 +232,7 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    void ExpandBreadthFirstSearchOpenList(Node node)
-    {
-        if (node != null)
-        {
-            foreach (Node neighbour in node.neighbours)
-            {
-                if (neighbour.nodeType != NodeType.Blocked 
-                     && !closedList.Contains(neighbour)
-                    && !openList.Contains(neighbour))
-                {
-                    neighbour.nodeParent = node;
-                    openList.Add(neighbour);
-                }
-            }
-        }
-    }
+    
     void ExpandDijkstraOpenList(Node node)
     {
         if (node != null)
@@ -242,6 +256,27 @@ public class Pathfinding : MonoBehaviour
                         openList.Add(neighbour);
                     }
                 }             
+            }
+        }
+    }
+
+    void ExpandGreedyBestFirstSearchOpenList(Node node, Node goalnode)
+    {
+        if (node != null)
+        {
+            foreach (Node neighbour in node.neighbours)
+            {
+                if (neighbour.nodeType != NodeType.Blocked
+                          && !closedList.Contains(neighbour)
+                         && !openList.Contains(neighbour))
+                {
+
+                    float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour);
+                    neighbour.gCost = distanceToNeighbor;
+                    neighbour.hCost = grid.GetNodeDistance(node, goalnode);
+                    neighbour.nodeParent = node;
+                    openList.Add(neighbour);
+                }
             }
         }
     }
