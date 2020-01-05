@@ -33,9 +33,9 @@ public class Node
     //The gCost is the distance between the current node we're looking at and the start node
     //The hCost is the heurstic, it estimates the distance between the current node we're looking at to the end node.
     //This is the total cost of the node we are in.
-    public int gCost;
-    public int hCost;
-    public int fCost { get { return gCost + hCost; } }
+    public float gCost;
+    public float hCost;
+    public float fCost { get { return gCost + hCost; } }
     
     //Constructor
     public Node(int xindexposition, int yindexposition, NodeType nodetype, Vector3 worldposition)
@@ -50,5 +50,7 @@ public class Node
     public void Reset()
     {
         nodeParent = null;
+        gCost = Mathf.Infinity;
+        hCost = Mathf.Infinity;
     }
 }

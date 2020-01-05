@@ -116,7 +116,7 @@ public class GridManager : MonoBehaviour
      //Issue with previous herustic, noticed it wasnt getting the most optimal path
      //May be wrong but I feel it finds it faster for a less optimal path
      //changed it and now getting optimal path. 
-    public int GetNodeDistance(Node source, Node target)
+    public float GetNodeDistance(Node source, Node target)
     {
         int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
         int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);

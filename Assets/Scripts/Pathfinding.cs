@@ -34,7 +34,7 @@ public class Pathfinding : MonoBehaviour
         gridVisualisation = gridvisualisation;
 
         ClearLists();
-        ResetNodeParentValueToNull();
+        ResetNodeParentgCostAndfCost();
     }
     public void ClearLists() 
     {
@@ -82,22 +82,23 @@ public class Pathfinding : MonoBehaviour
     }
     public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex)
     {
-        ResetNodeParentValueToNull();
+        ResetNodeParentgCostAndfCost();
 
         Node startNode = grid.GetNodeFromWorldPoint(startposition);
         Node goalNode = grid.GetNodeFromWorldPoint(goalposition);
-       
+        Node currentNode;
+
         openList = new List<Node>();
         closedList = new List<Node>();
         Stopwatch timer = new Stopwatch();
+        int nodesExploredCount = 0;
 
-        openList.Add(startNode);
-        int nodesExploredCount = 0;   
+        startNode.gCost = 0;
+        openList.Add(startNode);          
         timer.Start();
 
         while (openList.Count > 0)
         {
-            Node currentNode;
             //Depth takes from the back off the list instead of front.
             if (algorithmindex == 4)
             {
@@ -178,15 +179,13 @@ public class Pathfinding : MonoBehaviour
         {
             foreach (var neighbour in node.neighbours)
             {
-                if (neighbour.nodeType == NodeType.Blocked
-                   || closedList.Contains(neighbour)
-                   || openList.Contains(neighbour))
+                if (neighbour.nodeType != NodeType.Blocked
+                    && !closedList.Contains(neighbour)
+                   && !openList.Contains(neighbour))
                 {
-                    continue;
+                    neighbour.nodeParent = node;
+                    openList.Add(neighbour);
                 }
-
-                neighbour.nodeParent = node;
-                openList.Add(neighbour);
             }
         }
     }
@@ -197,16 +196,13 @@ public class Pathfinding : MonoBehaviour
         {
             foreach (Node neighbour in node.neighbours)
             {
-                if (neighbour.nodeType == NodeType.Blocked 
-                    || closedList.Contains(neighbour)
-                    || openList.Contains(neighbour))
+                if (neighbour.nodeType != NodeType.Blocked 
+                     && !closedList.Contains(neighbour)
+                    && !openList.Contains(neighbour))
                 {
-                    continue;
+                    neighbour.nodeParent = node;
+                    openList.Add(neighbour);
                 }
-
-                neighbour.nodeParent = node;
-                openList.Add(neighbour);
-
             }
         }
     }
@@ -221,7 +217,7 @@ public class Pathfinding : MonoBehaviour
                     continue;
                 }
 
-                int distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour);
+                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour);
 
                 if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
                 {
@@ -232,8 +228,7 @@ public class Pathfinding : MonoBehaviour
                     {
                         openList.Add(neighbour);
                     }
-                }
-                
+                }             
             }
         }
     }
@@ -249,7 +244,7 @@ public class Pathfinding : MonoBehaviour
                     continue;
                 }
 
-                int distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour);
+                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour);
 
                 if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
                 {
@@ -289,7 +284,7 @@ public class Pathfinding : MonoBehaviour
 
     //Without this it crashes due to it adding all the nodes into frontier and bombs out bizzare.
     //One to look at later since I thought they would just be overwritten with the new values but it doesnt seem to be the case.
-    void ResetNodeParentValueToNull()
+    void ResetNodeParentgCostAndfCost()
     {
         for (int x = 0; x < grid.GetGridWidth; x++)
         {
