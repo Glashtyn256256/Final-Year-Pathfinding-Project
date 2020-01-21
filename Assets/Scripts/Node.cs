@@ -9,8 +9,10 @@ using UnityEngine;
 public enum NodeType
 {
     Open = 0,
-    Blocked = 1,
-    GoalNode = 2
+    Blocked = 1,  
+    Grass = 3,
+    Water = 8,
+    GoalNode = 10
 }
 
 public class Node

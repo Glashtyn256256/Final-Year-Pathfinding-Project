@@ -34,6 +34,7 @@ public class SceneController : MonoBehaviour
     int yUnitInputValue;
 
     int algorithmIndex;
+    int terrainIndex;
 
     bool PathfindingVisualisationAid = true;
 
@@ -73,6 +74,10 @@ public class SceneController : MonoBehaviour
     public void SetCurrentAlgorithmFromDropdown(int algorithmindex)
     {
         algorithmIndex = algorithmindex;
+    }
+    public void SetTerrainTypeFromDropdown(int terrainindex)
+    {
+        terrainIndex = terrainindex;
     }
 
     public void ToggleVisualisationAid(bool toggle)
@@ -251,17 +256,28 @@ public class SceneController : MonoBehaviour
                     NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
                     if (nodeVisualisation != goalNode)
                     {
-                        if (nodeVisualisation.gridNode.nodeType == 0)
-                        {
-                            ChangeTileTerrain(nodeVisualisation, NodeType.Blocked, true);
-                            SearchUnitPathRecalculate(nodeVisualisation);
-                        }
-                        else
-                        {
-                            ChangeTileTerrain(nodeVisualisation, NodeType.Open, false);
-                            RecalculateUnitPath();
-                            //When we put back to a floor we recalculate a path. Need a better way since it may not even effect path
-                        }
+                        
+                            switch (terrainIndex)
+                            {
+                                case 0:
+                                    ChangeTileTerrain(nodeVisualisation, NodeType.Open, false);
+                                    RecalculateUnitPath();
+                                    break;
+                                case 1:
+                                    ChangeTileTerrain(nodeVisualisation, NodeType.Blocked, true);
+                                    RecalculateUnitPath();
+                                    break;
+                                case 2:
+                                    ChangeTileTerrain(nodeVisualisation, NodeType.Grass, false);
+                                    RecalculateUnitPath();
+                                    break;
+                                case 3:
+                                    ChangeTileTerrain(nodeVisualisation, NodeType.Water, false);
+                                    RecalculateUnitPath();
+                                    break;
+                                default:
+                                    break;
+                            }
                     }
                 }
             }

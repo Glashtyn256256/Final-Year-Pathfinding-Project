@@ -11,6 +11,9 @@ public class GridVisualisation : MonoBehaviour
     public Color baseColor = Color.white;
     public Color wallColor = Color.black;
     public Color goalColor = Color.red;
+    public Color grassColor = Color.green;
+    public Color waterColor = Color.blue;
+
 
     public void CreateGridVisualisation(GridManager grid)
     {
@@ -35,7 +38,7 @@ public class GridVisualisation : MonoBehaviour
                 {
                     nodeVisualisation.ColorNode(wallColor);
                 }
-                else 
+                else
                 {
                     nodeVisualisation.ColorNode(baseColor);
                 }
@@ -87,15 +90,24 @@ public class GridVisualisation : MonoBehaviour
             {
                 nodeVisualisation.ColorNode(wallColor);
             }
-            else if(nodeVisualisation.gridNode.nodeType == NodeType.Open) 
+            else if (nodeVisualisation.gridNode.nodeType == NodeType.Open)
             {
                 nodeVisualisation.ColorNode(baseColor);
             }
-            else if(nodeVisualisation.gridNode.nodeType == NodeType.GoalNode)
+            else if (nodeVisualisation.gridNode.nodeType == NodeType.GoalNode)
             {
                 nodeVisualisation.ColorNode(goalColor);
             }
-        
+            else if (nodeVisualisation.gridNode.nodeType == NodeType.Grass)
+            {
+                nodeVisualisation.ColorNode(grassColor);
+            }
+            else if (nodeVisualisation.gridNode.nodeType == NodeType.Water)
+            {
+                nodeVisualisation.ColorNode(waterColor);
+            }
+
+
     }
 
     public void ChangeToFloorNode(NodeVisualisation nodevisualisation)
@@ -103,6 +115,19 @@ public class GridVisualisation : MonoBehaviour
         nodevisualisation.gridNode.nodeType = NodeType.Open;
         nodevisualisation.ColorNode(baseColor);
     }
+
+    public void ChangeToGrassNode(NodeVisualisation nodevisualisation)
+    {
+        nodevisualisation.gridNode.nodeType = NodeType.Grass;
+        nodevisualisation.ColorNode(grassColor);
+    }
+
+    public void ChangeToWaterNode(NodeVisualisation nodevisualisation)
+    {
+        nodevisualisation.gridNode.nodeType = NodeType.Water;
+        nodevisualisation.ColorNode(waterColor);
+    }
+
     public void ChangeToGoalNode(NodeVisualisation nodevisualisation)
     {
         nodevisualisation.gridNode.nodeType = NodeType.GoalNode;

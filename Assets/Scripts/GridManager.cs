@@ -128,4 +128,32 @@ public class GridManager : MonoBehaviour
         return 14 * xDistance + 10 * (yDistance - xDistance);
     }
 
+    public void IntegrationField()
+    {
+        for (int y = 0; y < gridHeight; y++)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+                if(gridNodes[x,y].nodeType == NodeType.Blocked)
+                {
+                    continue;
+                }
+
+                gridNodes[x, y].nodeParent = gridNodes[x, y];
+
+                foreach (Node neighbour in gridNodes[x, y].neighbours)
+                {
+                    if (neighbour.nodeType == NodeType.Blocked)
+                    {
+                        continue;
+                    }
+
+                    if (neighbour.gCost < gridNodes[x, y].nodeParent.gCost)
+                    {
+                        gridNodes[x, y].nodeParent = neighbour;
+                    }
+                }
+            }
+        }
+    }
 }
