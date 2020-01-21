@@ -270,7 +270,7 @@ public class Pathfinding : MonoBehaviour
                           && !closedList.Contains(neighbour)
                          && !openList.Contains(neighbour))
                 {
-                    neighbour.hCost = grid.GetNodeDistance(node, goalnode)+(int)node.nodeType;
+                    neighbour.hCost = grid.GetNodeDistance(node, goalnode)+(int)neighbour.nodeType;
                     neighbour.nodeParent = node;
                     openList.Add(neighbour);
                 }
@@ -289,12 +289,12 @@ public class Pathfinding : MonoBehaviour
                     continue;
                 }
 
-                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour) + (int)node.nodeType;
+                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour) + (int)neighbour.nodeType;
 
                 if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
                 {
                     neighbour.gCost = distanceToNeighbor;
-                    neighbour.hCost = grid.GetNodeDistance(node, goalnode) + (int)node.nodeType;
+                    neighbour.hCost = grid.GetNodeDistance(node, goalnode) + (int)neighbour.nodeType;
                     neighbour.nodeParent = node;
 
                     if (!openList.Contains(neighbour))
