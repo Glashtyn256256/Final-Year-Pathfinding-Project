@@ -296,7 +296,7 @@ public class SceneController : MonoBehaviour
                 if (hit.collider.gameObject.tag == "Node")
                 {
                     NodeVisualisation nodeVisualisation = hit.collider.gameObject.GetComponentInParent<NodeVisualisation>();
-                    if (nodeVisualisation.gridNode.nodeType == NodeType.Open)
+                    if (nodeVisualisation.gridNode.nodeType != NodeType.Blocked)
                     {
                         ChangeTileToGoalNode(nodeVisualisation);
                         RecalculateUnitPath();
