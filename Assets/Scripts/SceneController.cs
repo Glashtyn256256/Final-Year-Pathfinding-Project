@@ -265,7 +265,7 @@ public class SceneController : MonoBehaviour
                                     break;
                                 case 1:
                                     ChangeTileTerrain(nodeVisualisation, NodeType.Blocked, true);
-                                    RecalculateUnitPath();
+                                    SearchUnitPathRecalculate(nodeVisualisation);
                                     break;
                                 case 2:
                                     ChangeTileTerrain(nodeVisualisation, NodeType.Grass, false);
