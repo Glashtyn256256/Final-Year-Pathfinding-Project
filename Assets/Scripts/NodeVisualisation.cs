@@ -6,6 +6,7 @@ public class NodeVisualisation : MonoBehaviour
 {
     public GameObject tile;
     public GameObject wall;
+    public GameObject arrow;
     //public GameObject arrow;
 
     public Node gridNode;
@@ -53,20 +54,12 @@ public class NodeVisualisation : MonoBehaviour
         go.SetActive(state);
     }
 
-    public void ShowArrow(Color color)
+    public void ArrowPosition()
     {
-        //if (m_node != null && arrow != null && m_node.previous != null)
-        //{
-        //    EnableObject(arrow, true);
-
-        //    Vector3 directionToPrevious = (m_node.previous.position - m_node.position).normalized;
-        //    arrow.transform.rotation = Quaternion.LookRotation(directionToPrevious);
-
-        //    Renderer arrowRender = arrow.GetComponent<Renderer>();
-        //    if (arrowRender != null)
-        //    {
-        //        arrowRender.material.color = color;
-        //    }
-        //}
+        if (gridNode.nodeType != NodeType.Blocked)
+        {
+            Vector3 directionToParent = (gridNode.nodeParent.nodeWorldPosition - gridNode.nodeWorldPosition).normalized;
+            arrow.transform.rotation = Quaternion.LookRotation(directionToParent);
+        }
     }
 }

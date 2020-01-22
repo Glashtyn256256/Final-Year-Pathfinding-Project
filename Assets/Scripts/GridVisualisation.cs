@@ -62,25 +62,41 @@ public class GridVisualisation : MonoBehaviour
         }
     }
 
-    public void ShowNodeArrows(Node node, Color color)
+    public void ShowNodeArrows(bool visualaid)
     {
-        if (node != null)
+        foreach(var nodeVisual in nodesVisualisationData)
         {
-            NodeVisualisation nodeView = nodesVisualisationData[node.xIndexPosition, node.yIndexPosition];
-            if (nodeView != null)
+            if (visualaid == true && nodeVisual.gridNode.nodeType != NodeType.Blocked)
             {
-                nodeView.ShowArrow(color);
+                nodeVisual.ArrowPosition();
+            }
+
+            if (nodeVisual.gridNode.nodeType != NodeType.Blocked)
+            {
+                nodeVisual.EnableObject(nodeVisual.arrow, visualaid);
             }
         }
     }
 
-    public void ShowNodeArrows(List<Node> nodes, Color color)
-    {
-        foreach (Node n in nodes)
-        {
-            ShowNodeArrows(n, color);
-        }
-    }
+    //public void ShowNodeArrows(Node node, Color color)
+    //{
+    //    if (node != null)
+    //    {
+    //        NodeVisualisation nodeView = nodesVisualisationData[node.xIndexPosition, node.yIndexPosition];
+    //        if (nodeView != null)
+    //        {
+    //            nodeView.ShowArrow();
+    //        }
+    //    }
+    //}
+
+    //public void ShowNodeArrows(List<Node> nodes, Color color)
+    //{
+    //    foreach (Node n in nodes)
+    //    {
+    //        ShowNodeArrows(n, color);
+    //    }
+    //}
 
     public void ResetGridVisualisation()
     {
@@ -137,6 +153,13 @@ public class GridVisualisation : MonoBehaviour
     public void ChangeToGoalNodeColourOnly(NodeVisualisation nodevisualisation)
     { 
         nodevisualisation.ColorNode(goalColor);
+    }
+   public void ChangePositionOfArrow()
+    {
+        foreach(var nodeVisual in nodesVisualisationData)
+        {
+            nodeVisual.ArrowPosition();
+        }
     }
 }
     
