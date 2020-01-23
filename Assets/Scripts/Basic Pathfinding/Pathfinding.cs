@@ -167,7 +167,7 @@ public class Pathfinding : MonoBehaviour
                     ExpandDijkstraOpenList(currentNode);
                     break;
                 case 3:
-                    ExpandGreedyBestFirstSearchOpenList(currentNode, goalNode);
+                    ExpandBestFirstSearchOpenList(currentNode, goalNode);
                     break;
                 case 4:
                     ExpandAStarOpenList(currentNode, goalNode);
@@ -260,7 +260,7 @@ public class Pathfinding : MonoBehaviour
 
     }
 
-    void ExpandGreedyBestFirstSearchOpenList(Node node, Node goalnode)
+    void ExpandBestFirstSearchOpenList(Node node, Node goalnode)
     {
         if (node != null)
         {
