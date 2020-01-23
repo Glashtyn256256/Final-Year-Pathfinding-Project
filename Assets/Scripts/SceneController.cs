@@ -35,6 +35,7 @@ public class SceneController : MonoBehaviour
 
     int algorithmIndex;
     int terrainIndex;
+    int heuristicIndex;
 
     bool PathfindingVisualisationAid = true;
 
@@ -80,6 +81,11 @@ public class SceneController : MonoBehaviour
         terrainIndex = terrainindex;
     }
 
+    public void SetHeuristicAlgorithmFromDropdown(int heuristicindex)
+    {
+        heuristicIndex = heuristicindex;
+    }
+    
     public void ToggleVisualisationAid(bool toggle)
     {
         PathfindingVisualisationAid = toggle;
@@ -192,7 +198,7 @@ public class SceneController : MonoBehaviour
         unit.SetUnitPositionInGrid(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
         unit.InitiatePathfinding(grid, gridVisualisation);
         unitData.Add(unit);
-        unit.UnitFindPath(goalNode.transform, algorithmIndex);
+        unit.UnitFindPath(goalNode.transform, algorithmIndex, heuristicIndex);
         if (PathfindingVisualisationAid)
         {
             if(!(unitData.Count > 1))
@@ -209,7 +215,7 @@ public class SceneController : MonoBehaviour
     {
         for (int i = 0; i < unitData.Count; i++)
         {
-            unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
+            unitData[i].UnitFindPath(goalNode.transform, algorithmIndex, heuristicIndex);
             if (PathfindingVisualisationAid)
             {
                 if (!(unitData.Count > 1))
@@ -228,7 +234,7 @@ public class SceneController : MonoBehaviour
         {
             if (unitData[i].SearchPathChangedNode(node.gridNode))
             {
-                unitData[i].UnitFindPath(goalNode.transform, algorithmIndex);
+                unitData[i].UnitFindPath(goalNode.transform, algorithmIndex, heuristicIndex);
             }
             if(PathfindingVisualisationAid)
             {

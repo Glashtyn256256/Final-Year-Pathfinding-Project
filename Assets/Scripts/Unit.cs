@@ -14,7 +14,8 @@ public class Unit : MonoBehaviour
     int ySpawnPosition;
 
     int IndexInPath;
-   
+    int heuristicIndex;
+    int algorithmIndex;
 
 
 
@@ -31,23 +32,27 @@ public class Unit : MonoBehaviour
 
     //Do we want to pass ina node or pass in a vector
     //Pass in type of search we're doing through unitfindpath. Then it will pick the correct one.
-    public void UnitFindPath(Transform goalposition, int algorithmindex)
+    public void UnitFindPath(Transform goalposition, int algorithmindex, int heuristicindex)
     {
         goalWorldPosition = goalposition;
+        algorithmIndex = algorithmindex;
+        heuristicIndex = heuristicindex;
+
         if (goalposition != null)
         {
             StopCoroutine("MoveUnitAcrossPath");
-            path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
+            path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmIndex, heuristicIndex);
             if (path != null)
             {
-                //StartCoroutine(MoveUnitAcrossPath(algorithmindex));
-                StartCoroutine("MoveUnitAcrossPath",algorithmindex);
+                //StartCoroutine(MoveUnitAcrossPath(algorithmindex, heuristicindex));
+                StartCoroutine("MoveUnitAcrossPath");
             }
         }
     }
-    IEnumerator MoveUnitAcrossPath(int algorithmindex)
+    IEnumerator MoveUnitAcrossPath()
     {
         Vector3 currentNodeWorldPosition = path[0].nodeWorldPosition;
+        
         IndexInPath = 0;
 
         while (true)
@@ -65,7 +70,7 @@ public class Unit : MonoBehaviour
             //Need a way to check the path after this to see if it's blocked, otherwise unit may be put inside wall.
             if (path[IndexInPath].nodeType == NodeType.Blocked)
             {
-                path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmindex);
+                path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmIndex, heuristicIndex);
                 IndexInPath = 0;
                 yield return null;
             }
@@ -112,6 +117,7 @@ public class Unit : MonoBehaviour
     public void ResetUnitPositionBackToOriginal()
     {
         StopCoroutine("MoveUnitAcrossPath");
+    
         //yspawnposition is meant to be in z, confusing name.
         transform.position = new Vector3(xSpawnPosition, transform.position.y, ySpawnPosition);
     }

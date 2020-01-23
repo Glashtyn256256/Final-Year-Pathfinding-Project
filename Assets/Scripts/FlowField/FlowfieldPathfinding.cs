@@ -37,7 +37,7 @@ public class FlowfieldPathfinding : MonoBehaviour
         openList = new List<Node>();
         closedList = new List<Node>();
     }
-    public void FlowfieldPath(Vector3 goalposition, bool visualaid)
+    public void FlowfieldPath(Vector3 goalposition, bool visualaid, int heuristicindex)
     {
         ResetNodeParentgCostAndhCost();
         ClearLists();
@@ -63,7 +63,7 @@ public class FlowfieldPathfinding : MonoBehaviour
                 closedList.Add(currentNode);
             }
 
-            CostField(currentNode);
+            CostField(currentNode, heuristicindex);
         }
         grid.IntegrationField();
         if (visualaid)
@@ -72,7 +72,7 @@ public class FlowfieldPathfinding : MonoBehaviour
         }
     }
 
-    void CostField(Node node)
+    void CostField(Node node, int heuristicindex)
     {
         if (node != null)
         {
@@ -87,7 +87,7 @@ public class FlowfieldPathfinding : MonoBehaviour
                     continue;
                 }
 
-                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour) + (int)neighbour.nodeType;
+                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour, heuristicindex) + (int)neighbour.nodeType;
 
                 if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
                 {

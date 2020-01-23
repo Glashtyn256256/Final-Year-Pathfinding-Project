@@ -35,7 +35,7 @@ public class FlowfieldSceneController : MonoBehaviour
     int xUnitInputValue;
     int yUnitInputValue;
 
-    int algorithmIndex;
+    int heuristicIndex;
     int terrainIndex;
 
     bool PathfindingVisualisationAid;
@@ -62,7 +62,7 @@ public class FlowfieldSceneController : MonoBehaviour
                 InstantiateUnit(startNode);
             }
             flowfieldPathfinding.CreatePathfinding(grid, gridVisualisation);
-            flowfieldPathfinding.FlowfieldPath(goalNode.transform.position, PathfindingVisualisationAid);
+            flowfieldPathfinding.FlowfieldPath(goalNode.transform.position, PathfindingVisualisationAid, heuristicIndex);
         }
     }
 
@@ -76,9 +76,9 @@ public class FlowfieldSceneController : MonoBehaviour
     }
 
     //Get the intgeger value selected from the dropdown
-    public void SetCurrentAlgorithmFromDropdown(int algorithmindex)
+    public void SetHeuristicAlgorithmFromDropdown(int heuristicindex)
     {
-        algorithmIndex = algorithmindex;
+        heuristicIndex = heuristicindex;
     }
     public void SetTerrainTypeFromDropdown(int terrainindex)
     {
@@ -319,7 +319,7 @@ public class FlowfieldSceneController : MonoBehaviour
 
     void UpdateMap()
     {
-        flowfieldPathfinding.FlowfieldPath(goalNode.transform.position, PathfindingVisualisationAid);
+        flowfieldPathfinding.FlowfieldPath(goalNode.transform.position, PathfindingVisualisationAid, heuristicIndex);
         ResetUnitHasReachedTarget();
     }
 }

@@ -7,7 +7,6 @@ public class NodeVisualisation : MonoBehaviour
     public GameObject tile;
     public GameObject wall;
     public GameObject arrow;
-    //public GameObject arrow;
 
     public Node gridNode;
 
@@ -23,7 +22,6 @@ public class NodeVisualisation : MonoBehaviour
             tile.transform.localScale = new Vector3(1f - borderSize, 1f, 1f - borderSize);
             gridNode = node;
 
-            // EnableObject(arrow, false);
             if (node.nodeType == NodeType.Blocked)
             {
                 wall.SetActive(true);

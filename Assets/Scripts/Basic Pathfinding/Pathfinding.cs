@@ -79,7 +79,7 @@ public class Pathfinding : MonoBehaviour
             gridvisualisation.ColorNodes(closedList, closedListColor);
         }
     }
-    public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex)
+    public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex, int heuristicindex)
     {
         ResetNodeParentgCostAndhCost();
         ClearLists();
@@ -164,13 +164,13 @@ public class Pathfinding : MonoBehaviour
                     ExpandDepthFirstSearchOpenList(currentNode);
                     break;
                 case 2:
-                    ExpandDijkstraOpenList(currentNode);
+                    ExpandDijkstraOpenList(currentNode, heuristicindex);
                     break;
                 case 3:
-                    ExpandBestFirstSearchOpenList(currentNode, goalNode);
+                    ExpandBestFirstSearchOpenList(currentNode, goalNode, heuristicindex);
                     break;
                 case 4:
-                    ExpandAStarOpenList(currentNode, goalNode);
+                    ExpandAStarOpenList(currentNode, goalNode, heuristicindex);
                     break;
                 default:
                     break;
@@ -232,7 +232,7 @@ public class Pathfinding : MonoBehaviour
     }
 
     
-    void ExpandDijkstraOpenList(Node node)
+    void ExpandDijkstraOpenList(Node node, int heuristicindex)
     {
         if (node != null)
         {
@@ -243,7 +243,7 @@ public class Pathfinding : MonoBehaviour
                     continue;
                 }
 
-                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour) + (int)neighbour.nodeType;
+                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour, heuristicindex) + (int)neighbour.nodeType;
 
                 if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
                 {
@@ -260,7 +260,7 @@ public class Pathfinding : MonoBehaviour
 
     }
 
-    void ExpandBestFirstSearchOpenList(Node node, Node goalnode)
+    void ExpandBestFirstSearchOpenList(Node node, Node goalnode, int heuristicindex)
     {
         if (node != null)
         {
@@ -270,7 +270,7 @@ public class Pathfinding : MonoBehaviour
                           && !closedList.Contains(neighbour)
                          && !openList.Contains(neighbour))
                 {
-                    neighbour.hCost = grid.GetNodeDistance(node, goalnode)+(int)neighbour.nodeType;
+                    neighbour.hCost = grid.GetNodeDistance(node, goalnode, heuristicindex)+(int)neighbour.nodeType;
                     neighbour.nodeParent = node;
                     openList.Add(neighbour);
                 }
@@ -278,7 +278,7 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    void ExpandAStarOpenList(Node node, Node goalnode)
+    void ExpandAStarOpenList(Node node, Node goalnode, int heuristicindex)
     {
         if (node != null)
         {
@@ -289,12 +289,12 @@ public class Pathfinding : MonoBehaviour
                     continue;
                 }
 
-                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour) + (int)neighbour.nodeType;
+                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour, heuristicindex) + (int)neighbour.nodeType;
 
                 if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
                 {
                     neighbour.gCost = distanceToNeighbor;
-                    neighbour.hCost = grid.GetNodeDistance(node, goalnode) + (int)neighbour.nodeType;
+                    neighbour.hCost = grid.GetNodeDistance(node, goalnode, heuristicindex) + (int)neighbour.nodeType;
                     neighbour.nodeParent = node;
 
                     if (!openList.Contains(neighbour))
@@ -307,32 +307,6 @@ public class Pathfinding : MonoBehaviour
         }
     }
  
-    void CostField(Node node)
-    {
-        if (node != null)
-        {
-            foreach (Node neighbour in node.neighbours)
-            {
-                if (neighbour.nodeType == NodeType.Blocked || closedList.Contains(neighbour))
-                {
-                    continue;
-                }
-
-                float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour);
-
-                if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
-                {
-                    neighbour.gCost = distanceToNeighbor;
-
-                    if (!openList.Contains(neighbour))
-                    {
-                        openList.Add(neighbour);
-                    }
-                }
-            }
-        }
-    }
-
     List<Node> GetPathNodes(Node goalnode)
     {
         List<Node> path = new List<Node>();

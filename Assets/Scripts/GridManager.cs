@@ -120,9 +120,24 @@ public class GridManager : MonoBehaviour
      //Issue with previous herustic, noticed it wasnt getting the most optimal path
      //May be wrong but I feel it finds it faster for a less optimal path
      //changed it and now getting optimal path. 
-    public float GetNodeDistance(Node source, Node target)
+    public float GetNodeDistance(Node source, Node target, int heuristicindex)
     {
-        return PatricksDiagnolDistance(source, target);
+        switch (heuristicindex)
+        {
+            case 0:
+                return PatricksDiagnolDistance(source, target);
+            case 1:
+                return ManhattenDistance(source, target);
+            case 2:
+                return EuclideanDistance(source, target);
+            case 3:
+                return ChebyshevDistance(source, target);
+            case 4:
+                return OctileDistance(source, target);
+                
+        }
+        //This will never be hit but we have to return a value since it will complain
+        return Mathf.Infinity;
     }
 
     float PatricksDiagnolDistance(Node source, Node target)
@@ -176,8 +191,8 @@ public class GridManager : MonoBehaviour
         int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
         //D = 10 AND D2 = 14
         //1.41421356237 square route of 2 
-        //D * max(dx, dy) + (D2-D) * min(dx, dy)
-        return 10 * Mathf.Max(xDistance + yDistance) + 4 * Mathf.Min(xDistance, yDistance);
+        //D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
+        return 10 * (xDistance + yDistance) + (14 - 2 * 10) * Mathf.Min(xDistance, yDistance);
     }
 
 
