@@ -12,6 +12,10 @@ public class GridManager : MonoBehaviour
     private int gridHeight;
     public int GetGridWidth { get { return gridWidth; } }
     public int GetGridHeight { get { return gridHeight; } }
+    //Saves us time having to use SQRT which is expensive to use.
+    const float squareRouteOf2 = 1.41421356237f;
+    //public int scaleDistanceOne = 10;
+    //public int scaleDistanceTwo = 14;
 
     //Create two one for all directions and one for four directions, then have a option to toggle it on or off.
     public static readonly Vector2[] nodeNeighbourDirections =
@@ -118,6 +122,11 @@ public class GridManager : MonoBehaviour
      //changed it and now getting optimal path. 
     public float GetNodeDistance(Node source, Node target)
     {
+        return PatricksDiagnolDistance(source, target);
+    }
+
+    float PatricksDiagnolDistance(Node source, Node target)
+    {
         int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
         int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
 
@@ -127,6 +136,50 @@ public class GridManager : MonoBehaviour
         }
         return 14 * xDistance + 10 * (yDistance - xDistance);
     }
+
+    //Only use this if you are using for four directions #up,down,left,right
+    float ManhattenDistance(Node source, Node target)
+    {
+        int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
+        int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
+
+        return 10 * (xDistance + yDistance);
+    }
+
+    //This is a straight line distance, if your unit can move any direction then you would 
+    //want to use this.
+    float EuclideanDistance(Node source, Node target)
+    {
+        int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
+        int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
+
+        return 10 * Mathf.Sqrt((xDistance * xDistance) + (yDistance * yDistance));
+    }
+
+    //All distances cost the same, diagnol and cardinal movements cost 10
+    float ChebyshevDistance(Node source, Node target)
+    {
+        int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
+        int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
+        //D = 10 and D2 = 10
+        ////D * max(dx, dy) + (D2-D) * min(dx, dy)
+        return 10 * Mathf.Max(xDistance, yDistance) + Mathf.Min(xDistance, yDistance);
+    }
+
+    //we use 10 and 14 in our distances instead of using 1 or 1.4 using whole numbers works.
+    //D1 is 1 multiply by 10 to ge t10 and D2 is 1.4 which is squareroute of two, multiply
+    //by 10 and we get 14.
+    //Caridnal movement is 10 but DiagnolMovement is 14.
+    float OctileDistance(Node source, Node target)
+    {
+        int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
+        int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
+        //D = 10 AND D2 = 14
+        //1.41421356237 square route of 2 
+        //D * max(dx, dy) + (D2-D) * min(dx, dy)
+        return 10 * Mathf.Max(xDistance + yDistance) + 4 * Mathf.Min(xDistance, yDistance);
+    }
+
 
     public void IntegrationField()
     {

@@ -77,27 +77,6 @@ public class GridVisualisation : MonoBehaviour
             }
         }
     }
-
-    //public void ShowNodeArrows(Node node, Color color)
-    //{
-    //    if (node != null)
-    //    {
-    //        NodeVisualisation nodeView = nodesVisualisationData[node.xIndexPosition, node.yIndexPosition];
-    //        if (nodeView != null)
-    //        {
-    //            nodeView.ShowArrow();
-    //        }
-    //    }
-    //}
-
-    //public void ShowNodeArrows(List<Node> nodes, Color color)
-    //{
-    //    foreach (Node n in nodes)
-    //    {
-    //        ShowNodeArrows(n, color);
-    //    }
-    //}
-
     public void ResetGridVisualisation()
     {
         foreach (NodeVisualisation nodeVisualisation in nodesVisualisationData)
