@@ -9,6 +9,7 @@ public class Unit : MonoBehaviour
     List<Node> path;
 
     float unitSpeed = 0.1f;
+    string unitMessagePathfinding;
 
     int xSpawnPosition;
     int ySpawnPosition;
@@ -41,7 +42,7 @@ public class Unit : MonoBehaviour
         if (goalposition != null)
         {
             StopCoroutine("MoveUnitAcrossPath");
-            path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmIndex, heuristicIndex);
+            path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmIndex, heuristicIndex, out unitMessagePathfinding);
             if (path != null)
             {
                 //StartCoroutine(MoveUnitAcrossPath(algorithmindex, heuristicindex));
@@ -70,7 +71,7 @@ public class Unit : MonoBehaviour
             //Need a way to check the path after this to see if it's blocked, otherwise unit may be put inside wall.
             if (path[IndexInPath].nodeType == NodeType.Blocked)
             {
-                path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmIndex, heuristicIndex);
+                path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmIndex, heuristicIndex, out unitMessagePathfinding);
                 IndexInPath = 0;
                 yield return null;
             }
@@ -127,5 +128,14 @@ public class Unit : MonoBehaviour
         StopCoroutine("MoveUnitAcrossPath");
         //yspawnposition is meant to be in z, confusing name.
         transform.position = new Vector3(x, transform.position.y, y);
+    }
+
+    public string ReturnUnitMessage()
+    {
+        if(unitMessagePathfinding != null && unitMessagePathfinding != "")
+        {
+            return unitMessagePathfinding;
+        }
+        return "Error getting pathfinding details.";
     }
 }

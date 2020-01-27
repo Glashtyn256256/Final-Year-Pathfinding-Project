@@ -79,7 +79,7 @@ public class Pathfinding : MonoBehaviour
             gridvisualisation.ColorNodes(closedList, closedListColor);
         }
     }
-    public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex, int heuristicindex)
+    public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex, int heuristicindex, out string unitmessage)
     {
         ResetNodeParentgCostAndhCost();
         ClearLists();
@@ -91,6 +91,7 @@ public class Pathfinding : MonoBehaviour
         Stopwatch timer = new Stopwatch();
 
         int nodesExploredCount = 0;
+        string pathfindingUsed = "";
         startNode.gCost = 0;
 
         openList.Add(startNode);          
@@ -159,6 +160,7 @@ public class Pathfinding : MonoBehaviour
             {
                 case 0:
                     ExpandBreadthFirstSearchOpenList(currentNode);
+                    pathfindingUsed = "Breadth First Search with ";
                     break;
                 case 1:
                     ExpandDepthFirstSearchOpenList(currentNode);
@@ -180,18 +182,20 @@ public class Pathfinding : MonoBehaviour
             {
                 pathList = GetPathNodes(goalNode);
                 timer.Stop();
-                UnityEngine.Debug.Log("Pathfinder searchroutine: Elapsed time = "
+                unitmessage = ((pathfindingUsed) 
+                    + (HeuristicUsed(heuristicindex)) 
+                    + ("Elapsed time = ")
                     + (timer.Elapsed.TotalMilliseconds).ToString()
                     + " milliseconds , Nodes Explored = " 
                     + nodesExploredCount.ToString()
-                    + ", Nodes To Goal "
+                    + ", Nodes To Goal = "
                     + pathList.Count.ToString());
 
 
                 return pathList;
             }
         }
-        UnityEngine.Debug.Log("Path is blocked, no path possible to goal");
+        unitmessage = ("Path is blocked, no path possible to goal");
         return null;
     }
 
@@ -326,7 +330,25 @@ public class Pathfinding : MonoBehaviour
         return path;
     }
 
+    string HeuristicUsed(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return "Diagnol Heuristic: ";
+            case 1:
+                return "Manhatten Heuristic: ";
+            case 2:
+                return "Euclidean Heuristic: ";
+            case 3:
+                return "Chebyshev Heuristic: ";
+            case 4:
+                return "Octile Heuristic: ";
 
+
+        }
+        return "error: ";
+    }
     //Without this it crashes due to it adding all the nodes into frontier and bombs out bizzare.
     //One to look at later since I thought they would just be overwritten with the new values but it doesnt seem to be the case.
     void ResetNodeParentgCostAndhCost()

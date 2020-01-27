@@ -20,6 +20,8 @@ public class SceneController : MonoBehaviour
     public InputField xUnitInput;
     public InputField yUnitInput;
 
+    public Text unitInfoDisplay;
+    public ScrollRect scrollObject;
 
     Ray ray;
     RaycastHit hit;
@@ -199,6 +201,8 @@ public class SceneController : MonoBehaviour
         unit.InitiatePathfinding(grid, gridVisualisation);
         unitData.Add(unit);
         unit.UnitFindPath(goalNode.transform, algorithmIndex, heuristicIndex);
+        AddMessageToTextBox(unit.ReturnUnitMessage(), unitData.Count - 1);
+        UpdateScrollBarToBottom();
         if (PathfindingVisualisationAid)
         {
             if(!(unitData.Count > 1))
@@ -208,7 +212,17 @@ public class SceneController : MonoBehaviour
             unit.UnitPathVisualisation();
             gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
         }
-        
+    }
+
+    void AddMessageToTextBox(string unitmessage, int unitnumber) {
+        unitInfoDisplay.text += "Unit " + unitnumber + " - " + unitmessage;
+        unitInfoDisplay.text += "\n";
+       
+    }
+    void UpdateScrollBarToBottom()
+    {
+        Canvas.ForceUpdateCanvases();
+        scrollObject.verticalNormalizedPosition = 0.0f;
     }
 
     void RecalculateUnitPath() 
@@ -216,6 +230,7 @@ public class SceneController : MonoBehaviour
         for (int i = 0; i < unitData.Count; i++)
         {
             unitData[i].UnitFindPath(goalNode.transform, algorithmIndex, heuristicIndex);
+            AddMessageToTextBox(unitData[i].ReturnUnitMessage(), i);
             if (PathfindingVisualisationAid)
             {
                 if (!(unitData.Count > 1))
@@ -226,6 +241,7 @@ public class SceneController : MonoBehaviour
                 gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
             }
         }
+        UpdateScrollBarToBottom();
     }
 
     void SearchUnitPathRecalculate(NodeVisualisation node)
@@ -235,6 +251,7 @@ public class SceneController : MonoBehaviour
             if (unitData[i].SearchPathChangedNode(node.gridNode))
             {
                 unitData[i].UnitFindPath(goalNode.transform, algorithmIndex, heuristicIndex);
+                AddMessageToTextBox(unitData[i].ReturnUnitMessage(), i);
             }
             if(PathfindingVisualisationAid)
             {
@@ -247,6 +264,7 @@ public class SceneController : MonoBehaviour
             }
           
         }
+        UpdateScrollBarToBottom();
     }
 
     //When you left click the mouse button, it will
