@@ -219,6 +219,10 @@ public class SceneController : MonoBehaviour
         unitInfoDisplay.text += "\n";
        
     }
+    void ClearTextFromDisplay()
+    {
+        unitInfoDisplay.text = "";
+    }
     void UpdateScrollBarToBottom()
     {
         Canvas.ForceUpdateCanvases();
@@ -227,9 +231,11 @@ public class SceneController : MonoBehaviour
 
     void RecalculateUnitPath() 
     {
+        ClearTextFromDisplay();
         for (int i = 0; i < unitData.Count; i++)
         {
             unitData[i].UnitFindPath(goalNode.transform, algorithmIndex, heuristicIndex);
+            
             AddMessageToTextBox(unitData[i].ReturnUnitMessage(), i);
             if (PathfindingVisualisationAid)
             {
@@ -246,14 +252,15 @@ public class SceneController : MonoBehaviour
 
     void SearchUnitPathRecalculate(NodeVisualisation node)
     {
+        ClearTextFromDisplay();
         for (int i = 0; i < unitData.Count; i++)
         {
             if (unitData[i].SearchPathChangedNode(node.gridNode))
             {
                 unitData[i].UnitFindPath(goalNode.transform, algorithmIndex, heuristicIndex);
-                AddMessageToTextBox(unitData[i].ReturnUnitMessage(), i);
             }
-            if(PathfindingVisualisationAid)
+            AddMessageToTextBox(unitData[i].ReturnUnitMessage(), i);
+            if (PathfindingVisualisationAid)
             {
                 if (!(unitData.Count > 1))
                 {
