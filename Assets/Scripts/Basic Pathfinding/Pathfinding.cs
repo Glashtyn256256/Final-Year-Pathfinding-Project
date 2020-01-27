@@ -164,15 +164,19 @@ public class Pathfinding : MonoBehaviour
                     break;
                 case 1:
                     ExpandDepthFirstSearchOpenList(currentNode);
+                    pathfindingUsed = "Depth First Search with ";
                     break;
                 case 2:
                     ExpandDijkstraOpenList(currentNode, heuristicindex);
+                    pathfindingUsed = "Dijkstra with ";
                     break;
                 case 3:
                     ExpandBestFirstSearchOpenList(currentNode, goalNode, heuristicindex);
+                    pathfindingUsed = "Best First Search with ";
                     break;
                 case 4:
                     ExpandAStarOpenList(currentNode, goalNode, heuristicindex);
+                    pathfindingUsed = "A* Pathfinding with ";
                     break;
                 default:
                     break;

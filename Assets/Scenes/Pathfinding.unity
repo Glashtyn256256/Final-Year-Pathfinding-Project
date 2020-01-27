@@ -3578,7 +3578,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Unit Positiion
+  m_Text: Unit Position
 --- !u!222 &852298119
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4182,7 +4182,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Goal Positiion
+  m_Text: Goal Position
 --- !u!222 &1076423907
 CanvasRenderer:
   m_ObjectHideFlags: 0
