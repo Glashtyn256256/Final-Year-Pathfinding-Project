@@ -221,7 +221,10 @@ public class SceneController : MonoBehaviour
     }
     void ClearTextFromDisplay()
     {
-        unitInfoDisplay.text = "";
+        if (unitData.Count > 1)
+        {
+            unitInfoDisplay.text = "";
+        }
     }
     void UpdateScrollBarToBottom()
     {
