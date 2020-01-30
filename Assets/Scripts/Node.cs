@@ -56,5 +56,6 @@ public class Node
         nodeParent = null;
         gCost = Mathf.Infinity;
         hCost = Mathf.Infinity;
+        UnitAbove = false;
     }
 }

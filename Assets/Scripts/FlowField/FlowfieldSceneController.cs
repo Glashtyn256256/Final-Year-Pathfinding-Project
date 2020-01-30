@@ -312,11 +312,11 @@ public class FlowfieldSceneController : MonoBehaviour
                 
                 if (currentNode.nodeParent.nodeType != NodeType.Blocked ||
                     currentNode.nodeType != NodeType.GoalNode
-                    || currentNode.nodeParent.UnitAbove != true)
+                    )
 
                 {
                     unit.UnitMovementStart(currentNode);
-                    unit.SetReachedTarget(false);
+                    
                 }
 
             }
