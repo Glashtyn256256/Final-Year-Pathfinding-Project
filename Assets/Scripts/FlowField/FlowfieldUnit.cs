@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlowfieldUnit : MonoBehaviour
 {
     float unitSpeed = 0.1f;
-
+    float unitWeight = 50.0f;
     int xSpawnPosition;
     int ySpawnPosition;
 
@@ -13,22 +13,26 @@ public class FlowfieldUnit : MonoBehaviour
     GridManager gridFlowfield;
    
 
-   public void InstaniateUnit(int xspawnposition, int yspawnposition, GridManager grid)
+   public void InstaniateUnit(int xspawnposition, int yspawnposition, GridManager grid, int indexposition)
     {
         reachedTarget = true;
         //Where the unit was sppawned on the grid. Will be used so when we reset the map we can move the unit back to original position.
         xSpawnPosition = xspawnposition;
         ySpawnPosition = yspawnposition;
         gridFlowfield = grid;
+        this.name = "Unit " + indexposition; 
     }
 
     IEnumerator MoveUnitToNode(Node currentnode)
     {
-        Vector3 tempNodePos = new Vector3(currentnode.nodeParent.nodeWorldPosition.x,
-            transform.position.y, currentnode.nodeParent.nodeWorldPosition.z);
         bool UnitPastCurrentNode = false;
         currentnode.UnitAbove = true;
 
+        Vector3 tempNodePos = new Vector3(currentnode.nodeParent.nodeWorldPosition.x,
+            transform.position.y, currentnode.nodeParent.nodeWorldPosition.z);
+        
+
+        //gridFlowfield.RecalculateNeighbours(currentnode);
         //issue it goes down in y :/
         //Stop it sinking into the ground, need a better way of fixing this.
         while (true)
@@ -44,10 +48,10 @@ public class FlowfieldUnit : MonoBehaviour
 
             if (transform.position == tempNodePos)
             {
-
                 SetReachedTarget(true);
                 yield break;
-            }
+            } 
+
             yield return null;
         }
     }

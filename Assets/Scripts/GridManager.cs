@@ -114,6 +114,7 @@ public class GridManager : MonoBehaviour
 
         currentnode.UnitAbove = false;
         currentnode.nodeParent.UnitAbove = true;
+       // RecalculateNeighbours(currentnode);
         return true;
     }
 
@@ -130,8 +131,23 @@ public class GridManager : MonoBehaviour
             
             if (neighbour.gCost < currentnode.gCost)
             {
-                currentnode = neighbour;
+                currentnode.nodeParent = neighbour;
             }
+
+            //foreach (Node nodeinneighbour in neighbour.neighbours)
+            //{
+            //    if (neighbour.nodeType == NodeType.Blocked || nodeinneighbour.UnitAbove == true)
+            //    {
+
+            //        continue;
+            //    }
+
+            //    if (nodeinneighbour.gCost < neighbour.gCost)
+            //    {
+            //        neighbour.nodeParent = nodeinneighbour;
+            //    }
+
+            //}
         }
     }
 
@@ -229,7 +245,7 @@ public class GridManager : MonoBehaviour
 
                 foreach (Node neighbour in gridNodes[x, y].neighbours)
                 {
-                    if (neighbour.nodeType == NodeType.Blocked)
+                    if (neighbour.nodeType == NodeType.Blocked || neighbour.UnitAbove == true)
                     {
                         continue;
                     }
