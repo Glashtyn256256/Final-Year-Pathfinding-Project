@@ -192,7 +192,7 @@ public class FlowfieldSceneController : MonoBehaviour
     void InstantiateUnit(NodeVisualisation node)
     {
         FlowfieldUnit unit = Instantiate(unitPrefab, node.transform.position + unitPrefab.transform.position, Quaternion.identity);
-        unit.InstaniateUnit(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
+        unit.InstaniateUnit(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition, grid);
         unitData.Add(unit);       
     }
 
@@ -309,7 +309,7 @@ public class FlowfieldSceneController : MonoBehaviour
                 Node currentNode = grid.GetNodeFromWorldPoint(unit.transform.position);
                 if (currentNode.nodeParent.nodeType != NodeType.Blocked || currentNode.nodeType != NodeType.GoalNode)
                 {
-                    unit.UnitMovementStart(currentNode.nodeParent);
+                    unit.UnitMovementStart(currentNode);
                     unit.SetReachedTarget(false);
                 }
             }

@@ -95,31 +95,50 @@ public class GridManager : MonoBehaviour
     //Nodes world position matches the nodes grid position in the array so 3,0,3 (x,y,z) in world space is 3,3 in grid.
     //When the playernode is passed through it may be between two nodes so we round it to the closest int meaning
     //the node it is closest to. This might result in it going back to a node if it's closer.
-    public Node GetNodeFromWorldPoint(Vector3 worldPosition)
+    public Node GetNodeFromWorldPoint(Vector3 worldposition)
     {
-        int x = Mathf.RoundToInt(worldPosition.x);
-        int y = Mathf.RoundToInt(worldPosition.z);
+        int x = Mathf.RoundToInt(worldposition.x);
+        int y = Mathf.RoundToInt(worldposition.z);
 
         return gridNodes[x, y];
     }
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawWireCube(nodes[0, 0].position, new Vector3(gridWidth, 1, gridHeight)); //Reason we use Y axis and not z is because the grid
+    public bool CheckIfUnitOnNode(Vector3 worldposition, Node currentnode)
+    {
+        int x = Mathf.RoundToInt(worldposition.x);
+        int y = Mathf.RoundToInt(worldposition.z);
 
-    //    if (nodes != null)
-    //    {
-    //        foreach (Node n in nodes)
-    //        {
+        if (gridNodes[x, y] != currentnode)
+        {
+            return false;
+        }
 
-    //            Gizmos.DrawCube(n.position, Vector3.one * (nodeDiameter));
-    //        }
-    //    }
-    //}
+        currentnode.UnitAbove = false;
+        currentnode.nodeParent.UnitAbove = true;
+        return true;
+    }
 
-     //Talk about this more later, from tutorial. explain in write up what it does.
-     //Issue with previous herustic, noticed it wasnt getting the most optimal path
-     //May be wrong but I feel it finds it faster for a less optimal path
-     //changed it and now getting optimal path. 
+    public void RecalculateNeighbours(Node currentnode)
+    {
+        currentnode.nodeParent = currentnode;
+        foreach (Node neighbour in currentnode.neighbours)
+        {
+            if (neighbour.nodeType == NodeType.Blocked || neighbour.UnitAbove == true)
+            {
+                
+                continue;
+            }
+            
+            if (neighbour.gCost < currentnode.gCost)
+            {
+                currentnode = neighbour;
+            }
+        }
+    }
+
+    //Talk about this more later, from tutorial. explain in write up what it does.
+    //Issue with previous herustic, noticed it wasnt getting the most optimal path
+    //May be wrong but I feel it finds it faster for a less optimal path
+    //changed it and now getting optimal path. 
     public float GetNodeDistance(Node source, Node target, int heuristicindex)
     {
         switch (heuristicindex)
@@ -194,7 +213,6 @@ public class GridManager : MonoBehaviour
         //D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
         return 10 * (xDistance + yDistance) + (14 - 2 * 10) * Mathf.Min(xDistance, yDistance);
     }
-
 
     public void IntegrationField()
     {
