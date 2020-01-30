@@ -28,19 +28,18 @@ public class FlowfieldUnit : MonoBehaviour
         bool UnitPastCurrentNode = false;
         currentnode.UnitAbove = true;
         SetReachedTarget(false);
-
+        currentnode.nodeParent.UnitAbove = true;
         Vector3 tempNodePos = new Vector3(currentnode.nodeParent.nodeWorldPosition.x,
             transform.position.y, currentnode.nodeParent.nodeWorldPosition.z);
         int count = 0;
 
-        //gridFlowfield.RecalculateNeighbours(currentnode);
+        
         //issue it goes down in y :/
         //Stop it sinking into the ground, need a better way of fixing this.
         while (true)
         {
-            if(count > 100)
-            {
-                
+            if(count > 30)
+            {               
                 SetReachedTarget(true);
                 yield break;
             }
@@ -50,12 +49,14 @@ public class FlowfieldUnit : MonoBehaviour
                 
                 if(gridFlowfield.CheckIfUnitOnNode(transform.position, currentnode))
                 {
+                    gridFlowfield.RecalculateNeighbours(currentnode);
                     UnitPastCurrentNode = true;
                 }
             }
 
             if (transform.position == tempNodePos)
             {
+
                 SetReachedTarget(true);
                 yield break;
             }

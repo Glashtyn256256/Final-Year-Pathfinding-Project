@@ -311,23 +311,29 @@ public class FlowfieldSceneController : MonoBehaviour
                 Node currentNode = grid.GetNodeFromWorldPoint(unit.transform.position);
                 
                 if (currentNode.nodeParent.nodeType != NodeType.Blocked ||
-                    currentNode.nodeType != NodeType.GoalNode
-                    )
+                    currentNode.nodeType != NodeType.GoalNode )
+                //|| currentNode.UnitAbove != true || currentNode.nodeParent.UnitAbove != true)
 
                 {
                     unit.UnitMovementStart(currentNode);
-                    
+                    gridVisualisation.nodesVisualisationData[currentNode.xIndexPosition, currentNode.yIndexPosition].ArrowPosition();
+                    gridVisualisation.nodesVisualisationData[currentNode.nodeParent.xIndexPosition, currentNode.nodeParent.yIndexPosition].ArrowPosition();
                 }
 
             }
         }
-        grid.IntegrationField();
+        //gridVisualisation.ChangePositionOfArrow();
     }
 
     void UpdateMap()
     {
         flowfieldPathfinding.FlowfieldPath(goalNode.transform.position, PathfindingVisualisationAid, heuristicIndex);
         ResetUnitHasReachedTarget();
+        foreach(var unit in unitData)
+        {
+            Node currentNode = grid.GetNodeFromWorldPoint(unit.transform.position);
+            currentNode.UnitAbove = true;
+        }
     }
 }
 
