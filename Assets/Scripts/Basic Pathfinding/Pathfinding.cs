@@ -99,7 +99,7 @@ public class Pathfinding : MonoBehaviour
 
             Stopwatch timer = new Stopwatch();
 
-            int nodesExploredCount = 0;
+            //int nodesExploredCount = 0;
             string pathfindingUsed = "";
             startNode.gCost = 0;
 
@@ -108,85 +108,72 @@ public class Pathfinding : MonoBehaviour
 
             while (openList.Count > 0)
             {
-                //Depth takes from the back off the list instead of front.
-                if (algorithmindex == 4)
-                {
-                    currentNode = openList[0];
-                    //Get the lowest fcost in the list.
-                    for (int j = 1; j < openList.Count; j++)
-                    {
-                        if (openList[j].fCost < currentNode.fCost)
-                        {
-                            currentNode = openList[j];
-                        }
-                    }
-                    openList.Remove(currentNode);
-                }
-                else if (algorithmindex == 2)
-                {
-                    currentNode = openList[0];
-                   // Get the lowest gcost in the openlist.
-                    for (int j = 1; j < openList.Count; j++)
-                    {
-                        if (openList[j].gCost < currentNode.gCost)
-                        {
-                            currentNode = openList[j];
-                        }
-                    }
-                    openList.Remove(currentNode);
-                }
-                else if (algorithmindex == 3)
-                {
-                    currentNode = openList[0];
-                    //Get the lowest hcost in the openlist.
-                    for (int j = 1; j < openList.Count; j++)
-                    {
-                        if (openList[j].hCost < currentNode.hCost)
-                        {
-                            currentNode = openList[j];
-                        }
-                    }
-                    openList.Remove(currentNode);
-                }
-                else if (!(algorithmindex == 1))
-                {
-                    currentNode = openList[0];
-                    openList.Remove(currentNode);
-                }
-                else
-                {
-                    currentNode = openList.Last();
-                    openList.Remove(currentNode);
-                }
-
-                if (!closedList.Contains(currentNode))
-                {
-                    closedList.Add(currentNode);
-                    nodesExploredCount++;
-                }
-
                 switch (algorithmindex)
                 {
                     case 0:
+                        currentNode = openList[0];
+                        openList.Remove(currentNode);
+                        AddCurrentNodeToCloseList(currentNode);
                         ExpandBreadthFirstSearchOpenList(currentNode, heuristicindex);
                         pathfindingUsed = "Breadth First Search with ";
                         break;
                     case 1:
-                       // currentNode.neighbours.Reverse();
+                        currentNode = openList.Last();
+                        openList.Remove(currentNode);
+                        AddCurrentNodeToCloseList(currentNode);
+                        // currentNode.neighbours.Reverse();
                         ExpandDepthFirstSearchOpenList(currentNode, heuristicindex);
                        // currentNode.neighbours.Reverse();
                         pathfindingUsed = "Depth First Search with ";
                         break;
                     case 2:
+                        currentNode = openList[0];
+                        // Get the lowest gcost in the openlist.
+                        for (int j = 1; j < openList.Count; j++)
+                        {
+                            if (openList[j].gCost < currentNode.gCost)
+                            {
+                                currentNode = openList[j];
+                            }
+                        }
+
+                        openList.Remove(currentNode);
+                        AddCurrentNodeToCloseList(currentNode);
                         ExpandDijkstraOpenList(currentNode, heuristicindex);
                         pathfindingUsed = "Dijkstra with ";
                         break;
                     case 3:
+                        currentNode = openList[0];
+                        //Get the lowest hcost in the openlist.
+                        for (int j = 1; j < openList.Count; j++)
+                        {
+                            if (openList[j].hCost < currentNode.hCost)
+                            {
+                                currentNode = openList[j];
+                            }
+                        }
+                        openList.Remove(currentNode);
+
+                        AddCurrentNodeToCloseList(currentNode);
                         ExpandBestFirstSearchOpenList(currentNode, goalNode, heuristicindex);
                         pathfindingUsed = "Best First Search with ";
                         break;
                     case 4:
+                        currentNode = openList[0];
+                        //Get the lowest fcost in the list.
+                        for (int j = 1; j < openList.Count; j++)
+                        {
+                            if (openList[j].fCost < currentNode.fCost)
+                            {
+                                currentNode = openList[j];
+                            }
+                        }
+                        openList.Remove(currentNode);
+
+                        AddCurrentNodeToCloseList(currentNode);
+
                         ExpandAStarOpenList(currentNode, goalNode, heuristicindex);
+
                         pathfindingUsed = "A* Pathfinding with ";
                         break;
                     default:
@@ -201,8 +188,8 @@ public class Pathfinding : MonoBehaviour
                     //{
                         pathList = GetPathNodes(goalNode, out nodeTotalGCost);
                         totalTime = totalTime + timer.Elapsed.TotalMilliseconds;
-                        totalGoalNode = totalGoalNode + pathList.Count(); ;
-                        totalNodesExplored = totalNodesExplored + nodesExploredCount;
+                        totalGoalNode = totalGoalNode + pathList.Count();
+                        totalNodesExplored = totalNodesExplored + closedList.Count();
                    // }
                     break;
                     
@@ -310,7 +297,7 @@ public class Pathfinding : MonoBehaviour
                 {
                     float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour, heuristicindex) + (int)neighbour.nodeType;
                     neighbour.gCost = distanceToNeighbor;
-                    neighbour.hCost = grid.GetNodeDistance(node, goalnode, heuristicindex)+(int)neighbour.nodeType;
+                    neighbour.hCost = grid.GetNodeDistance(neighbour, goalnode, heuristicindex)+(int)neighbour.nodeType;
                     neighbour.nodeParent = node;
                     openList.Add(neighbour);
                 }
@@ -334,7 +321,7 @@ public class Pathfinding : MonoBehaviour
                 if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
                 {
                     neighbour.gCost = distanceToNeighbor;
-                    neighbour.hCost = grid.GetNodeDistance(node, goalnode, heuristicindex) + (int)neighbour.nodeType;
+                    neighbour.hCost = grid.GetNodeDistance(neighbour, goalnode, heuristicindex) + (int)neighbour.nodeType;
                     neighbour.nodeParent = node;
 
                     if (!openList.Contains(neighbour))
@@ -397,6 +384,14 @@ public class Pathfinding : MonoBehaviour
             {
                 grid.gridNodes[x, y].Reset();
             }
+        }
+    }
+
+    void AddCurrentNodeToCloseList(Node currentNode)
+    {
+        if (!closedList.Contains(currentNode))
+        {
+            closedList.Add(currentNode);
         }
     }
 }
