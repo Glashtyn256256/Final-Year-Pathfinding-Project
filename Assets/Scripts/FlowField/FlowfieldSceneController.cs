@@ -192,7 +192,7 @@ public class FlowfieldSceneController : MonoBehaviour
     void InstantiateUnit(NodeVisualisation node)
     {
         FlowfieldUnit unit = Instantiate(unitPrefab, node.transform.position + unitPrefab.transform.position, Quaternion.identity);
-        unit.InstaniateUnit(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
+        unit.InstaniateUnit(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition, grid, unitData.Count);
         unitData.Add(unit);       
     }
 
@@ -302,25 +302,38 @@ public class FlowfieldSceneController : MonoBehaviour
 
     void UnitMovement()
     {
-        foreach(var unit in unitData) 
+        grid.IntegrationField();
+        foreach (var unit in unitData) 
         {
+          
             if (unit.HasReachedTarget())
             {
                 Node currentNode = grid.GetNodeFromWorldPoint(unit.transform.position);
-                if (currentNode.nodeParent.nodeType != NodeType.Blocked || currentNode.nodeType != NodeType.GoalNode)
+                
+                if (currentNode.nodeParent.nodeType != NodeType.Blocked ||
+                    currentNode.nodeType != NodeType.GoalNode )
+                //|| currentNode.UnitAbove != true || currentNode.nodeParent.UnitAbove != true)
+
                 {
-                    unit.UnitMovementStart(currentNode.nodeParent);
-                    unit.SetReachedTarget(false);
+                    unit.UnitMovementStart(currentNode);
+                    gridVisualisation.nodesVisualisationData[currentNode.xIndexPosition, currentNode.yIndexPosition].ArrowPosition();
+                    gridVisualisation.nodesVisualisationData[currentNode.nodeParent.xIndexPosition, currentNode.nodeParent.yIndexPosition].ArrowPosition();
                 }
+
             }
-        
         }
+        //gridVisualisation.ChangePositionOfArrow();
     }
 
     void UpdateMap()
     {
         flowfieldPathfinding.FlowfieldPath(goalNode.transform.position, PathfindingVisualisationAid, heuristicIndex);
         ResetUnitHasReachedTarget();
+        foreach(var unit in unitData)
+        {
+            Node currentNode = grid.GetNodeFromWorldPoint(unit.transform.position);
+            currentNode.UnitAbove = true;
+        }
     }
 }
 

@@ -38,7 +38,9 @@ public class Node
     public float gCost;
     public float hCost;
     public float fCost { get { return gCost + hCost; } }
-    
+
+    public bool UnitAbove;
+
     //Constructor
     public Node(int xindexposition, int yindexposition, NodeType nodetype, Vector3 worldposition)
     {
@@ -54,5 +56,6 @@ public class Node
         nodeParent = null;
         gCost = Mathf.Infinity;
         hCost = Mathf.Infinity;
+        UnitAbove = false;
     }
 }
