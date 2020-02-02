@@ -309,7 +309,7 @@ public class Pathfinding : MonoBehaviour
                          && !openList.Contains(neighbour))
                 {
                     float distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour, heuristicindex) + (int)neighbour.nodeType;
-                    neighbour.gCost = distanceToNeighbor = node.gCost + grid.GetNodeDistance(node, neighbour, heuristicindex) + (int)neighbour.nodeType;
+                    neighbour.gCost = distanceToNeighbor;
                     neighbour.hCost = grid.GetNodeDistance(node, goalnode, heuristicindex)+(int)neighbour.nodeType;
                     neighbour.nodeParent = node;
                     openList.Add(neighbour);
