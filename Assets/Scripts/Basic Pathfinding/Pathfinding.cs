@@ -85,8 +85,9 @@ public class Pathfinding : MonoBehaviour
         int totalGoalNode = 0;
         int totalNodesExplored = 0;
         float nodeTotalGCost = 0;
-      //  algorithmindex = 4;
-        for (int i = 0; i < 1; i++)
+        algorithmindex = 4;
+        heuristicindex = 4;
+        for (int i = 0; i < 10100; i++)
         {
 
 
@@ -121,9 +122,9 @@ public class Pathfinding : MonoBehaviour
                         currentNode = openList.Last();
                         openList.Remove(currentNode);
                         AddCurrentNodeToCloseList(currentNode);
-                        // currentNode.neighbours.Reverse();
+                         currentNode.neighbours.Reverse();
                         ExpandDepthFirstSearchOpenList(currentNode, heuristicindex);
-                       // currentNode.neighbours.Reverse();
+                        currentNode.neighbours.Reverse();
                         pathfindingUsed = "Depth First Search with ";
                         break;
                     case 2:
@@ -184,13 +185,14 @@ public class Pathfinding : MonoBehaviour
                 {
                     timer.Stop();
 
-                    //if (i >= 100)
-                    //{
+                    if (i >= 100)
+                    {
                         pathList = GetPathNodes(goalNode, out nodeTotalGCost);
                         totalTime = totalTime + timer.Elapsed.TotalMilliseconds;
                         totalGoalNode = totalGoalNode + pathList.Count();
                         totalNodesExplored = totalNodesExplored + closedList.Count();
-                   // }
+                    
+                    }
                     break;
                     
 
@@ -199,10 +201,10 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
-        totalTime /= 1;
-        totalGoalNode /= 1;
-        totalNodesExplored /= 1;
-        nodeTotalGCost /= 1;
+        totalTime /= 10000;
+        totalGoalNode /= 10000;
+        totalNodesExplored /= 10000;
+        nodeTotalGCost /= 10000;
         unitmessage = ((algorithmindex)
                         + (HeuristicUsed(heuristicindex))
                         + ("Elapsed time = ")
