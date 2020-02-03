@@ -182,9 +182,9 @@ public class GridManager : MonoBehaviour
 
         if (xDistance > yDistance)
         {
-            return 14 * yDistance + 10 * (xDistance - yDistance);
+            return 1.5f * yDistance + 1.0f * (xDistance - yDistance);
         }
-        return 14 * xDistance + 10 * (yDistance - xDistance);
+        return 1.5f * xDistance + 1.0f * (yDistance - xDistance);
     }
 
     //Only use this if you are using for four directions #up,down,left,right
@@ -193,7 +193,7 @@ public class GridManager : MonoBehaviour
         int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
         int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
 
-        return 10 * (xDistance + yDistance);
+        return 1.0f * (xDistance + yDistance);
     }
 
     //This is a straight line distance, if your unit can move any direction then you would 
@@ -203,7 +203,7 @@ public class GridManager : MonoBehaviour
         int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
         int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
 
-        return 10 * Mathf.Sqrt((xDistance * xDistance) + (yDistance * yDistance));
+        return 1.0f * Mathf.Sqrt((xDistance * xDistance) + (yDistance * yDistance));
     }
 
     //All distances cost the same, diagnol and cardinal movements cost 10
@@ -213,7 +213,7 @@ public class GridManager : MonoBehaviour
         int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
         //D = 10 and D2 = 10
         ////D * max(dx, dy) + (D2-D) * min(dx, dy)
-        return 10 * Mathf.Max(xDistance, yDistance) + Mathf.Min(xDistance, yDistance);
+        return 1.0f * Mathf.Max(xDistance, yDistance) + (1.0f - 1.0f) * Mathf.Min(xDistance, yDistance);
     }
 
     //we use 10 and 14 in our distances instead of using 1 or 1.4 using whole numbers works.
@@ -227,7 +227,7 @@ public class GridManager : MonoBehaviour
         //D = 10 AND D2 = 14
         //1.41421356237 square route of 2 
         //D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
-        return 10 * (xDistance + yDistance) + (14 - 2 * 10) * Mathf.Min(xDistance, yDistance);
+        return 1.0f * (xDistance + yDistance) + (1.5f - 2 * 1.0f) * Mathf.Min(xDistance, yDistance);
     }
 
     public void IntegrationField()
