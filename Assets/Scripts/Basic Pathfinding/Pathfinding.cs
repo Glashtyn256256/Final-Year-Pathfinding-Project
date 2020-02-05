@@ -348,6 +348,8 @@ public class Pathfinding : MonoBehaviour
                 return "Chebyshev Heuristic: ";
             case 4:
                 return "Octile Heuristic: ";
+            case 5:
+                return "Custom Distance";
 
 
         }

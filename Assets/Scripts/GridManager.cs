@@ -14,8 +14,9 @@ public class GridManager : MonoBehaviour
     public int GetGridHeight { get { return gridHeight; } }
     //Saves us time having to use SQRT which is expensive to use.
     const float squareRouteOf2 = 1.41421356237f;
-    //public int scaleDistanceOne = 10;
-    //public int scaleDistanceTwo = 14;
+
+    float customDistanceStraight = 1;
+    float customDistanceDiagnol  = 1;
 
     //Create two one for all directions and one for four directions, then have a option to toggle it on or off.
     public static readonly Vector2[] nodeNeighbourDirections =
@@ -169,7 +170,10 @@ public class GridManager : MonoBehaviour
                 return ChebyshevDistance(source, target);
             case 4:
                 return OctileDistance(source, target);
-                
+            case 5:
+                return CustomDiagnolDistance(source, target);
+
+
         }
         //This will never be hit but we have to return a value since it will complain
         return Mathf.Infinity;
@@ -182,9 +186,9 @@ public class GridManager : MonoBehaviour
 
         if (xDistance > yDistance)
         {
-            return 1.5f * yDistance + 1.0f * (xDistance - yDistance);
+            return 1.4f * yDistance + 1.0f * (xDistance - yDistance);
         }
-        return 1.5f * xDistance + 1.0f * (yDistance - xDistance);
+        return 1.4f * xDistance + 1.0f * (yDistance - xDistance);
     }
 
     //Only use this if you are using for four directions #up,down,left,right
@@ -227,7 +231,25 @@ public class GridManager : MonoBehaviour
         //D = 10 AND D2 = 14
         //1.41421356237 square route of 2 
         //D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
-        return 1.0f * (xDistance + yDistance) + (1.5f - 2 * 1.0f) * Mathf.Min(xDistance, yDistance);
+        return 1.0f * (xDistance + yDistance) + (1.4f - 2 * 1.0f) * Mathf.Min(xDistance, yDistance);
+    }
+
+    float CustomDiagnolDistance(Node source, Node target)
+    {
+        int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
+        int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
+
+        if (xDistance > yDistance)
+        {
+            return customDistanceDiagnol * yDistance + customDistanceStraight * (xDistance - yDistance);
+        }
+        return customDistanceDiagnol * xDistance + customDistanceStraight * (yDistance - xDistance);
+    }
+
+    public void SetCustomDistanceValues(float diagnol, float straight)
+    {
+        customDistanceDiagnol = diagnol;
+        customDistanceStraight = straight;
     }
 
     public void IntegrationField()

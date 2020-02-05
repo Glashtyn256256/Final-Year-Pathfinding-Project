@@ -20,6 +20,9 @@ public class SceneController : MonoBehaviour
     public InputField xUnitInput;
     public InputField yUnitInput;
 
+    public InputField distanceDiagnol;
+    public InputField distanceStraight;
+
     public Text unitInfoDisplay;
     public ScrollRect scrollObject;
 
@@ -87,7 +90,15 @@ public class SceneController : MonoBehaviour
     {
         heuristicIndex = heuristicindex;
     }
-    
+
+    public void ChangeCustomDistanceOnClick()
+    {
+        if (distanceStraight.text != "" && distanceDiagnol.text != "")
+        {
+            grid.SetCustomDistanceValues(float.Parse(distanceDiagnol.text), float.Parse(distanceStraight.text));
+        }
+    }
+
     public void ToggleVisualisationAid(bool toggle)
     {
         PathfindingVisualisationAid = toggle;
