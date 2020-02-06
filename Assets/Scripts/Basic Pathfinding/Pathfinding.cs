@@ -93,7 +93,7 @@ public class Pathfinding : MonoBehaviour
         int nodesExploredCount = 0;
         string pathfindingUsed = "";
         startNode.gCost = 0;
-
+        startNode.hCost = grid.GetNodeDistance(startNode, goalNode, heuristicindex) + (int)startNode.nodeType;
         openList.Add(startNode);          
         timer.Start();
 
