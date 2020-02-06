@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlowfieldUnit : MonoBehaviour
 {
     float unitSpeed = 0.1f;
-    float unitWeight = 50.0f;
+    //float unitWeight = 50.0f;
     int xSpawnPosition;
     int ySpawnPosition;
 

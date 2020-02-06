@@ -349,7 +349,7 @@ public class Pathfinding : MonoBehaviour
             case 4:
                 return "Octile Heuristic: ";
             case 5:
-                return "Custom Distance";
+                return "Custom Distance: ";
 
 
         }
