@@ -8,7 +8,7 @@ public class Pathfinding : MonoBehaviour
     GridManager grid;
     GridVisualisation gridVisualisation;
 
-    List<Node> openList;
+    MinHeap<Node> openList;
     List<Node> closedList;
     List<Node> pathList;
 
@@ -37,7 +37,7 @@ public class Pathfinding : MonoBehaviour
     }
     public void ClearLists() 
     {
-        openList = new List<Node>();
+        openList = new MinHeap<Node>(grid.MaxGridSize);
         closedList = new List<Node>();
         pathList = new List<Node>();
     }
@@ -97,57 +97,50 @@ public class Pathfinding : MonoBehaviour
         openList.Add(startNode);          
         timer.Start();
 
-        while (openList.Count > 0)
+        while (openList.Count() > 0)
         {
             //Depth takes from the back off the list instead of front.
             if (algorithmindex == 4)
             {
-                currentNode = openList[0];
+                currentNode = openList.RemoveFrontItem();
                 //Get the lowest fcost in the list.
-                for (int i = 1; i < openList.Count; i++)
-                {
-                    if (openList[i].fCost < currentNode.fCost)
-                    {
-                            currentNode = openList[i];
-                    }
-                }
-                openList.Remove(currentNode);
+                //for (int i = 1; i < openList.Count; i++)
+                //{
+                //    if (openList[i].fCost < currentNode.fCost)
+                //    {
+                //            currentNode = openList[i];
+                //    }
+                //}
+                //openList.Remove(currentNode);
             }
             else if (algorithmindex == 2)
             {
-                currentNode = openList[0];
+                currentNode = openList.RemoveFrontItem();
                 //Get the lowest gcost in the openlist.
-                for (int i = 1; i < openList.Count; i++)
-                {
-                    if (openList[i].gCost < currentNode.gCost)
-                    {
-                        currentNode = openList[i];
-                    }
-                }
-                openList.Remove(currentNode);
+                //for (int i = 1; i < openList.Count; i++)
+                //{
+                //    if (openList[i].gCost < currentNode.gCost)
+                //    {
+                //        currentNode = openList[i];
+                //    }
+                //}
+                //openList.Remove(currentNode);
             }
             else if(algorithmindex == 3)
             {
-                currentNode = openList[0];
+                currentNode = openList.RemoveFrontItem();
                 //Get the lowest hcost in the openlist.
-                for (int i = 1; i < openList.Count; i++)
-                {
-                    if (openList[i].hCost < currentNode.hCost)
-                    {
-                        currentNode = openList[i];
-                    }
-                }
-                openList.Remove(currentNode);
+               // openList.Remove(currentNode);
             }
             else if (!(algorithmindex == 1))
             {
-                currentNode = openList[0];
-                openList.Remove(currentNode);
+                currentNode = openList.RemoveFrontItem();
+                //openList.Remove(currentNode);
             }      
             else
             {
-                currentNode = openList.Last();
-                openList.Remove(currentNode);
+                currentNode = openList.RemoveFrontItem();
+               // openList.Remove(currentNode);
             }
            
             if (!closedList.Contains(currentNode))
@@ -257,7 +250,7 @@ public class Pathfinding : MonoBehaviour
                 {
                     neighbour.gCost = distanceToNeighbor;
                     neighbour.nodeParent = node;
-
+                    neighbour.compareValue = neighbour.gCost;
                     if (!openList.Contains(neighbour))
                     {
                         openList.Add(neighbour);
@@ -279,6 +272,7 @@ public class Pathfinding : MonoBehaviour
                          && !openList.Contains(neighbour))
                 {
                     neighbour.hCost = grid.GetNodeDistance(neighbour, goalnode, heuristicindex)+(int)neighbour.nodeType;
+                    neighbour.compareValue = neighbour.hCost;
                     neighbour.nodeParent = node;
                     openList.Add(neighbour);
                 }
@@ -303,6 +297,7 @@ public class Pathfinding : MonoBehaviour
                 {
                     neighbour.gCost = distanceToNeighbor;
                     neighbour.hCost = grid.GetNodeDistance(neighbour, goalnode, heuristicindex) + (int)neighbour.nodeType;
+                    neighbour.compareValue = neighbour.fCost;
                     neighbour.nodeParent = node;
 
                     if (!openList.Contains(neighbour))
@@ -310,7 +305,6 @@ public class Pathfinding : MonoBehaviour
                         openList.Add(neighbour);
                     }
                 }
-
             }
         }
     }

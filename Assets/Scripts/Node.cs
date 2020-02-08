@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 //Container of data with some limited functionality, not in heriting from monobehaviour could make pathfinding more fficient
 
@@ -15,7 +15,7 @@ public enum NodeType
     GoalNode = 10
 }
 
-public class Node
+public class Node : IHeapItem<Node>
 {
     public NodeType nodeType = NodeType.Open;
 
@@ -41,6 +41,9 @@ public class Node
 
     public bool UnitAbove;
 
+    public int heapIndex;
+    public float compareValue;
+
     //Constructor
     public Node(int xindexposition, int yindexposition, NodeType nodetype, Vector3 worldposition)
     {
@@ -49,11 +52,39 @@ public class Node
         nodeType = nodetype;
         nodeWorldPosition = worldposition;
     }
+    public int HeapIndex
+    {
+        get { return heapIndex;  }
+        set { heapIndex = value; }
+    }
+
+    public int CompareTo(Node nodeToCompare)
+    {
+        int compare = 0;
+        if (!float.IsInfinity(fCost))
+        {
+            compare = fCost.CompareTo(nodeToCompare.fCost);
+            if (compare == 0)
+            {
+                compare = hCost.CompareTo(nodeToCompare.hCost);
+            }
+        }
+        else if (!float.IsInfinity(hCost))
+        {
+            compare = hCost.CompareTo(nodeToCompare.hCost);
+        }
+        else if (!float.IsInfinity(gCost))
+        {
+            compare = gCost.CompareTo(nodeToCompare.gCost);
+        }
+        return -compare;
+    }
 
     //Reset our node parent to null.
     public void Reset()
     {
         nodeParent = null;
+        compareValue = Mathf.Infinity;
         gCost = Mathf.Infinity;
         hCost = Mathf.Infinity;
         UnitAbove = false;
