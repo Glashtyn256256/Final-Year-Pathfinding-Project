@@ -42,7 +42,6 @@ public class Node : IHeapItem<Node>
     public bool UnitAbove;
 
     public int heapIndex;
-    public float compareValue;
 
     //Constructor
     public Node(int xindexposition, int yindexposition, NodeType nodetype, Vector3 worldposition)
@@ -84,7 +83,7 @@ public class Node : IHeapItem<Node>
     public void Reset()
     {
         nodeParent = null;
-        compareValue = Mathf.Infinity;
+        //compareValue = Mathf.Infinity;
         gCost = Mathf.Infinity;
         hCost = Mathf.Infinity;
         UnitAbove = false;

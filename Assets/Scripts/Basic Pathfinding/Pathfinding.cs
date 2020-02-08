@@ -250,7 +250,7 @@ public class Pathfinding : MonoBehaviour
                 {
                     neighbour.gCost = distanceToNeighbor;
                     neighbour.nodeParent = node;
-                    neighbour.compareValue = neighbour.gCost;
+
                     if (!openList.Contains(neighbour))
                     {
                         openList.Add(neighbour);
@@ -272,7 +272,6 @@ public class Pathfinding : MonoBehaviour
                          && !openList.Contains(neighbour))
                 {
                     neighbour.hCost = grid.GetNodeDistance(neighbour, goalnode, heuristicindex)+(int)neighbour.nodeType;
-                    neighbour.compareValue = neighbour.hCost;
                     neighbour.nodeParent = node;
                     openList.Add(neighbour);
                 }
@@ -297,7 +296,6 @@ public class Pathfinding : MonoBehaviour
                 {
                     neighbour.gCost = distanceToNeighbor;
                     neighbour.hCost = grid.GetNodeDistance(neighbour, goalnode, heuristicindex) + (int)neighbour.nodeType;
-                    neighbour.compareValue = neighbour.fCost;
                     neighbour.nodeParent = node;
 
                     if (!openList.Contains(neighbour))
