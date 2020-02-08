@@ -12,6 +12,7 @@ public class GridManager : MonoBehaviour
     private int gridHeight;
     public int GetGridWidth { get { return gridWidth; } }
     public int GetGridHeight { get { return gridHeight; } }
+    public int MaxGridSize { get { return gridWidth * gridHeight; } }
     //Saves us time having to use SQRT which is expensive to use.
     const float squareRouteOf2 = 1.41421356237f;
 
