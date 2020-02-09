@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class SceneController : MonoBehaviour
+public class MinHeapSceneController : MonoBehaviour
 {
     public MapData mapData;
     public GridManager grid;
-    public Unit unitPrefab;
-    public List<Unit> unitData;
+    public MinHeapUnit unitPrefab;
+    public List<MinHeapUnit> unitData;
 
     GridVisualisation gridVisualisation;
     NodeVisualisation startNode;
@@ -207,7 +207,7 @@ public class SceneController : MonoBehaviour
     
     void InstantiateUnit(NodeVisualisation node)
     {
-        Unit unit = Instantiate(unitPrefab, node.transform.position + unitPrefab.transform.position, Quaternion.identity);
+        MinHeapUnit unit = Instantiate(unitPrefab, node.transform.position + unitPrefab.transform.position, Quaternion.identity);
         unit.SetUnitPositionInGrid(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
         unit.InitiatePathfinding(grid, gridVisualisation);
         unitData.Add(unit);

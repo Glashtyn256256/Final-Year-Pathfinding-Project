@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
-public class Pathfinding : MonoBehaviour
+public class MinHeapPathfinding : MonoBehaviour
 {
     GridManager grid;
     GridVisualisation gridVisualisation;

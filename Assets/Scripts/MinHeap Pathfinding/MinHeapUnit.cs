@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit : MonoBehaviour
+public class MinHeapUnit : MonoBehaviour
 {
-    public Pathfinding pathFinding;
+    public MinHeapPathfinding pathFinding;
     Transform goalWorldPosition;
     List<Node> path;
 
