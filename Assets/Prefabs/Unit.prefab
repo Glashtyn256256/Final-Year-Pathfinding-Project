@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 309557581046816790}
-  - component: {fileID: 1235119935113994836}
+  - component: {fileID: 8260497219730979633}
   m_Layer: 0
   m_Name: Pathfinding
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 5058686062963192423}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1235119935113994836
+--- !u!114 &8260497219730979633
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,7 +40,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 777923026687957541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ec144e8a3e63cc44b54bb24c7d20104, type: 3}
+  m_Script: {fileID: 11500000, guid: 83f2439936563f84abf2badda8882fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   startNodeColor: {r: 0, g: 1, b: 0, a: 1}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 9209963141694889674}
   - component: {fileID: 3024680016710708705}
   - component: {fileID: 6812732425861871966}
-  - component: {fileID: 2793640578789117138}
+  - component: {fileID: 7768982143432262833}
   - component: {fileID: 7061966724812052238}
   m_Layer: 0
   m_Name: Unit
@@ -146,7 +146,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &2793640578789117138
+--- !u!114 &7768982143432262833
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,10 +155,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8445363487285333785}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5727ba46a0a842f4b90ceb5965b79699, type: 3}
+  m_Script: {fileID: 11500000, guid: 45d55e44980b0754e968abcb3f6a3b03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathFinding: {fileID: 1235119935113994836}
+  pathFinding: {fileID: 8260497219730979633}
 --- !u!54 &7061966724812052238
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -173,5 +173,5 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 92
+  m_Constraints: 116
   m_CollisionDetection: 2
