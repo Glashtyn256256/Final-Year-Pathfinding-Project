@@ -33,7 +33,7 @@ public class MinHeapSceneController : MonoBehaviour
     int xStart = 1;
     int yStart = 4;
     int xGoal = 20;
-    int yGoal = 20;
+    int yGoal = 19;
     int xGoalInputValue;
     int yGoalInputValue;
     int xUnitInputValue;
