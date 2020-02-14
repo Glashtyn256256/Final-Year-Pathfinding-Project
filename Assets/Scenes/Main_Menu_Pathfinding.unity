@@ -201,7 +201,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 141372065}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: MinHeapMapThreeOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &141372065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,7 +330,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 142736622}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: FlowfieldMapTwoOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &142736622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,6 +698,7 @@ GameObject:
   - component: {fileID: 403424282}
   - component: {fileID: 403424281}
   - component: {fileID: 403424280}
+  - component: {fileID: 403424284}
   m_Layer: 5
   m_Name: Menu_Canvas
   m_TagString: Untagged
@@ -765,6 +788,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &403424284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403424279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485ca047899b217499a7742b8088983d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &423727429
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,7 +881,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 423727432}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: PathfindingMapCustomOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &423727432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -964,7 +1010,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 797877177}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: PathfindingMapThreeOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &797877177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1082,7 +1139,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 804280263}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: MinHeapMapOneOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &804280263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1171,7 +1239,7 @@ GameObject:
   - component: {fileID: 931577134}
   - component: {fileID: 931577133}
   m_Layer: 5
-  m_Name: FlowfieldMapFour
+  m_Name: FlowfieldMapCustom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1239,7 +1307,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 931577134}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: FlowfieldMapCustomOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &931577134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1289,7 +1368,7 @@ GameObject:
   - component: {fileID: 1035725200}
   - component: {fileID: 1035725199}
   m_Layer: 5
-  m_Name: MinHeapMapFour
+  m_Name: MinHeapMapCustom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1357,7 +1436,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1035725200}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: MinHeapMapCustomOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1035725200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1539,7 +1629,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Flowfield Map  Custom
+  m_Text: Flowfield Map Custom
 --- !u!222 &1346159055
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1629,7 +1719,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1493746135}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: FlowfieldMapOneOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1493746135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1747,7 +1848,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1520614399}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: MinHeapMapTwoOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1520614399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2529,7 +2641,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1815936384}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: PathfindingMapTwoOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1815936384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2686,7 +2809,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1960145967}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: FlowfieldMapThreeOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1960145967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2804,7 +2938,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2012856603}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403424284}
+        m_MethodName: PathfindingMapOneOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2012856603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2909,7 +3054,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: MinHeap Map  Custom
+  m_Text: MinHeap Map Custom
 --- !u!222 &2053978112
 CanvasRenderer:
   m_ObjectHideFlags: 0
