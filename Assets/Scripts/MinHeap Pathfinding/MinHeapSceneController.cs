@@ -62,6 +62,10 @@ public class MinHeapSceneController : MonoBehaviour
             //if our goal is not in the map range it will throw.
             if(grid.IsWithinBounds(xGoal,yGoal) && grid.IsWithinBounds(xStart, yStart))
             {
+                xGoalInput.text = xGoal.ToString();
+                yGoalInput.text = yGoal.ToString();
+                xUnitInput.text = xStart.ToString();
+                yUnitInput.text = yStart.ToString();
                 startNode = gridVisualisation.nodesVisualisationData[xStart, yStart];
                 goalNode = gridVisualisation.nodesVisualisationData[xGoal, yGoal];
                 InstantiateUnit(startNode);

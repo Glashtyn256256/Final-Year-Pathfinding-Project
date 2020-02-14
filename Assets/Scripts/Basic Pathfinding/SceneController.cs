@@ -64,6 +64,10 @@ public class SceneController : MonoBehaviour
             {
                 startNode = gridVisualisation.nodesVisualisationData[xStart, yStart];
                 goalNode = gridVisualisation.nodesVisualisationData[xGoal, yGoal];
+                xGoalInput.text = xGoal.ToString();
+                yGoalInput.text = yGoal.ToString();
+                xUnitInput.text = xStart.ToString();
+                yUnitInput.text = yStart.ToString();
                 InstantiateUnit(startNode);
             }
         }
