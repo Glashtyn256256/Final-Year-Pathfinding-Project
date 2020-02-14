@@ -3826,7 +3826,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -400, y: -148}
+  m_AnchoredPosition: {x: -400, y: -190}
   m_SizeDelta: {x: 800, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &848655677
@@ -4039,7 +4039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 30
   mapHeight: 30
-  textureMap: {fileID: 2800000, guid: 32a2f9d4ed7d24141aca7eeb41f9786d, type: 3}
+  textureMap: {fileID: 2800000, guid: 3ab68633324bf6c48a22636c340dc470, type: 3}
   resourcePath: MapData
   levelName: 
 --- !u!4 &934138432
@@ -4225,7 +4225,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 45, y: 60, z: 13}
+  m_LocalPosition: {x: 29, y: 45, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

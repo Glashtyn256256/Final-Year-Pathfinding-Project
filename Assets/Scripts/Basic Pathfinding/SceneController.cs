@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class SceneController : MonoBehaviour
     int xStart = 1;
     int yStart = 4;
     int xGoal = 20;
-    int yGoal = 20;
+    int yGoal = 19;
     int xGoalInputValue;
     int yGoalInputValue;
     int xUnitInputValue;
@@ -97,6 +98,11 @@ public class SceneController : MonoBehaviour
         {
             grid.SetCustomDistanceValues(float.Parse(distanceDiagnol.text), float.Parse(distanceStraight.text));
         }
+    }
+
+    public void BackToMainMenuOnClick()
+    {
+        SceneManager.LoadScene("Main_Menu_Pathfinding");
     }
 
     public void ToggleVisualisationAid(bool toggle)
