@@ -69,6 +69,7 @@ public class FlowfieldSceneController : MonoBehaviour
             }
             flowfieldPathfinding.CreatePathfinding(grid, gridVisualisation);
             flowfieldPathfinding.FlowfieldPath(goalNode.transform.position, PathfindingVisualisationAid, heuristicIndex);
+           
         }
     }
 

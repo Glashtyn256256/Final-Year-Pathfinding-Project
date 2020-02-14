@@ -93,9 +93,17 @@ public class MapData : MonoBehaviour
                     {
                         newLine += '0';
                     }
+                    else if (texture.GetPixel(x, y) == Color.blue)
+                    {
+                        newLine += '9';
+                    }
+                    else if (texture.GetPixel(x, y) == Color.green)
+                    {
+                        newLine += '3';
+                    }
                     else
                     {
-                        newLine += ' ';
+                        newLine += '0';
                     }
                 }
                 lines.Add(newLine);

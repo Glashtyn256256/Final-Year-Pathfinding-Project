@@ -11,7 +11,7 @@ public enum NodeType
     Open = 0,
     Blocked = 1,  
     Grass = 3,
-    Water = 15,
+    Water = 9,
     GoalNode = 10
 }
 

@@ -34,13 +34,25 @@ public class GridVisualisation : MonoBehaviour
             {
                 nodeVisualisation.CreateNodeVisualisation(node);
                 nodesVisualisationData[node.xIndexPosition, node.yIndexPosition] = nodeVisualisation;
-                if (node.nodeType == NodeType.Blocked)
+                if (nodeVisualisation.gridNode.nodeType == NodeType.Blocked)
                 {
                     nodeVisualisation.ColorNode(wallColor);
                 }
-                else
+                else if (nodeVisualisation.gridNode.nodeType == NodeType.Open)
                 {
                     nodeVisualisation.ColorNode(baseColor);
+                }
+                else if (nodeVisualisation.gridNode.nodeType == NodeType.GoalNode)
+                {
+                    nodeVisualisation.ColorNode(goalColor);
+                }
+                else if (nodeVisualisation.gridNode.nodeType == NodeType.Grass)
+                {
+                    nodeVisualisation.ColorNode(grassColor);
+                }
+                else if (nodeVisualisation.gridNode.nodeType == NodeType.Water)
+                {
+                    nodeVisualisation.ColorNode(waterColor);
                 }
             }
         }

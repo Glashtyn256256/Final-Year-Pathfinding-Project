@@ -4039,7 +4039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 30
   mapHeight: 30
-  textureMap: {fileID: 2800000, guid: 32a2f9d4ed7d24141aca7eeb41f9786d, type: 3}
+  textureMap: {fileID: 2800000, guid: 1199f054209551f40ba875cbca984b33, type: 3}
   resourcePath: MapData
   levelName: 
 --- !u!4 &934138432
@@ -4225,7 +4225,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 46, y: 68, z: 13}
+  m_LocalPosition: {x: 40, y: 60, z: 9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
