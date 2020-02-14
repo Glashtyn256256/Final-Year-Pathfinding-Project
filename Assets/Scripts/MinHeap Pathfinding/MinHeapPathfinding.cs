@@ -99,50 +99,9 @@ public class MinHeapPathfinding : MonoBehaviour
 
         while (openList.Count() > 0)
         {
-            //Depth takes from the back off the list instead of front.
-            if (algorithmindex == 4)
-            {
-                currentNode = openList.RemoveFrontItem();
-                //Get the lowest fcost in the list.
-                //for (int i = 1; i < openList.Count; i++)
-                //{
-                //    if (openList[i].fCost < currentNode.fCost)
-                //    {
-                //            currentNode = openList[i];
-                //    }
-                //}
-                //openList.Remove(currentNode);
-            }
-            else if (algorithmindex == 2)
-            {
-                currentNode = openList.RemoveFrontItem();
-                //Get the lowest gcost in the openlist.
-                //for (int i = 1; i < openList.Count; i++)
-                //{
-                //    if (openList[i].gCost < currentNode.gCost)
-                //    {
-                //        currentNode = openList[i];
-                //    }
-                //}
-                //openList.Remove(currentNode);
-            }
-            else if(algorithmindex == 3)
-            {
-                currentNode = openList.RemoveFrontItem();
-                //Get the lowest hcost in the openlist.
-               // openList.Remove(currentNode);
-            }
-            else if (!(algorithmindex == 1))
-            {
-                currentNode = openList.RemoveFrontItem();
-                //openList.Remove(currentNode);
-            }      
-            else
-            {
-                currentNode = openList.RemoveFrontItem();
-               // openList.Remove(currentNode);
-            }
-           
+          
+            currentNode = openList.RemoveFrontItem();
+
             if (!closedList.Contains(currentNode))
             {
                 closedList.Add(currentNode);
@@ -152,22 +111,14 @@ public class MinHeapPathfinding : MonoBehaviour
             switch (algorithmindex)
             {
                 case 0:
-                    ExpandBreadthFirstSearchOpenList(currentNode);
-                    pathfindingUsed = "Breadth First Search with ";
-                    break;
-                case 1:
-                    ExpandDepthFirstSearchOpenList(currentNode);
-                    pathfindingUsed = "Depth First Search with ";
-                    break;
-                case 2:
                     ExpandDijkstraOpenList(currentNode, heuristicindex);
                     pathfindingUsed = "Dijkstra with ";
                     break;
-                case 3:
+                case 1:
                     ExpandBestFirstSearchOpenList(currentNode, goalNode, heuristicindex);
                     pathfindingUsed = "Best First Search with ";
                     break;
-                case 4:
+                case 2:
                     ExpandAStarOpenList(currentNode, goalNode, heuristicindex);
                     pathfindingUsed = "A* Pathfinding with ";
                     break;

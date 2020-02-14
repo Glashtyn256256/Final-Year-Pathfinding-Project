@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -91,6 +92,10 @@ public class MinHeapSceneController : MonoBehaviour
         heuristicIndex = heuristicindex;
     }
 
+    public void BackToMainMenuOnClick()
+    {
+        SceneManager.LoadScene("Main_Menu_Pathfinding");
+    }
     public void ChangeCustomDistanceOnClick()
     {
         if (distanceStraight.text != "" && distanceDiagnol.text != "")

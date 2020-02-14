@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -196,8 +197,11 @@ public class FlowfieldSceneController : MonoBehaviour
         unitData.Add(unit);       
     }
 
-    
-   
+    public void BackToMainMenuOnClick()
+    {
+        SceneManager.LoadScene("Main_Menu_Pathfinding");
+    }
+
     //When you left click the mouse button, it will
     void LeftMouseClickToAlterNodeTerrain()
     {
@@ -316,8 +320,8 @@ public class FlowfieldSceneController : MonoBehaviour
 
                 {
                     unit.UnitMovementStart(currentNode);
-                    gridVisualisation.nodesVisualisationData[currentNode.xIndexPosition, currentNode.yIndexPosition].ArrowPosition();
-                    gridVisualisation.nodesVisualisationData[currentNode.nodeParent.xIndexPosition, currentNode.nodeParent.yIndexPosition].ArrowPosition();
+                    //gridVisualisation.nodesVisualisationData[currentNode.xIndexPosition, currentNode.yIndexPosition].ArrowPosition();
+                    //gridVisualisation.nodesVisualisationData[currentNode.nodeParent.xIndexPosition, currentNode.nodeParent.yIndexPosition].ArrowPosition();
                 }
 
             }
