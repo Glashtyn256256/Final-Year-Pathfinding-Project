@@ -11,8 +11,8 @@ public class Pathfinding : MonoBehaviour
     List<Node> openList;
     List<Node> closedList;
     List<Node> pathList;
-    const int loopAmount = 1;
-    const int averageDivision = 1;
+    const int loopAmount = 10100;
+    const int averageDivision = 10000;
 
     public Color startNodeColor = Color.green;
     public Color goalNodeColor = Color.red;
@@ -186,7 +186,7 @@ public class Pathfinding : MonoBehaviour
                 {
                     timer.Stop();
 
-                    if (i >= 0)
+                    if (i >= 100)
                     {
                         pathList = GetPathNodes(goalNode, out float totalGCost);
                         totalTime = totalTime + timer.Elapsed.TotalMilliseconds;
