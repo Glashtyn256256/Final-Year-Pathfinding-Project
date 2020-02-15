@@ -35,6 +35,7 @@ public class Node : IHeapItem<Node>
     //The gCost is the distance between the current node we're looking at and the start node
     //The hCost is the heurstic, it estimates the distance between the current node we're looking at to the end node.
     //This is the total cost of the node we are in.
+    public float minHeapGTotal;
     public float gCost;
     public float hCost;
     public float fCost { get { return gCost + hCost; } }
@@ -84,6 +85,7 @@ public class Node : IHeapItem<Node>
     {
         nodeParent = null;
         //compareValue = Mathf.Infinity;
+        minHeapGTotal = Mathf.Infinity;
         gCost = Mathf.Infinity;
         hCost = Mathf.Infinity;
         UnitAbove = false;

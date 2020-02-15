@@ -93,10 +93,10 @@ public class MinHeap<T> where T : IHeapItem<T>
         ReCalculateUp(item);
     }
 
-    //public void UpdateItem(T item)
-    //{
-    //    ReCalculateUp(item);
-    //}
+    public void UpdateItem(T item)
+    {
+        ReCalculateUp(item);
+    }
 
     void ReCalculateDown(T item)
     {

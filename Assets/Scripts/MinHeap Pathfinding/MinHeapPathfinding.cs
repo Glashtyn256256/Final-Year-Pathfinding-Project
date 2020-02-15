@@ -11,6 +11,8 @@ public class MinHeapPathfinding : MonoBehaviour
     MinHeap<Node> openList;
     List<Node> closedList;
     List<Node> pathList;
+    const int loopAmount = 1;
+    const int averageDivision = 1;
 
     public Color startNodeColor = Color.green;
     public Color goalNodeColor = Color.red;
@@ -81,116 +83,99 @@ public class MinHeapPathfinding : MonoBehaviour
     }
     public List<Node> FindPath(Vector3 startposition, Vector3 goalposition, int algorithmindex, int heuristicindex, out string unitmessage)
     {
-        ResetNodeParentgCostAndhCost();
-        ClearLists();
-
-        Node startNode = grid.GetNodeFromWorldPoint(startposition);
-        Node goalNode = grid.GetNodeFromWorldPoint(goalposition);
-        Node currentNode;
-        
-        Stopwatch timer = new Stopwatch();
-
-        int nodesExploredCount = 0;
+        double totalTime = 0;
+        int totalGoalNode = 0;
+        int totalNodesExplored = 0;
+        float nodeTotalGCost = 0;
+        // algorithmindex = 4;
+        // heuristicindex = 4;
         string pathfindingUsed = "";
-        startNode.gCost = 0;
-        startNode.hCost = grid.GetNodeDistance(startNode, goalNode, heuristicindex) + (int)startNode.nodeType;
-        openList.Add(startNode);          
-        timer.Start();
-
-        while (openList.Count() > 0)
+        for (int i = 0; i < loopAmount; i++)
         {
-          
-            currentNode = openList.RemoveFrontItem();
+            ResetNodeParentgCostAndhCost();
+            ClearLists();
 
-            if (!closedList.Contains(currentNode))
+            Node startNode = grid.GetNodeFromWorldPoint(startposition);
+            Node goalNode = grid.GetNodeFromWorldPoint(goalposition);
+            Node currentNode;
+
+            Stopwatch timer = new Stopwatch();
+
+            startNode.gCost = 0;
+            startNode.hCost = grid.GetNodeDistance(startNode, goalNode, heuristicindex) + (int)startNode.nodeType;
+            startNode.minHeapGTotal = 0;
+            openList.Add(startNode);
+            timer.Start();
+
+            while (openList.Count() > 0)
             {
-                closedList.Add(currentNode);
-                nodesExploredCount++;
-            }
+                currentNode = openList.RemoveFrontItem();
 
-            switch (algorithmindex)
-            {
-                case 0:
-                    ExpandDijkstraOpenList(currentNode, heuristicindex);
-                    pathfindingUsed = "Dijkstra with ";
-                    break;
-                case 1:
-                    ExpandBestFirstSearchOpenList(currentNode, goalNode, heuristicindex);
-                    pathfindingUsed = "Best First Search with ";
-                    break;
-                case 2:
-                    ExpandAStarOpenList(currentNode, goalNode, heuristicindex);
-                    pathfindingUsed = "A* Pathfinding with ";
-                    break;
-                default:
-                    break;
-            }
-
-            if (openList.Contains(goalNode))
-            {
-                pathList = GetPathNodes(goalNode);
-                timer.Stop();
-                unitmessage = ((pathfindingUsed) 
-                    + (HeuristicUsed(heuristicindex)) 
-                    + ("Elapsed time = ")
-                    + (timer.Elapsed.TotalMilliseconds).ToString()
-                    + " milliseconds , Nodes Explored = " 
-                    + nodesExploredCount.ToString()
-                    + ", Nodes To Goal = "
-                    + pathList.Count.ToString());
-
-
-                return pathList;
-            }
-        }
-        unitmessage = ("Path is blocked, no path possible to goal");
-        return null;
-    }
-
-    //These are a waste shorten when you get the chance. A lot of re-used code
-   
-    void ExpandBreadthFirstSearchOpenList(Node node)
-        {
-            if (node != null)
-            {
-                foreach (Node neighbour in node.neighbours)
+                if (!closedList.Contains(currentNode))
                 {
-                    if (neighbour.nodeType != NodeType.Blocked 
-                         && !closedList.Contains(neighbour)
-                        && !openList.Contains(neighbour))
+                    closedList.Add(currentNode);
+                }
+
+                switch (algorithmindex)
+                {
+                    case 0:
+                        ExpandDijkstraOpenList(currentNode, heuristicindex);
+                        pathfindingUsed = "Dijkstra with ";
+                        break;
+                    case 1:
+                        ExpandBestFirstSearchOpenList(currentNode, goalNode, heuristicindex);
+                        pathfindingUsed = "Best First Search with ";
+                        break;
+                    case 2:
+                        ExpandAStarOpenList(currentNode, goalNode, heuristicindex);
+                        pathfindingUsed = "A* Pathfinding with ";
+                        break;
+                    default:
+                        break;
+                }
+
+                if (openList.Contains(goalNode))
+                {
+                    timer.Stop();
+
+                    if (i >= 0)
                     {
-                        neighbour.nodeParent = node;
-                        openList.Add(neighbour);
+                        pathList = GetPathNodes(goalNode, out float totalGCost);
+                        totalTime = totalTime + timer.Elapsed.TotalMilliseconds;
+                        totalGoalNode = totalGoalNode + pathList.Count();
+                        totalNodesExplored = totalNodesExplored + closedList.Count();
+                        nodeTotalGCost = nodeTotalGCost + totalGCost;
+
                     }
+                    break;
                 }
             }
         }
- 
-    void ExpandDepthFirstSearchOpenList(Node node)
-    {
-        if (node != null)
-        {
-            foreach (var neighbour in node.neighbours)
-            {
-                if (neighbour.nodeType != NodeType.Blocked
-                    && !closedList.Contains(neighbour)
-                   && !openList.Contains(neighbour))
-                {
-                    neighbour.nodeParent = node;
-                    openList.Add(neighbour);
-                }
-            }
-        }
+
+        totalTime /= averageDivision;
+        totalGoalNode /= averageDivision;
+        totalNodesExplored /= averageDivision;
+        nodeTotalGCost /= averageDivision;
+        unitmessage = ((pathfindingUsed)
+                        + (HeuristicUsed(heuristicindex))
+                        + ("Elapsed time = ")
+                        + (totalTime.ToString()
+                        + " milliseconds , Nodes Explored = "
+                        + totalNodesExplored.ToString()
+                        + ", Nodes To Goal = "
+                        + totalGoalNode.ToString()
+                        + " total gcost = "
+                        + nodeTotalGCost.ToString()));
+        return pathList;
     }
 
-    
     void ExpandDijkstraOpenList(Node node, int heuristicindex)
     {
         if (node != null)
         {
             foreach (Node neighbour in node.neighbours)
             {
-                if(neighbour.nodeType == NodeType.Blocked || closedList.Contains(neighbour))
+                if (neighbour.nodeType == NodeType.Blocked || closedList.Contains(neighbour))
                 {
                     continue;
                 }
@@ -199,6 +184,7 @@ public class MinHeapPathfinding : MonoBehaviour
 
                 if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
                 {
+                    neighbour.minHeapGTotal = distanceToNeighbor;
                     neighbour.gCost = distanceToNeighbor;
                     neighbour.nodeParent = node;
 
@@ -206,7 +192,7 @@ public class MinHeapPathfinding : MonoBehaviour
                     {
                         openList.Add(neighbour);
                     }
-                }             
+                }
             }
         }
 
@@ -222,7 +208,9 @@ public class MinHeapPathfinding : MonoBehaviour
                           && !closedList.Contains(neighbour)
                          && !openList.Contains(neighbour))
                 {
-                    neighbour.hCost = grid.GetNodeDistance(neighbour, goalnode, heuristicindex)+(int)neighbour.nodeType;
+                    float distanceToNeighbor = node.minHeapGTotal + grid.GetNodeDistance(node, neighbour, heuristicindex) + (int)neighbour.nodeType;
+                    neighbour.minHeapGTotal = distanceToNeighbor;
+                    neighbour.hCost = grid.GetNodeDistance(neighbour, goalnode, heuristicindex) + (int)neighbour.nodeType;
                     neighbour.nodeParent = node;
                     openList.Add(neighbour);
                 }
@@ -246,6 +234,7 @@ public class MinHeapPathfinding : MonoBehaviour
                 if (distanceToNeighbor < neighbour.gCost || !openList.Contains(neighbour))
                 {
                     neighbour.gCost = distanceToNeighbor;
+                    neighbour.minHeapGTotal = distanceToNeighbor;
                     neighbour.hCost = grid.GetNodeDistance(neighbour, goalnode, heuristicindex) + (int)neighbour.nodeType;
                     neighbour.nodeParent = node;
 
@@ -257,9 +246,10 @@ public class MinHeapPathfinding : MonoBehaviour
             }
         }
     }
- 
-    List<Node> GetPathNodes(Node goalnode)
+
+    List<Node> GetPathNodes(Node goalnode, out float nodegcost)
     {
+        nodegcost = 0;
         List<Node> path = new List<Node>();
         if (goalnode == null)
         {
@@ -268,8 +258,9 @@ public class MinHeapPathfinding : MonoBehaviour
 
         path.Add(goalnode);
         Node currentNode = goalnode.nodeParent;
-        while(currentNode != null)
+        while (currentNode != null)
         {
+            nodegcost += currentNode.minHeapGTotal;
             path.Insert(0, currentNode); //saves us haivng to reverse if we use add
             currentNode = currentNode.nodeParent;
         }
@@ -277,6 +268,13 @@ public class MinHeapPathfinding : MonoBehaviour
         return path;
     }
 
+    void AddCurrentNodeToCloseList(Node currentNode)
+    {
+        if (!closedList.Contains(currentNode))
+        {
+            closedList.Add(currentNode);
+        }
+    }
     string HeuristicUsed(int index)
     {
         switch (index)
