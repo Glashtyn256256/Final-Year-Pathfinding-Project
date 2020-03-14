@@ -145,8 +145,8 @@ public class Pathfinding : MonoBehaviour
 
                         openList.Remove(currentNode);
                         AddCurrentNodeToCloseList(currentNode);
-                        ExpandBestFirstSearchOpenList(currentNode, goalNode, heuristicindex);
-                        pathfindingUsed = "Best First Search with ";
+                        ExpandGreedyBestFirstSearchOpenList(currentNode, goalNode, heuristicindex);
+                        pathfindingUsed = "Greedy Best First Search with ";
                         break;
                     case 4:
                         currentNode = openList[0];
@@ -169,7 +169,7 @@ public class Pathfinding : MonoBehaviour
                 }
 
                 if (openList.Contains(goalNode))
-            {
+                {
                 pathList = GetPathNodes(goalNode);
                 timer.Stop();
                 unitmessage = ((pathfindingUsed)
@@ -183,7 +183,7 @@ public class Pathfinding : MonoBehaviour
 
 
                 return pathList;
-            }
+                }
         }
         unitmessage = ("Path is blocked, no path possible to goal");
         return null;
@@ -251,10 +251,9 @@ public class Pathfinding : MonoBehaviour
                 }             
             }
         }
-
     }
 
-    void ExpandBestFirstSearchOpenList(Node node, Node goalnode, int heuristicindex)
+    void ExpandGreedyBestFirstSearchOpenList(Node node, Node goalnode, int heuristicindex)
     {
         if (node != null)
         {
@@ -296,7 +295,6 @@ public class Pathfinding : MonoBehaviour
                         openList.Add(neighbour);
                     }
                 }
-
             }
         }
     }

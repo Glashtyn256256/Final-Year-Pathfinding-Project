@@ -1923,7 +1923,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Dijkstra
       m_Image: {fileID: 0}
-    - m_Text: Best-First-Search
+    - m_Text: Greedy-Best-First-Search
       m_Image: {fileID: 0}
     - m_Text: A* Pathfinding
       m_Image: {fileID: 0}
