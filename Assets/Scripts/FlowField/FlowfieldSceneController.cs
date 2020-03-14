@@ -128,7 +128,7 @@ public class FlowfieldSceneController : MonoBehaviour
                 if (node.gridNode.nodeType != NodeType.Blocked)
                 {
                     ChangeTileToGoalNode(node);
-            
+                    UpdateMap();
                 }
                 else
                 {
@@ -162,6 +162,7 @@ public class FlowfieldSceneController : MonoBehaviour
                     unitData[0].ChangeUnitPositionWithoutUsingSpawnPosition(node.gridNode.xIndexPosition, node.gridNode.yIndexPosition);
                     gridVisualisation.ResetGridVisualisation();
                     gridVisualisation.ChangeToGoalNodeColourOnly(goalNode);
+                    UpdateMap();
                 }
                 else
                 {
@@ -314,12 +315,10 @@ public class FlowfieldSceneController : MonoBehaviour
     {
         grid.IntegrationField();
         foreach (var unit in unitData) 
-        {
-          
+        {          
             if (unit.HasReachedTarget())
             {
-                Node currentNode = grid.GetNodeFromWorldPoint(unit.transform.position);
-                
+                Node currentNode = grid.GetNodeFromWorldPoint(unit.transform.position);            
                 if (currentNode.nodeParent.nodeType != NodeType.Blocked ||
                     currentNode.nodeType != NodeType.GoalNode )
                 //|| currentNode.UnitAbove != true || currentNode.nodeParent.UnitAbove != true)
@@ -329,7 +328,6 @@ public class FlowfieldSceneController : MonoBehaviour
                     //gridVisualisation.nodesVisualisationData[currentNode.xIndexPosition, currentNode.yIndexPosition].ArrowPosition();
                     //gridVisualisation.nodesVisualisationData[currentNode.nodeParent.xIndexPosition, currentNode.nodeParent.yIndexPosition].ArrowPosition();
                 }
-
             }
         }
         //gridVisualisation.ChangePositionOfArrow();
