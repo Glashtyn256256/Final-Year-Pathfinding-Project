@@ -116,7 +116,7 @@ public class MinHeapPathfinding : MonoBehaviour
                     break;
                 case 1:
                     ExpandBestFirstSearchOpenList(currentNode, goalNode, heuristicindex);
-                    pathfindingUsed = "Best First Search with ";
+                    pathfindingUsed = "Greedy Best First Search with ";
                     break;
                 case 2:
                     ExpandAStarOpenList(currentNode, goalNode, heuristicindex);
