@@ -65,11 +65,12 @@ public class FlowfieldSceneController : MonoBehaviour
                 yGoalInput.text = yGoal.ToString();
                 xUnitInput.text = xStart.ToString();
                 yUnitInput.text = yStart.ToString();
+                ChangeTileToGoalNode(goalNode);
                 InstantiateUnit(startNode);
             }
+            
             flowfieldPathfinding.CreatePathfinding(grid, gridVisualisation);
             flowfieldPathfinding.FlowfieldPath(goalNode.transform.position, PathfindingVisualisationAid, heuristicIndex);
-           
         }
     }
 

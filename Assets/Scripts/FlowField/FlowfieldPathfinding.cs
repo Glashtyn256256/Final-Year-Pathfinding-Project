@@ -80,10 +80,6 @@ public class FlowfieldPathfinding : MonoBehaviour
             {
                 if (neighbour.nodeType == NodeType.Blocked || closedList.Contains(neighbour))
                 {
-                    //if(neighbour.nodeType == NodeType.Blocked)
-                    //{
-                    //    neighbour.gCost = 60000;
-                    //}
                     continue;
                 }
 
