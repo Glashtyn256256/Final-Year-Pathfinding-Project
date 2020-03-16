@@ -98,8 +98,7 @@ public class MinHeapPathfinding : MonoBehaviour
         timer.Start();
 
         while (openList.Count() > 0)
-        {
-          
+        {          
             currentNode = openList.RemoveFrontItem();
 
             if (!closedList.Contains(currentNode))
