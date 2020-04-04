@@ -52,8 +52,7 @@ public class Unit : MonoBehaviour
     }
     IEnumerator MoveUnitAcrossPath()
     {
-        Vector3 currentNodeWorldPosition = path[0].nodeWorldPosition;
-        
+        Vector3 currentNodeWorldPosition = path[0].nodeWorldPosition;     
         IndexInPath = 0;
 
         while (true)
@@ -68,15 +67,12 @@ public class Unit : MonoBehaviour
                 currentNodeWorldPosition = path[IndexInPath].nodeWorldPosition;
             }
 
-            //Need a way to check the path after this to see if it's blocked, otherwise unit may be put inside wall.
             if (path[IndexInPath].nodeType == NodeType.Blocked)
             {
                 path = pathFinding.FindPath(transform.position, goalWorldPosition.position, algorithmIndex, heuristicIndex, out unitMessagePathfinding);
                 IndexInPath = 0;
                 yield return null;
             }
-            //issue it goes down in y :/
-            //Stop it sinking into the ground, need a better way of fixing this.
             currentNodeWorldPosition.y = transform.position.y;
             transform.position = Vector3.MoveTowards(transform.position, currentNodeWorldPosition, unitSpeed);
             yield return null;

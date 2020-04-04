@@ -75,16 +75,12 @@ public class GridManager : MonoBehaviour
     }
     List<Node> GetNeighbours(int x, int y, Node[,] nodeArray, Vector2[] directions)
     {
-        List<Node> neighbourNodes = new List<Node>();
-
-        
+        List<Node> neighbourNodes = new List<Node>();    
         foreach (Vector2 dir in directions)
         {
             int newX = x + (int)dir.x;
             int newY = y + (int)dir.y;
 
-            //We want the blocked nodes incase they've been changed so we still want to know about them.
-            //Make sure we dont add nodes that are outside the boundrys of the grid
             if (IsWithinBounds(newX, newY) && nodeArray[newX, newY] != null)
             {
                 neighbourNodes.Add(nodeArray[newX, newY]);
@@ -173,9 +169,7 @@ public class GridManager : MonoBehaviour
                 return OctileDistance(source, target);
             case 5:
                 return CustomDiagnolDistance(source, target);
-
-
-        }
+       }
         //This will never be hit but we have to return a value since it will complain
         return Mathf.Infinity;
     }
@@ -216,20 +210,14 @@ public class GridManager : MonoBehaviour
     {
         int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
         int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
-        //D = 10 and D2 = 10
         ////D * max(dx, dy) + (D2-D) * min(dx, dy)
         return 1.0f * Mathf.Max(xDistance, yDistance) + (1.0f - 1.0f) * Mathf.Min(xDistance, yDistance);
     }
 
-    //we use 10 and 14 in our distances instead of using 1 or 1.4 using whole numbers works.
-    //D1 is 1 multiply by 10 to ge t10 and D2 is 1.4 which is squareroute of two, multiply
-    //by 10 and we get 14.
-    //Caridnal movement is 10 but DiagnolMovement is 14.
     float OctileDistance(Node source, Node target)
     {
         int xDistance = Mathf.Abs(source.xIndexPosition - target.xIndexPosition);
         int yDistance = Mathf.Abs(source.yIndexPosition - target.yIndexPosition);
-        //D = 10 AND D2 = 14
         //1.41421356237 square route of 2 
         //D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
         return 1.0f * (xDistance + yDistance) + (1.4f - 2 * 1.0f) * Mathf.Min(xDistance, yDistance);

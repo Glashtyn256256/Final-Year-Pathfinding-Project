@@ -19,7 +19,7 @@ public class GridVisualisation : MonoBehaviour
     {
         if (grid == null)
         {
-            Debug.LogWarning("GridManager! No grid");
+            Debug.LogWarning("GridManager has returned as null");
             return;
         }
 
@@ -113,8 +113,6 @@ public class GridVisualisation : MonoBehaviour
             {
                 nodeVisualisation.ColorNode(waterColor);
             }
-
-
     }
 
     public void ChangeToFloorNode(NodeVisualisation nodevisualisation)
@@ -145,7 +143,14 @@ public class GridVisualisation : MonoBehaviour
     { 
         nodevisualisation.ColorNode(goalColor);
     }
-   public void ChangePositionOfArrow()
+
+    public void ChangeToGoalNodeColourOnly(Node node)
+    {
+        NodeVisualisation visualNode = nodesVisualisationData[node.xIndexPosition, node.yIndexPosition];
+        visualNode.ColorNode(goalColor);
+    }
+
+    public void ChangePositionOfArrow()
     {
         foreach(var nodeVisual in nodesVisualisationData)
         {

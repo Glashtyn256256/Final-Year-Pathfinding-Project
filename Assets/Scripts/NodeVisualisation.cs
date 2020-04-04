@@ -10,8 +10,7 @@ public class NodeVisualisation : MonoBehaviour
 
     public Node gridNode;
 
-    [Range(0, 0.5f)]
-    public float borderSize = 0.0f;
+
 
     public void CreateNodeVisualisation(Node node){
 
@@ -19,7 +18,6 @@ public class NodeVisualisation : MonoBehaviour
         {
             gameObject.name = "Node (" + node.xIndexPosition + "," + node.yIndexPosition + ")";
             gameObject.transform.position = node.nodeWorldPosition;
-            tile.transform.localScale = new Vector3(1f - borderSize, 1f, 1f - borderSize);
             gridNode = node;
 
             if (node.nodeType == NodeType.Blocked)

@@ -49,8 +49,8 @@ public class SceneController : MonoBehaviour
     {
         if (mapData != null && grid != null)
         {
-            int[,] mapinstance = mapData.MakeMap();
-            grid.CreateGrid(mapinstance);
+            int[,] mapDesign = mapData.MakeMap();
+            grid.CreateGrid(mapDesign);
 
             gridVisualisation = grid.gameObject.GetComponent<GridVisualisation>();
 
