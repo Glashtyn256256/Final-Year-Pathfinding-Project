@@ -2887,7 +2887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d0235cfb5e4a35418febfc26df2de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nodeVisualisationPrefab: {fileID: 1286476223196418308, guid: d9b4b67224c72af45aed2711e3a1613b,
+  nodeVisualisationPrefab: {fileID: 1286476223196418308, guid: 5a6750c5770193d4ba6077a812671b06,
     type: 3}
   baseColor: {r: 1, g: 1, b: 1, a: 1}
   wallColor: {r: 0, g: 0, b: 0, a: 1}
@@ -3276,7 +3276,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Unit Positiion
+  m_Text: Unit Position
 --- !u!222 &1280260553
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4059,7 +4059,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Goal Positiion
+  m_Text: Goal Position
 --- !u!222 &1579780122
 CanvasRenderer:
   m_ObjectHideFlags: 0
