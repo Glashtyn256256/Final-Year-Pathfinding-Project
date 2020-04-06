@@ -40,7 +40,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 777923026687957541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f2439936563f84abf2badda8882fc0, type: 3}
+  m_Script: {fileID: 11500000, guid: a17257d1756a64247870d2be425b6abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   startNodeColor: {r: 0, g: 1, b: 0, a: 1}
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8445363487285333785}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45d55e44980b0754e968abcb3f6a3b03, type: 3}
+  m_Script: {fileID: 11500000, guid: f7429540a19a2fa40903ed1567f25275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pathFinding: {fileID: 8260497219730979633}

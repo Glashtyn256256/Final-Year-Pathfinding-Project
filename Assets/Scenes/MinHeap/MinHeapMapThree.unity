@@ -4035,7 +4035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 30
   mapHeight: 30
-  textureMap: {fileID: 2800000, guid: 1199f054209551f40ba875cbca984b33, type: 3}
+  textureMap: {fileID: 2800000, guid: 91974d61700b3564a98336b086925a93, type: 3}
   resourcePath: MapData
   levelName: 
 --- !u!4 &934138432
@@ -5387,7 +5387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapData: {fileID: 934138431}
   grid: {fileID: 374706466}
-  unitPrefab: {fileID: 3177748228992786389, guid: aae6089cf58afc046a0111393a1ca284,
+  unitPrefab: {fileID: 3177748228992786389, guid: 52830888b51b0c746ab03dcf4a331fb0,
     type: 3}
   unitData: []
   xGoalInput: {fileID: 1412207774}

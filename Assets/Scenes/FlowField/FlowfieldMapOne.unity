@@ -4993,7 +4993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 30
   mapHeight: 30
-  textureMap: {fileID: 2800000, guid: 32a2f9d4ed7d24141aca7eeb41f9786d, type: 3}
+  textureMap: {fileID: 2800000, guid: 69d1dc1fc6152154189621c2ad166c23, type: 3}
   resourcePath: MapData
   levelName: 
 --- !u!4 &1915912022
